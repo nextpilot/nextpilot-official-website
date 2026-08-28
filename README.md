@@ -79,4 +79,5 @@ pnpm docs:preview
 
 ## 许 可 证
 
-BSD 3-Clause，可免费商用。
+- 本站内容（文档、图片等）：[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)：开放共享、转载、修改与商用，但须保留署名来源
+- NextPilot 飞行控制软件：[BSD 3-Clause](https://opensource.org/license/bsd-3-clause)：自由使用、修改、再分发与商用，但须保留版权声明，不得以项目方名义背书
