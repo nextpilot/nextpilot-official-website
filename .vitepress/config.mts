@@ -5,6 +5,7 @@ export default defineConfig({
   title: "NextPilot Flight Control",
   description: "NextPilot Flight Control",
   lang: 'zh-CN',
+  srcDir: 'source',
   // 排除根目录的说明文件，避免被当作页面生成
   srcExclude: ['CLAUDE.md', 'README.md'],
   // frontmatter.permalink -> 固定访问路径（真实路由）
@@ -21,7 +22,7 @@ export default defineConfig({
 
     footer: {
       message: '本文档采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> 国际协议，开放共享、转载、修改、商用，但须保留署名来源',
-      copyright: 'Copyright © 2026 NextPilot',
+      copyright: `Copyright © ${new Date().getFullYear()} NextPilot Development Team`,
     },
   },
 
