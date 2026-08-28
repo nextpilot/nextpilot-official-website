@@ -1,0 +1,8 @@
+/* 内容铺满可用宽度，与首页一致（覆盖 VitePress 各层默认 max-width） */
+.VPDoc .container,
+.VPDoc .content,
+.vp-doc,
+.content-container,
+.main {
+  max-width: none !important;
+}
