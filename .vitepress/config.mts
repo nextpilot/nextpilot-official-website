@@ -1,0 +1,57 @@
+import { defineConfig } from 'vitepress';
+
+// https://vitepress.dev/reference/site-config
+export default defineConfig({
+  title: "NextPilot Flight Control",
+  description: "NextPilot Flight Control",
+  lang: 'zh-CN',
+  // 排除根目录的说明文件，避免被当作页面生成
+  srcExclude: ['CLAUDE.md', 'README.md'],
+  // frontmatter.permalink -> 固定访问路径（真实路由）
+  // rewrites: buildRewrites(),
+
+  // 通用主题配置（不区分语言）
+  themeConfig: {
+    logo: '/logo.png',
+    search: { provider: 'local' },
+
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/nextpilot/nextpilot-flight-control' }
+    ],
+
+    footer: {
+      message: 'BSD 3-Clause 开源协议，可免费商用',
+      copyright: 'Copyright © 2026 NextPilot',
+    },
+  },
+
+  locales: {
+    root: {
+      label: '简体中文',
+      lang: 'zh-CN',
+      themeConfig: {
+        nav: [
+          { text: '关于我们', link: '/aboutus/' },
+          { text: '解决方案', link: '/solution/' },
+          { text: '产品中心', link: '/product/' },
+          { text: '用户手册', link: '/manual/' },
+          { text: '开发指南', link: '/develop/' },
+          { text: '博客', link: '/blog/' },
+        ],
+        // sidebar: { '/docs/': docsSidebar('') },
+      },
+    },
+    en: {
+      label: 'English',
+      lang: 'en-US',
+      themeConfig: {
+        nav: [
+          { text: 'Home', link: '/en/' },
+          { text: '简体中文', link: '/' },
+        ],
+        // sidebar: { '/en/docs/': docsSidebar('en') },
+      },
+    },
+  },
+
+});
