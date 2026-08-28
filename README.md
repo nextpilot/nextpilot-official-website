@@ -63,13 +63,18 @@ pnpm docs:preview
 .
 ├── .vitepress/          # VitePress 配置
 │   └── config.mts       # 站点配置（标题、导航、本地化等）
-├── index.md             # 首页
-├── aboutus/             # 关于我们
-├── solution/            # 解决方案
-├── product/             # 产品中心
-├── manual/              # 用户手册
-├── develop/             # 开发指南
-├── discovery/           # 发现
+├── source/              # 内容根目录（srcDir）
+│   ├── index.md         # 首页
+│   ├── aboutus/         # 关于我们
+│   ├── solution/        # 解决方案
+│   ├── product/         # 产品中心
+│   ├── manual/          # 用户手册
+│   ├── develop/         # 开发指南
+│   ├── discovery/       # 精彩探索
+│   ├── news/            # 新闻资讯
+│   ├── download/        # 资料下载
+│   ├── blog/            # 博客
+│   └── en/              # 英文站
 └── public/              # 静态资源（logo、favicon 等）
 ```
 
