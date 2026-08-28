@@ -44,10 +44,13 @@ export default defineConfig({
         nav: [
           { text: '首页', link: '/' },
           { text: '关于我们', link: '/aboutus/' },
+          { text: '新闻资讯', link: '/news/' },
           { text: '解决方案', link: '/solution/' },
           { text: '产品中心', link: '/product/' },
           { text: '用户手册', link: '/manual/' },
           { text: '开发指南', link: '/develop/' },
+          { text: '社区支持', link: '/community/' },
+          { text: '资料下载', link: '/download/' },
           { text: '博客', link: '/blog/' },
         ],
         // sidebar: { '/docs/': docsSidebar('') },
