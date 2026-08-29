@@ -1,15 +1,15 @@
 ---
-title: np-snail-550
+title: NP-SNAIL-550
 summary: 面向开发者的四轴无人机机体平台，X构型、对角轴距584mm、机臂可折叠，碳板堆叠结构
 cover: /images/product/aircraft/full-state.png
 order: 1
 description: >-
-  np-snail-550 面向开发者的四轴无人机机体平台，X 构型、对角轴距 584mm、
+  NP-SNAIL-550 面向开发者的四轴无人机机体平台，X 构型、对角轴距 584mm、
   机臂可折叠，采用碳板堆叠结构并预留过孔，载荷板支持堆叠扩展，
   兼容主流动力系统，零配件均为市面标准产品，易于维修更换。
 ---
 
-# np-snail-550 机体平台
+# NP-SNAIL-550
 
 ## 简介
 
