@@ -2,8 +2,9 @@
 import { computed } from 'vue'
 import { useData, useRoute } from 'vitepress'
 
-const { page, theme } = useData()
+const { page, theme, lang } = useData()
 const route = useRoute()
+const isZh = computed(() => (lang.value || 'zh-CN').startsWith('zh'))
 
 interface Crumb {
   text: string
@@ -30,7 +31,7 @@ const crumbs = computed<Crumb[]>(() => {
   if (path !== '/') path = path.replace(/\/$/, '')
   const segments = path.split('/').filter(Boolean)
 
-  const items: Crumb[] = [{ text: '首页', link: '/' }]
+  const items: Crumb[] = [{ text: isZh.value ? '首页' : 'Home', link: '/' }]
 
   // 一级栏目：从 nav（含下拉项）按链接匹配中文名，匹配不到回退到路径段
   const first = segments[0]
@@ -53,7 +54,7 @@ const crumbs = computed<Crumb[]>(() => {
 </script>
 
 <template>
-  <nav v-if="crumbs.length > 1" class="breadcrumb" aria-label="面包屑导航">
+  <nav v-if="crumbs.length > 1" class="breadcrumb" :aria-label="isZh ? '面包屑导航' : 'Breadcrumb'">
     <template v-for="(c, i) in crumbs" :key="i">
       <span v-if="i > 0" class="sep" aria-hidden="true">/</span>
       <a v-if="c.link" :href="c.link" class="crumb">{{ c.text }}</a>

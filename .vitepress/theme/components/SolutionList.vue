@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useData } from 'vitepress'
 
 interface Solution {
   title: string
@@ -11,6 +12,9 @@ interface Solution {
 const props = defineProps<{
   solutions: Solution[]
 }>()
+
+const { lang } = useData()
+const isZh = computed(() => (lang.value || 'zh-CN').startsWith('zh'))
 
 const items = computed(() =>
   props.solutions.map((s) => {
@@ -33,7 +37,7 @@ const items = computed(() =>
       <ul v-if="s.bullets.length" class="card-bullets">
         <li v-for="b in s.bullets" :key="b">{{ b }}</li>
       </ul>
-      <span class="card-more">查看详情 →</span>
+      <span class="card-more">{{ isZh ? '查看详情 →' : 'View details →' }}</span>
     </a>
   </div>
 </template>

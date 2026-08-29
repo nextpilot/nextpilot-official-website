@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useData } from 'vitepress'
 
 interface Product {
   title: string
@@ -20,6 +21,14 @@ const props = defineProps<{
 
 const query = ref('')
 const activeCategory = ref('')
+
+const { lang } = useData()
+const isZh = computed(() => (lang.value || 'zh-CN').startsWith('zh'))
+const t = computed(() =>
+  isZh.value
+    ? { all: '全部', placeholder: '搜索产品名称、型号、关键词…', search: '搜索产品', empty: '没有匹配的产品。', cats: '产品分类' }
+    : { all: 'All', placeholder: 'Search product name, model, keyword…', search: 'Search products', empty: 'No matching products.', cats: 'Categories' }
+)
 
 // 分类列表：去重，按 categoryOrder 排序
 const categories = computed(() => {
@@ -48,13 +57,13 @@ const filtered = computed(() => {
 
 <template>
   <div class="product-toolbar">
-    <div class="product-cats" role="group" aria-label="产品分类">
+    <div class="product-cats" role="group" :aria-label="t.cats">
       <button
         class="cat-chip"
         :class="{ active: activeCategory === '' }"
         @click="activeCategory = ''"
       >
-        全部
+        {{ t.all }}
       </button>
       <button
         v-for="c in categories"
@@ -70,12 +79,12 @@ const filtered = computed(() => {
       v-model="query"
       type="search"
       class="product-search"
-      placeholder="搜索产品名称、型号、关键词…"
-      aria-label="搜索产品"
+      :placeholder="t.placeholder"
+      :aria-label="t.search"
     />
   </div>
 
-  <p v-if="!filtered.length" class="product-empty">没有匹配的产品。</p>
+  <p v-if="!filtered.length" class="product-empty">{{ t.empty }}</p>
 
   <div class="product-grid">
     <a
