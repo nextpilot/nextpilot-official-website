@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: NextPilot
-  text: 国产开源先进自动驾驶仪
-  tagline: 基于 RT-Thread 与 PX4 的飞控系统，面向教育、研究与工业
+  # text: 国产开源先进自动驾驶仪
+  tagline: 基于 RT-Thread 与 PX4 的先进飞控系统，面向教育、研究与工业等领域
   actions:
     - theme: brand
       text: 快速上手
