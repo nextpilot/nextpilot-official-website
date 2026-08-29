@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress';
+import { docsSidebar } from './sidebar';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -44,16 +45,26 @@ export default defineConfig({
         nav: [
           { text: '首页', link: '/' },
           { text: '关于我们', link: '/aboutus/' },
-          { text: '新闻资讯', link: '/news/' },
+          // { text: '新闻资讯', link: '/news/' },
           { text: '解决方案', link: '/solution/' },
           { text: '产品中心', link: '/product/' },
-          { text: '用户手册', link: '/manual/' },
-          { text: '开发指南', link: '/develop/' },
-          { text: '社区支持', link: '/community/' },
+          {
+            text: '文档中心',
+            items: [
+              { text: '用户手册', link: '/manual/' },
+              { text: '开发指南', link: '/develop/' },
+              { text: '社区支持', link: '/community/' },
+            ],
+          },
           { text: '资料下载', link: '/download/' },
-          { text: '博客', link: '/blog/' },
+          { text: '技术博客', link: '/blog/' },
         ],
-        // sidebar: { '/docs/': docsSidebar('') },
+        sidebar: {
+          '/aboutus/': docsSidebar('aboutus'),
+          '/manual/': docsSidebar('manual'),
+          '/develop/': docsSidebar('develop'),
+          '/community/': docsSidebar('community'),
+        },
       },
     },
     en: {
