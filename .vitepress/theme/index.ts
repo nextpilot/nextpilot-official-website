@@ -1,6 +1,7 @@
 import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
 import SolutionList from './components/SolutionList.vue'
+import ProductList from './components/ProductList.vue'
 import './style.css'
 
 export default {
@@ -8,5 +9,6 @@ export default {
   Layout,
   enhanceApp({ app }) {
     app.component('SolutionList', SolutionList)
+    app.component('ProductList', ProductList)
   },
 }
