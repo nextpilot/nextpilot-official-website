@@ -10,6 +10,20 @@ interface Crumb {
   link?: string
 }
 
+// 展开 nav（含下拉菜单 items），便于按链接反查栏目中文名
+const navLinks = computed(() => {
+  const flat: { text?: string; link: string }[] = []
+  for (const item of theme.value.nav ?? []) {
+    if ('link' in item && item.link) flat.push({ text: item.text, link: item.link })
+    if ('items' in item && item.items) {
+      for (const sub of item.items) {
+        if ('link' in sub && sub.link) flat.push({ text: sub.text, link: sub.link })
+      }
+    }
+  }
+  return flat
+})
+
 const crumbs = computed<Crumb[]>(() => {
   // 归一化路径：去掉 .html 后缀与末尾斜杠
   let path = decodeURIComponent(route.path).replace(/\.html$/, '')
@@ -18,22 +32,20 @@ const crumbs = computed<Crumb[]>(() => {
 
   const items: Crumb[] = [{ text: '首页', link: '/' }]
 
-  // 一级栏目：从 nav 里按链接匹配中文名，匹配不到就回退到路径段
+  // 一级栏目：从 nav（含下拉项）按链接匹配中文名，匹配不到回退到路径段
   const first = segments[0]
   if (first) {
     const link = `/${first}/`
-    const navItem = (theme.value.nav ?? []).find(
-      (item) => 'link' in item && item.link === link
-    )
-    items.push({
-      text: (navItem && 'text' in navItem && navItem.text) || first,
-      link,
-    })
+    const navItem = navLinks.value.find((item) => item.link === link)
+    items.push({ text: navItem?.text || first, link })
   }
 
-  // 当前页：优先 frontmatter title，其次路径末段
+  // 当前页：优先 frontmatter title，其次 page.title，最后路径末段
   if (segments.length > 1) {
-    items.push({ text: page.value.title || segments[segments.length - 1] })
+    const fmTitle = page.value.frontmatter?.title as string | undefined
+    items.push({
+      text: fmTitle || page.value.title || segments[segments.length - 1],
+    })
   }
 
   return items
