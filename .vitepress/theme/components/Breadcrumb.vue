@@ -29,11 +29,15 @@ const crumbs = computed<Crumb[]>(() => {
   // 归一化路径：去掉 .html 后缀与末尾斜杠
   let path = decodeURIComponent(route.path).replace(/\.html$/, '')
   if (path !== '/') path = path.replace(/\/$/, '')
-  const segments = path.split('/').filter(Boolean)
+  let segments = path.split('/').filter(Boolean)
 
-  const items: Crumb[] = [{ text: isZh.value ? '首页' : 'Home', link: '/' }]
+  // 英文站去掉语言前缀 en，避免把 en 当成一级栏目
+  if (!isZh.value && segments[0] === 'en') segments = segments.slice(1)
 
-  // 一级栏目：从 nav（含下拉项）按链接匹配中文名，匹配不到回退到路径段
+  const homeLink = isZh.value ? '/' : '/en/'
+  const items: Crumb[] = [{ text: isZh.value ? '首页' : 'Home', link: homeLink }]
+
+  // 一级栏目：从 nav（含下拉项）按链接匹配栏目名，匹配不到回退到路径段
   const first = segments[0]
   if (first) {
     const link = `/${first}/`
