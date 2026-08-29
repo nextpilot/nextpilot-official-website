@@ -17,7 +17,7 @@ export default defineConfig({
   lastUpdated: true,
 
   // 排除根目录的说明文件，避免被当作页面生成
-  srcExclude: ['CLAUDE.md', 'README.md'],
+  srcExclude: ['README.md'],
   // frontmatter.permalink -> 固定访问路径（真实路由）
   // rewrites: buildRewrites(),
 
