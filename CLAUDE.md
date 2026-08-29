@@ -17,7 +17,7 @@ NextPilot（`nextpilot-flight-control`）是一款国产开源先进自动驾驶
 
 ## 当前状态
 
-当前仅完成 VitePress 基础配置和目录迁移（`srcDir` 指向 `source/`）。以下功能**尚未实现**：产品列表页、文章列表页（news / blog）、manual / develop 自动侧边栏（`docsSidebar()`）、`permalink` 重写（`buildRewrites()`）及自定义主题组件；`config.mts` 中的 `rewrites`、`sidebar` 目前仍为注释状态。
+当前已完成 VitePress 基础配置、目录迁移（`srcDir` 指向 `source/`）以及 aboutus / manual / develop / community 自动侧边栏（`docsSidebar()`，已接入 `config.mts` 的 `sidebar`）。以下功能**尚未实现**：产品列表页、文章列表页（news / blog）、`permalink` 重写（`buildRewrites()`）；`config.mts` 中的 `rewrites` 目前仍为注释状态。
 
 ## 环境与技术栈
 
@@ -43,7 +43,7 @@ pnpm docs:preview     # 本地预览构建产物
 nextpilot-official-website/
 ├── .vitepress/
 │   ├── config.mts         # 站点配置：nav、sidebar、locales、主题
-│   ├── sidebar.ts         # docsSidebar()：manual/develop 侧边栏生成
+│   ├── sidebar.ts         # docsSidebar()：aboutus/manual/develop/community 侧边栏生成
 │   ├── rewrites.ts        # buildRewrites()：permalink → 真实路由
 │   ├── theme/             # 自定义主题：布局扩展、组件、样式
 │   └── dist/              # 构建产物（不提交）
@@ -55,6 +55,7 @@ nextpilot-official-website/
 │   │   └── <category>/        #   如 flight-controller/、navigation/、air-data/
 │   ├── manual/            # 用户手册：用户手册、FAQ
 │   ├── develop/           # 开发指南：开发指南、API 参考
+│   ├── community/         # 社区支持：技术支持、贡献代码、行为准则、开源许可
 │   ├── discovery/         # 精彩探索（待建）
 │   ├── news/              # 新闻资讯：版本发布、社区活动、公告（待建）
 │   ├── download/          # 资料下载：固件、软件、文档（待建）
@@ -72,11 +73,12 @@ nextpilot-official-website/
 
 | 栏目 | 模型 | 路径 | 内容定位 | 组织方式 |
 | ------ | ------ | ------ | ---------- | ---------- |
-| 关于我们 | page | `/aboutus/` | 团队介绍、发展历程、开源协议、联系与合作 | 顶部导航一个入口 |
+| 关于我们 | page | `/aboutus/` | 团队介绍、发展历程、开源协议、联系与合作 | 扁平结构，左侧侧边栏自动生成 |
 | 解决方案 | page | `/solution/` | 面向教育、科研、工业等场景的解决方案 | 顶部导航一个入口 |
 | 产品中心 | product | `/product/` | 飞控硬件、软件能力、机型与仿真支持 | 列表页（卡片 + 分类筛选 + 搜索），每款产品一个详情页 |
 | 用户手册 | docs | `/manual/` | 用户手册、FAQ | 层级最深，**侧边栏按目录结构自动生成** |
 | 开发指南 | docs | `/develop/` | 开发指南、API 参考 | 层级最深，**侧边栏按目录结构自动生成** |
+| 社区支持 | docs | `/community/` | 技术支持、贡献代码、行为准则、开源许可 | 层级最深，**侧边栏按目录结构自动生成** |
 | 新闻资讯 | post | `/news/` | 版本发布、社区活动、公告 | 按时间倒序列表，条目短（待建） |
 | 博客 | post | `/blog/` | 技术文章、开发笔记、应用案例 | 按时间倒序列表，正文长 |
 | 精彩探索 | image | `/discovery/` | 活动照片、案例图集等精彩图片/视频 | 图片/视频卡片墙（待建） |
@@ -84,8 +86,9 @@ nextpilot-official-website/
 
 ### 关于我们（aboutus）和解决方案（solution）
 
-- `/aboutus/` 和 `/solution/` 属于 `page` 类，没有分类/分组，目录结构为扁平的 `aboutus/<xx-page.md>`（solution 同理），`xx` 是排序前缀，每个 md 一个页面
-- 列表页面自动生成侧边栏，但是侧边栏放在顶部，标题优先使用 frontmatter `title`，否则使用文件名（去除排序前缀）
+- `/aboutus/` 和 `/solution/` 目录结构均为扁平的 `<栏目>/<xx-page.md>`，`xx` 是排序前缀，每个 md 一个页面
+- `/aboutus/` 使用左侧自动侧边栏（`docsSidebar('aboutus')`），条目名优先 frontmatter `title`，其次文件名（去除排序前缀），排除 `index.md`
+- `/solution/` 属于 `page` 类，侧边栏放在顶部（当前未实现），标题优先 frontmatter `title`，否则文件名（去除排序前缀）
 
 ### 产品中心（product）
 
@@ -108,6 +111,12 @@ nextpilot-official-website/
 - 分类仅来自文章所在子目录及其 `index.md` 标题，`tags` 是可选的多值主题标签，用于右侧筛选
 - md 映射为条目，条目名优先 frontmatter `title`，否则文件名去排序前缀；
 - 路由优先使用 frontmatter `permalink`，否则回退文件路径
+
+### 社区支持（community）
+
+- `/community/` 属于 `docs` 类，与 manual / develop 相同：左侧自动侧边栏、右侧 TOC
+- 侧边栏由 `docsSidebar('community')` 自动生成，条目名优先 frontmatter `title`，其次文件名（去除排序前缀），并排除 `index.md`
+- `docsSidebar()` 同时支持分组结构（manual/develop，子目录映射为分组）和扁平结构（community，md 直接映射为条目），两种结构共用同一套命名与排序规则
 
 ### 新闻资讯（news）和博客（blog）
 
@@ -139,8 +148,8 @@ nextpilot-official-website/
 ### 页面职责
 
 - `/` 展示站点介绍、核心能力和主要栏目入口
-- `/product/` 为产品列表页；`/blog/` 为博客列表页；`/manual/` 和 `/develop/` 为文档分组入口并使用自动侧边栏
-- `/aboutus/` 和 `/solution/` 为栏目入口及内容页，内部页面使用手写侧边栏
+- `/product/` 为产品列表页；`/blog/` 为博客列表页；`/manual/`、`/develop/` 和 `/community/` 为文档分组入口并使用自动侧边栏（顶部导航统一收进「文档中心」下拉菜单）
+- `/aboutus/` 为栏目入口及内容页，使用左侧自动侧边栏；`/solution/` 为栏目入口及内容页，侧边栏放在顶部（待实现）
 - 待建的 `/news/`、`/discovery/`、`/download/` 只保留目录占位和 `index.md`，未实现前不接入顶部导航
 
 ### Frontmatter
@@ -167,14 +176,14 @@ draft: false                     # 草稿；开发环境可预览，生产环境
 
 ### 排序约定
 
-- **所有页面和目录**（aboutus / solution / product / manual / develop / news / blog 的条目和分组）排序优先级统一为：frontmatter `order`（越小越靠前）> 文件或目录的排序前缀；`order` 相同时继续比较排序前缀，仍相同时按完整路径稳定排序
+- **所有页面和目录**（aboutus / solution / product / manual / develop / community / news / blog 的条目和分组）排序优先级统一为：frontmatter `order`（越小越靠前）> 文件或目录的排序前缀；`order` 相同时继续比较排序前缀，仍相同时按完整路径稳定排序
 - 排序前缀分两类：`xx`/`yy` 数字前缀用于对时间无要求的页面（docs、product；aboutus、solution 仅 `xx` 一级），`yyyymmdd` 日期前缀用于时间感强的页面（blog、news），日期按照倒序排列
 - `date`（Frontmatter 日期字段）**不参与排序**，也不覆盖文件名中的日期排序前缀
 
 ### 写作规范
 
 - 中文正文使用中文标点；中英文之间强制加空格，且同一文件内保持一致
-- 每篇文档只有一个 H1（由 frontmatter `title` 或正文首个 `#` 提供）
+- 页面标题优先取 frontmatter `title`，缺失时取正文首个 `#`；frontmatter `title` 与正文一级标题（`#`）可共存（前者用于页面标题/侧边栏/SEO，后者作为正文中的一级标题）
 - 在页面之间链接时，建议使用相对路径，但省略`.md` 和 `.html` 文件扩展名，以便 VitePress 可以根据配置生成最终的 URL
 - 图片放在 `public/images/<栏目>/` 下，Markdown 中以 `/images/...` 绝对路径引用
 
@@ -192,6 +201,7 @@ draft: false                     # 草稿；开发环境可预览，生产环境
 - 产品列表页（`/product/`）用 `createContentLoader` 收集 `product/**/*.md` 的页面数据，交给一个 Vue 组件渲染：**卡片网格 + 分类筛选 + 产品全文搜索**；分类筛选不使用 `tags`，筛选与搜索是客户端交互，数据在构建期一次性注入，运行时不发请求
 - 使用 `createContentLoader` 收集列表数据时，必须过滤所有 `index.md` 和 `draft: true` 页面；产品搜索应覆盖产品全文，产品分类筛选只使用目录分类，不使用 `tags`
 - 自定义 Vue 组件放在 `.vitepress/theme/components/`，通过 `enhanceApp` 全局注册后即可在 Markdown 中使用
+- 面包屑（`.vitepress/theme/components/Breadcrumb.vue`）当前页标题优先取 frontmatter `title`，其次 `page.title`，最后路径末段；一级栏目名从 nav（含下拉菜单 `items`）按链接反查，匹配不到回退路径段
 - `docsSidebar()`、`buildRewrites()` 等构建期帮助函数放在 `.vitepress/` 下的独立模块（如 `sidebar.ts`、`rewrites.ts`），`config.mts` 只 import 不内联实现，避免 config 膨胀
 - `permalink` 用 VitePress 的 `rewrites` 实现为**真实路由**：扫描 `srcDir` 下所有 md 的 `frontmatter.permalink`，生成「源路径 → 目标路径」映射交给 `rewrites`。两个关键点：① **必须用 VitePress ≥ 2.0**（1.6.x 对深层路径重写会生成空文件，chunk 命名 bug）；② rewrite 目标要**带 `.md` 后缀**且**不带前导斜杠**——即 `permalink: /manual/foo`（以 `/` 开头、无扩展名）需转换成目标 `manual/foo.md`（去前导 `/` 加 `.md`），否则 `page.replace(/\.md$/, '.html')` 无法追加 `.html`、会产出无扩展名文件
 - **保持 `cleanUrls` 关闭（默认）**：非首页页面产出 `xxx.html`，`permalink: /manual/foo` 的实际路由是 `/manual/foo.html`。开启 `cleanUrls` 会让链接指向去掉 `.html` 的干净 URL，在 GitHub Pages 等无 URL 重写的静态托管上会 404
