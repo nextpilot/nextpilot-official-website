@@ -1,3 +1,8 @@
+---
+title: 行为准则
+order: 3
+---
+
 # 行为准则
 
 We pledge to adhere to the [nextpilot code of conduct](https://github.com/nextpilot/nextpilot-flight-control/blob/main/.github/CODE_OF_CONDUCT.md), which aims to foster an open and welcoming environment.

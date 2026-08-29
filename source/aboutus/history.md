@@ -1,3 +1,8 @@
+---
+title: 发展历程
+order: 1
+---
+
 # 发展历程
 
 - 2024.3.21，沉静了近 10 年的团队再次复苏，在 github/gitee 上发布了基于 px4 和 rt-thread 的 [NextPilot](https://github.com/nextpilot/nextpilot-flight-control) 飞控项目源代码。

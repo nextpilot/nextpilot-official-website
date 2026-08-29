@@ -1,3 +1,8 @@
+---
+title: 技术支持
+order: 1
+---
+
 # 技术支持
 
 如果您在使用 NextPilot 时遇到任何问题，请先在 [Github Discussions](https://github.com/nextpilot/nextpilot-flight-control/discussions) 上发布帖子（因为它们可能是由飞控配置引起的）。
