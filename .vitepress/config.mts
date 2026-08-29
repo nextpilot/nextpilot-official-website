@@ -30,11 +30,6 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/nextpilot/nextpilot-flight-control' }
     ],
-
-    footer: {
-      message: '本文档采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> 国际协议，开放共享、转载、修改、商用，但须保留署名来源',
-      copyright: `Copyright © ${new Date().getFullYear()} NextPilot Development Team`,
-    },
   },
 
   locales: {
@@ -42,6 +37,26 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh-CN',
       themeConfig: {
+        outline: { label: '本页目录' },
+        docFooter: { prev: '上一页', next: '下一页' },
+        lastUpdated: { text: '最后更新于' },
+        returnToTopLabel: '回到顶部',
+        sidebarMenuLabel: '菜单',
+        darkModeSwitchLabel: '外观',
+        lightModeSwitchTitle: '切换到浅色主题',
+        darkModeSwitchTitle: '切换到深色主题',
+        langMenuLabel: '切换语言',
+        skipToContentLabel: '跳转到内容',
+        notFound: {
+          title: '页面未找到',
+          quote: '抱歉，您访问的页面不存在或已被移除。',
+          linkLabel: '返回首页',
+          linkText: '回到首页',
+        },
+        footer: {
+          message: '本文档采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> 国际协议，开放共享、转载、修改、商用，但须保留署名来源',
+          copyright: `Copyright © ${new Date().getFullYear()} NextPilot Development Team`,
+        },
         nav: [
           { text: '首页', link: '/' },
           { text: '关于我们', link: '/aboutus/' },
@@ -71,9 +86,12 @@ export default defineConfig({
       label: 'English',
       lang: 'en-US',
       themeConfig: {
+        footer: {
+          message: 'This documentation is licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>. You are free to share, adapt, and use it commercially, provided you give appropriate credit.',
+          copyright: `Copyright © ${new Date().getFullYear()} NextPilot Development Team`,
+        },
         nav: [
           { text: 'Home', link: '/en/' },
-          { text: '简体中文', link: '/' },
         ],
         // sidebar: { '/en/docs/': docsSidebar('en') },
       },
