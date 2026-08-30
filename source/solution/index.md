@@ -3,7 +3,7 @@ aside: false
 ---
 
 <script setup>
-import { data as solutions } from './solutions.data.mjs'
+import { data as solutions } from './solutions.data.mts'
 </script>
 
 # 解决方案

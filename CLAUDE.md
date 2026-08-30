@@ -143,6 +143,9 @@ nextpilot-official-website/
 - 排序规则：分类排序优先取 `index.md` 的 `frontmatter.order`，再比较目录名前缀；产品排序优先取 `frontmatter.order`，再比较文件名前缀。
 - 过滤规则：列表页必须过滤 `index.md` 和 `draft: true`，并支持按分类筛选与全文搜索；分类筛选不能使用 `tags`。
 - 约束：卡片展示依赖 `title / cover / summary / price / tags` 等 frontmatter，未填写字段不显示；路由优先使用 `frontmatter.permalink`，否则回退文件路径。
+- 布局：产品详情页使用 `layout: product` 自定义布局（`.vitepress/theme/ProductLayout.vue`），左侧图库 + 右侧摘要（标题/简介/价格/CTA），下方渲染详细正文；正文不写首行 `# 标题`（标题由 `frontmatter.title` 在布局中渲染）。
+- 列表页布局：产品列表页（`product/index.md`）使用 `layout: catalog`（`.vitepress/theme/CatalogLayout.vue`），布局自动读取同名数据加载器 `.vitepress/theme/CatalogLayout.data.mts` 并按当前目录分类过滤后渲染 `ProductList` 网格，无需在 md 里写 `<script setup>` 与 `<ProductList>`；`product/<category>/index.md` 若同样声明 `layout: catalog`，则自动只展示该分类。加载器以 `frontmatter.layout === 'product'` 识别产品详情页，不绑定栏目目录。
+- 正文 tabs：正文中每个二级标题（`##`）会自动折叠为一个 tab（由 `.vitepress/markdown/product-heading-tabs.mts` 插件在构建期生成，对声明 `layout: product` 的页面生效）；少于两个二级标题时不生成 tab。
 
 ### 7.3 用户手册 / 开发指南 / 社区支持
 
@@ -180,7 +183,11 @@ permalink: /product/fcs-v1
 category: controller
 tags: [飞控, 仿真]
 cover: /images/blog/xxx.png
+gallery:
+  - /images/blog/xxx-1.png
+  - /images/blog/xxx-2.png
 price: 100
+buy: https://shop.example.com/xxx
 order: 10
 date: 2026-08-28
 author: 作者名
@@ -195,6 +202,7 @@ draft: false
 - `draft: true` 在开发环境允许预览，但构建和列表页必须排除草稿，未填写 `draft` 时按正式内容处理
 - `tags` 不用于产品分类筛选
 - `date` 仅用于显示，不参与排序
+- `gallery`（图片数组）用于产品详情页多图图库，优先于单张 `cover`；`buy`（外部购买链接）可选，未填写则不显示「立即购买」按钮
 
 ## 9. 写作规范
 
@@ -228,6 +236,8 @@ draft: false
 - `glob` 模式不要携带前导斜杠，例如：`product/**/*.md`，不能写成 `/product/**/*.md`
 - 自定义 Vue 组件放在 `.vitepress/theme/components/` 并通过 `enhanceApp` 全局注册
 - `docsSidebar()`、`buildRewrites()` 等辅助函数应放在 `.vitepress/` 的独立模块中，`config.mts` 只负责 import
+- TypeScript 代码文件统一用 `.mts` 扩展名（ESM），普通模块文件名用 kebab-case；`createContentLoader` 数据文件与所用布局同名同目录（如 `CatalogLayout.data.mts`，`.data.` 是 VitePress 识别加载器的必需后缀）；markdown-it 插件放在 `.vitepress/markdown/` 下
+- 通用 tab 组：`::: tabs` 容器内每个 `=== 标题` 行折叠为一个 tab（由 `.vitepress/markdown/tabs-group.mts` 的 block rule 生成，任意页面可用），语法为 `::: tabs` / `=== 标题` / 内容 / `:::`
 - 若开启 `cleanUrls`，会导致静态托管环境下出现 404，故必须保持 `cleanUrls` 关闭；非首页页面仍产出 `xxx.html`
 - 通过 VitePress 的 `rewrites` 实现真实路由：`/manual/foo` → `manual/foo.md`（去前导 `/`、补 `.md`），否则会生成无扩展名文件
 
