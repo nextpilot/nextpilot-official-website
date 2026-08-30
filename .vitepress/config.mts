@@ -18,8 +18,23 @@ export default defineConfig({
 
   // 排除根目录的说明文件，避免被当作页面生成
   srcExclude: ['README.md'],
+
   // frontmatter.permalink -> 固定访问路径（真实路由）
   // rewrites: buildRewrites(),
+
+  // 数学公式支持（LaTeX，通过 markdown-it-mathjax3）
+  markdown: {
+    math: true,
+    // 图片懒加载：为 <img> 添加 loading="lazy"
+    image: { lazyLoad: true },
+    // 代码块显示行号
+    lineNumbers: true,
+  },
+
+  // 站点地图：构建时生成 sitemap.xml
+  sitemap: {
+    hostname: 'https://nextpilot.org',
+  },
 
   // 通用主题配置（不区分语言）
   themeConfig: {
