@@ -19,8 +19,9 @@ description: 把工作区未提交的改动按逻辑分组为多个可独立构�
 
 1. 语义独立的提交：把当前未提交的改动拆成多个逻辑清晰、各自可构建的 git 提交，每个提交只包含一个逻辑改动
 2. 提交信息 **必须遵循** [Conventional Commits](https://www.conventionalcommits.org/)：`type(scope): description`，type 用英文（如 `feat` / `fix` / `chore` / `docs` / `refactor`）
-3. 每个提交的 body **必须包含** `Signed-off-by: latercomer <latercomer@qq.com>`
-4. **严禁添加** `Co-Authored-By: Claude Code` 或任何 Claude/AI 署名
+3. 每个提交 **必须有描述性 body**：用多个 `-m` 写（`-m "标题" -m "正文"`），说明做了什么/为什么，不要只有标题
+4. 每个提交的 body **必须包含** `Signed-off-by: latercomer <latercomer@qq.com>`
+5. **严禁添加** `Co-Authored-By: Claude Code` 或任何 Claude/AI 署名
 
 ## 其他约束
 
