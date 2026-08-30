@@ -3,13 +3,16 @@ title: NP-FCC-H05
 summary: 高性能工业级一体化导航飞控，双冗余IMU、双频RTK定位，适用10kg~300kg级多旋翼、固定翼、垂起等机型
 cover: /images/product/controller/fcc-top-view1.png
 order: 1
+layout: product
+gallery:
+  - /images/product/controller/fcc-top-view1.png
+  - /images/product/controller/fcc-top-view2.png
+  - /images/product/controller/fcc-front-view.png
 description: >-
   NP-FCC-H05 是 NextPilot 自研的高性能工业级一体化导航飞控，
   内置双冗余IMU、双频RTK定位，支持动平台起降、视觉导航、集群编队，
   适用于10kg~300kg级多旋翼、固定翼、垂起、倾转等机型。
 ---
-
-# NP-FCC-H05
 
 ## 简介
 
@@ -67,6 +70,7 @@ description: >-
 15. 高低温工作、振动、冲击、电磁兼容符合GJB要求。
 
 ## 电气接口
+
   飞控提供了两个SMA接头用于双天线连接，其中右侧为主天线接头，左侧为辅天线接头；提供了航空连接器，型号为J30J-144ZKW-J，接口布局如下图所示。
 
 ![飞控接口](/images/product/controller/fcc-front-view.png)
@@ -76,6 +80,7 @@ description: >-
 安装孔直径4mm，间距107mm*87mm。
 
 ## 接口定义
+
 飞控连接器型号为J30J-144ZKW-J，引脚定义如下：
 
 | 序号 | 引脚 | 定义            | 功能说明                       | 外部设备（参考）                      |
@@ -226,6 +231,7 @@ description: >-
 | 144  | 65   | GND2            |                                |                                   |
 
 ## 相关配件
+
 ### 调试板
 
  导航飞控配套调试线缆如下图所示：

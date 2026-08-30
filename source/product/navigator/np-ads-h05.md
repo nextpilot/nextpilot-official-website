@@ -3,13 +3,15 @@ title: NP-ADS-H05
 summary: 工业级大气数据计算机，内置差压/气压高度/地磁传感器，精确测量空速、气压高度与温度
 cover: /images/product/navigator/airspeed-top-view.png
 order: 1
+layout: product
+gallery:
+  - /images/product/navigator/airspeed-top-view.png
+  - /images/product/navigator/airspeed-front-view.png
 description: >-
   NP-ADS-H05 是 NextPilot 自研的工业级大气数据计算机，内置 MS5525DSO
   差压传感器、MS5611 气压高度传感器与 RM3100 地磁传感器，支持动压/静压双路测量、
   全温区补偿，提供精准的空速、气压高度与温度数据。
 ---
-
-# NP-ADS-H05
 
 ## 简介
 
