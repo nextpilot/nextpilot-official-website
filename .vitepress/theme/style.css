@@ -6,3 +6,44 @@
 .main {
   max-width: none !important;
 }
+
+/* 通用 `::: tabs` 容器（tabs-group 插件生成） */
+.tabs-group {
+  margin: 16px 0;
+}
+.tabs-group-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  border-bottom: 1px solid var(--vp-c-divider);
+  margin-bottom: 16px;
+}
+.tabs-group-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.tabs-group-btn:hover {
+  color: var(--vp-c-brand-1);
+}
+.tabs-group-btn.is-active {
+  color: var(--vp-c-brand-1);
+  border-bottom-color: var(--vp-c-brand-1);
+}
+.tabs-group-panel {
+  display: none;
+}
+.tabs-group-panel.is-active {
+  display: block;
+}
+/* 面板内的 h3 标题与 tab 标签重复，隐藏 */
+.tabs-group-panel > h3 {
+  display: none;
+}

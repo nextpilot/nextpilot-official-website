@@ -1,5 +1,7 @@
 import { defineConfig } from 'vitepress';
-import { docsSidebar } from './sidebar';
+import { docsSidebar } from './sidebar.mts';
+import { productHeadingTabs } from './markdown/product-heading-tabs.mts';
+import { tabsGroup } from './markdown/tabs-group.mts';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -29,6 +31,12 @@ export default defineConfig({
     image: { lazyLoad: true },
     // 代码块显示行号
     lineNumbers: true,
+    config: (md) => {
+      // 正文二级标题折叠为 tab（仅对 layout: product 页面生效）
+      productHeadingTabs(md)
+      // 通用 `::: tabs` 容器：`=== 标题` 折叠为 tab
+      tabsGroup(md)
+    },
   },
 
   // 站点地图：构建时生成 sitemap.xml
