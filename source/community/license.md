@@ -7,15 +7,15 @@ order: 4
 
 本页记录了系统中各个组件的许可证。
 
-|序号|项目|许可证|
-|---|---|---|
-|1| [nextpilot-flight-control](https://github.com/nextpilot/nexpilot-flight-control) | [BSD 3-clause](<https://opensource.org/licenses/BSD-3-Clause>) |
-|2| [nextpilot-windows-toolchain](https://github.com/nextpilot/nexpilot-windows-toolchain) | [BSD 3-clause](<https://opensource.org/licenses/BSD-3-Clause>) |
-|3| [nextpilot-user-guide](https://docs.nextpilot.org) | [CC BY 4.0](<https://creativecommons.org/licenses/by/4.0/>) |
+| 序号 | 项目                                                                                   | 许可证                                                       |
+| ---- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| 1    | [nextpilot-flight-control](https://github.com/nextpilot/nexpilot-flight-control)       | [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause) |
+| 2    | [nextpilot-windows-toolchain](https://github.com/nextpilot/nexpilot-windows-toolchain) | [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause) |
+| 3    | [nextpilot-user-guide](https://docs.nextpilot.org)                                     | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)    |
 
 ## BSD 3-clause
 
-NextPilot 大部分项目均采用 [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause) 许可证，比如 [Nextpilot-Flight-Control](https://github.com/nextpilot/nextpilot-flight-control) ，这意味着您可以免费使用和修改 [nextpilot-flight-control](https://github.com/nextpilot/nextpilot-flight-control) 代码，没有任何商业风险。但是 __未经特别事先书面许可，著作权人和其贡献者的姓名不得用于认可或推销源自该软件的产品__。
+NextPilot 大部分项目均采用 [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause) 许可证，比如 [Nextpilot-Flight-Control](https://github.com/nextpilot/nextpilot-flight-control) ，这意味着您可以免费使用和修改 [nextpilot-flight-control](https://github.com/nextpilot/nextpilot-flight-control) 代码，没有任何商业风险。但是 **未经特别事先书面许可，著作权人和其贡献者的姓名不得用于认可或推销源自该软件的产品**。
 
 ```
 BSD 3-Clause License
@@ -50,4 +50,4 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## CC BY 4.0
 
-[Nextpilo-User-Guide](https://docs.nextpilot.org) 采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 许可证，是知识共享 4.0 署名协议，允许任何人复制、修改、商用作品，__仅需标注原作者来源__。
+[Nextpilo-User-Guide](https://docs.nextpilot.org) 采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 许可证，是知识共享 4.0 署名协议，允许任何人复制、修改、商用作品，**仅需标注原作者来源**。

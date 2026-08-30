@@ -26,8 +26,20 @@ const { lang } = useData()
 const isZh = computed(() => (lang.value || 'zh-CN').startsWith('zh'))
 const t = computed(() =>
   isZh.value
-    ? { all: '全部', placeholder: '搜索产品名称、型号、关键词…', search: '搜索产品', empty: '没有匹配的产品。', cats: '产品分类' }
-    : { all: 'All', placeholder: 'Search product name, model, keyword…', search: 'Search products', empty: 'No matching products.', cats: 'Categories' }
+    ? {
+        all: '全部',
+        placeholder: '搜索产品名称、型号、关键词…',
+        search: '搜索产品',
+        empty: '没有匹配的产品。',
+        cats: '产品分类',
+      }
+    : {
+        all: 'All',
+        placeholder: 'Search product name, model, keyword…',
+        search: 'Search products',
+        empty: 'No matching products.',
+        cats: 'Categories',
+      },
 )
 
 // 分类列表：去重，按 categoryOrder 排序
@@ -47,7 +59,8 @@ const filtered = computed(() => {
   const q = query.value.trim().toLowerCase()
   if (q) {
     list = list.filter((p) => {
-      const haystack = `${p.title} ${p.summary} ${p.categoryName} ${p.tags.join(' ')} ${p.searchText}`.toLowerCase()
+      const haystack =
+        `${p.title} ${p.summary} ${p.categoryName} ${p.tags.join(' ')} ${p.searchText}`.toLowerCase()
       return haystack.includes(q)
     })
   }
@@ -87,12 +100,7 @@ const filtered = computed(() => {
   <p v-if="!filtered.length" class="product-empty">{{ t.empty }}</p>
 
   <div class="product-grid">
-    <a
-      v-for="p in filtered"
-      :key="p.url"
-      :href="p.url"
-      class="product-card"
-    >
+    <a v-for="p in filtered" :key="p.url" :href="p.url" class="product-card">
       <img v-if="p.cover" :src="p.cover" :alt="p.title" class="card-cover" />
       <div class="card-body">
         <h3 class="card-title">{{ p.title }}</h3>
@@ -147,7 +155,10 @@ const filtered = computed(() => {
   border: 1px solid var(--vp-c-divider);
   border-radius: 999px;
   cursor: pointer;
-  transition: color 0.25s, border-color 0.25s, background 0.25s;
+  transition:
+    color 0.25s,
+    border-color 0.25s,
+    background 0.25s;
 }
 .cat-chip:hover {
   color: var(--vp-c-brand-1);
@@ -187,7 +198,9 @@ const filtered = computed(() => {
   overflow: hidden;
   text-decoration: none;
   color: var(--vp-c-text-1);
-  transition: border-color 0.25s, box-shadow 0.25s;
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s;
 }
 .product-card:hover {
   border-color: var(--vp-c-brand-1);

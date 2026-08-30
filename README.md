@@ -1,6 +1,6 @@
 # NextPilot 官方网站
 
-基于 [VitePress](https://vitepress.dev/) 构建的 [NextPilot Flight Control 官方网站](https://nextpilot.org)，提供产品介绍、解决方案、用户手册与开发指南等内容。
+这是基于 [VitePress](https://vitepress.dev/) 构建的 [NextPilot Flight Control 官方网站](https://nextpilot.org)，提供产品介绍、解决方案、用户手册与开发指南等内容。
 
 编译好的网页托管在本仓库的 [gh-pages](https://github.com/nextpilot/nextpilot-flight-control/tree/gh-pages) 分支，可通过以下链接访问：
 
@@ -16,7 +16,7 @@
 
 ## 快速开始
 
-国内网络环境下安装依赖较慢，可配置 npm 镜像源加速：
+国内网络环境下安装依赖较慢，可配置 `pnpm` 镜像源加速：
 
 ```bash
 # 查看当前镜像源
@@ -59,24 +59,56 @@ pnpm docs:preview
 
 ## 目录结构
 
-```
+```text
 .
-├── .vitepress/          # VitePress 配置
-│   └── config.mts       # 站点配置（标题、导航、本地化等）
-├── source/              # 内容根目录（srcDir）
-│   ├── index.md         # 首页
-│   ├── aboutus/         # 关于我们
-│   ├── solution/        # 解决方案
-│   ├── product/         # 产品中心
-│   ├── manual/          # 用户手册
-│   ├── develop/         # 开发指南
-│   ├── discovery/       # 精彩探索
-│   ├── news/            # 新闻资讯
-│   ├── download/        # 资料下载
-│   ├── blog/            # 博客
-│   └── en/              # 英文站
-└── public/              # 静态资源（logo、favicon 等）
+├── .vitepress/                     # VitePress 站点配置与主题扩展
+│   ├── config.mts                 # 站点主配置
+│   ├── sidebar.mts                # 自动生成侧边栏
+│   ├── markdown/                  # Markdown 扩展插件
+│   │   ├── product-heading-tabs.mts
+│   │   └── tabs-group.mts
+│   └── theme/                     # 自定义主题与布局组件
+│       ├── CatalogLayout.vue
+│       ├── CatalogLayout.data.mts
+│       ├── ProductLayout.vue
+│       ├── components/
+│       └── index.mts
+├── source/                        # 内容源目录，VitePress srcDir
+│   ├── index.md                   # 首页
+│   ├── aboutus/                   # 关于我们
+│   ├── blog/                      # 技术博客
+│   ├── community/                 # 社区支持
+│   ├── develop/                   # 开发指南
+│   ├── discovery/                 # 展示/占位栏目
+│   ├── download/                  # 资源下载
+│   ├── en/                        # 英文站内容
+│   ├── manual/                    # 用户手册
+│   ├── news/                      # 新闻资讯
+│   ├── product/                   # 产品中心
+│   ├── solution/                  # 解决方案
+│   └── ...
+├── public/                        # 静态资源目录
+│   ├── CNAME
+│   ├── favicon.png
+│   ├── logo.png
+│   └── images/
+├── build/                         # 生产构建输出，自动生成
+├── package.json
+├── pnpm-lock.yaml
+├── README.md
+├── LICENSE
+├── CLAUDE.md
+└── ...
 ```
+
+## 功能概览
+
+- 自动生成文档侧边栏与栏目导航
+- 产品列表页与详情页分离布局
+- 自定义产品页顶部图集和摘要区
+- Markdown 二级标题自动折叠为产品页 Tabs
+- 支持中英文站点配置与多语言导航
+- 生成 sitemap 与站内固定路由配置
 
 ## 相关链接
 

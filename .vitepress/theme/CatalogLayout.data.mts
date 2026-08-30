@@ -47,9 +47,7 @@ export default createContentLoader('**/*.md', {
       })
       .sort(
         (a, b) =>
-          a.categoryOrder - b.categoryOrder ||
-          a.order - b.order ||
-          a.url.localeCompare(b.url)
+          a.categoryOrder - b.categoryOrder || a.order - b.order || a.url.localeCompare(b.url),
       )
   },
 })

@@ -22,10 +22,7 @@ export default createContentLoader('solution/*.md', {
       .filter((item) => item.frontmatter.draft !== true)
       .sort((a, b) => (a.frontmatter.order ?? 999) - (b.frontmatter.order ?? 999))
       .map((item) => ({
-        title:
-          item.frontmatter.title ||
-          firstHeading(item.src || '') ||
-          titleFromUrl(item.url),
+        title: item.frontmatter.title || firstHeading(item.src || '') || titleFromUrl(item.url),
         cover: item.frontmatter.cover || '',
         summary: item.frontmatter.summary || '',
         url: item.url,

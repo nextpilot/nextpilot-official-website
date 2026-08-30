@@ -1,17 +1,15 @@
-import { defineConfig } from 'vitepress';
-import { docsSidebar } from './sidebar.mts';
-import { productHeadingTabs } from './markdown/product-heading-tabs.mts';
-import { tabsGroup } from './markdown/tabs-group.mts';
+import { defineConfig } from 'vitepress'
+import { docsSidebar } from './sidebar.mts'
+import { productHeadingTabs } from './markdown/product-heading-tabs.mts'
+import { tabsGroup } from './markdown/tabs-group.mts'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "NextPilot Flight Control",
-  description: "NextPilot Flight Control",
+  title: 'NextPilot Flight Control',
+  description: 'NextPilot Flight Control',
   lang: 'zh-CN',
   // 站点 favicon
-  head: [
-    ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }],
-  ],
+  head: [['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }]],
   srcDir: 'source',
   outDir: 'build',
   // VitePress 2.0 的 publicDir 默认相对 srcDir（source/），这里指回仓库根目录的 public/
@@ -51,7 +49,7 @@ export default defineConfig({
     search: { provider: 'local' },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/nextpilot/nextpilot-flight-control' }
+      { icon: 'github', link: 'https://github.com/nextpilot/nextpilot-flight-control' },
     ],
   },
 
@@ -77,7 +75,8 @@ export default defineConfig({
           linkText: '回到首页',
         },
         footer: {
-          message: '本文档采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> 国际协议，开放共享、转载、修改、商用，但须保留署名来源',
+          message:
+            '本文档采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> 国际协议，开放共享、转载、修改、商用，但须保留署名来源',
           copyright: `Copyright © ${new Date().getFullYear()} NextPilot Development Team`,
         },
         nav: [
@@ -110,15 +109,13 @@ export default defineConfig({
       lang: 'en-US',
       themeConfig: {
         footer: {
-          message: 'This documentation is licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>. You are free to share, adapt, and use it commercially, provided you give appropriate credit.',
+          message:
+            'This documentation is licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>. You are free to share, adapt, and use it commercially, provided you give appropriate credit.',
           copyright: `Copyright © ${new Date().getFullYear()} NextPilot Development Team`,
         },
-        nav: [
-          { text: 'Home', link: '/en/' },
-        ],
+        nav: [{ text: 'Home', link: '/en/' }],
         // sidebar: { '/en/docs/': docsSidebar('en') },
       },
     },
   },
-
-});
+})

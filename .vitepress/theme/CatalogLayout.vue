@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData, useRoute } from 'vitepress'
+// @ts-expect-error `data` 由 VitePress 在构建期注入
 import { data as allProducts } from './CatalogLayout.data.mts'
 import Breadcrumb from './components/Breadcrumb.vue'
 import ProductList from './components/ProductList.vue'

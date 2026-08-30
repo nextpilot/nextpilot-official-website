@@ -15,7 +15,9 @@ const images = computed<string[]>(() => {
 const active = ref(0)
 
 const price = computed(() => (frontmatter.value.price ?? null) as number | null)
-const buy = computed(() => (frontmatter.value.buy || 'https://ffvf62dgcrpcsf5h87lj12mrgn90rx5.taobao.com/') as string)
+const buy = computed(
+  () => (frontmatter.value.buy || 'https://ffvf62dgcrpcsf5h87lj12mrgn90rx5.taobao.com/') as string,
+)
 const tags = computed(() => (frontmatter.value.tags || []) as string[])
 
 // 正文 tab 切换：事件委托，处理 markdown 渲染出的 `.product-tab` 点击
@@ -75,12 +77,7 @@ onBeforeUnmount(() => document.removeEventListener('click', onTabClick))
         <div class="price">{{ price != null ? `¥${price}` : '价格面议' }}</div>
 
         <div class="actions">
-          <a
-            :href="buy"
-            class="btn btn-primary"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a :href="buy" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
             立即购买
           </a>
           <a href="/manual/" class="btn btn-secondary">帮助文档</a>
@@ -191,7 +188,10 @@ onBeforeUnmount(() => document.removeEventListener('click', onTabClick))
   font-weight: 500;
   border-radius: 8px;
   text-decoration: none;
-  transition: background 0.25s, border-color 0.25s, color 0.25s;
+  transition:
+    background 0.25s,
+    border-color 0.25s,
+    color 0.25s;
 }
 .btn-primary {
   color: #fff;
@@ -254,7 +254,9 @@ onBeforeUnmount(() => document.removeEventListener('click', onTabClick))
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
   cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
 }
 .product-body :deep(.product-tab:hover) {
   color: var(--vp-c-brand-1);

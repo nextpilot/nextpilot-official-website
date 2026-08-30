@@ -54,10 +54,7 @@ export function productHeadingTabs(md: any): void {
         if (current) groups.push({ title: currentTitle, tokens: current })
         current = [tok]
         const inline = tokens[i + 1]
-        currentTitle =
-          inline && inline.type === 'inline'
-            ? extractText(inline.children || [])
-            : ''
+        currentTitle = inline && inline.type === 'inline' ? extractText(inline.children || []) : ''
       } else if (current) {
         current.push(tok)
       }
@@ -77,21 +74,21 @@ export function productHeadingTabs(md: any): void {
     const buttons = groups
       .map(
         (g, i) =>
-          `<button type="button" class="product-tab${i === 0 ? ' is-active' : ''}" data-tab="${i}" role="tab" aria-selected="${i === 0}">${escapeHtml(g.title)}</button>`
+          `<button type="button" class="product-tab${i === 0 ? ' is-active' : ''}" data-tab="${i}" role="tab" aria-selected="${i === 0}">${escapeHtml(g.title)}</button>`,
       )
       .join('')
 
     const out: any[] = [
       html(
-        `<div class="product-tabs"><div class="product-tab-list" role="tablist">${buttons}</div><div class="product-tab-panels">`
+        `<div class="product-tabs"><div class="product-tab-list" role="tablist">${buttons}</div><div class="product-tab-panels">`,
       ),
     ]
 
     groups.forEach((g, i) => {
       out.push(
         html(
-          `<div class="product-tab-panel${i === 0 ? ' is-active' : ''}" data-panel="${i}" role="tabpanel">`
-        )
+          `<div class="product-tab-panel${i === 0 ? ' is-active' : ''}" data-panel="${i}" role="tabpanel">`,
+        ),
       )
       out.push(...g.tokens)
       out.push(html('</div>'))

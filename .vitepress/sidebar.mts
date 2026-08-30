@@ -18,8 +18,7 @@ function readFrontmatter(filePath: string): Record<string, string> {
     let val = m[2].trim()
     if (
       val.length >= 2 &&
-      ((val.startsWith('"') && val.endsWith('"')) ||
-        (val.startsWith("'") && val.endsWith("'")))
+      ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'")))
     ) {
       val = val.slice(1, -1)
     }
@@ -55,9 +54,7 @@ interface Entry {
 /** 按 order > 排序前缀 > 完整路径 稳定排序，返回纯 SidebarItem[] */
 function sortEntries(entries: Entry[]): SidebarItem[] {
   return entries
-    .sort(
-      (a, b) => a.order - b.order || a.prefix - b.prefix || a.path.localeCompare(b.path)
-    )
+    .sort((a, b) => a.order - b.order || a.prefix - b.prefix || a.path.localeCompare(b.path))
     .map((e) => e.item)
 }
 

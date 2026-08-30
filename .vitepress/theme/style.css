@@ -28,7 +28,9 @@
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
   cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
 }
 .tabs-group-btn:hover {
   color: var(--vp-c-brand-1);
