@@ -20,7 +20,8 @@ export default createContentLoader('product/**/*.md', {
       .filter((item) => item.frontmatter.draft !== true) // 排除草稿
       .map((item) => {
         const seg = item.url.split('/').filter(Boolean)
-        const category = seg[1] || ''
+        // 分类标识（slug）：优先 frontmatter.category，否则用目录名
+        const category = item.frontmatter.category || seg[1] || ''
         const cat = categories[category]
         return {
           title: item.frontmatter.title || '',
