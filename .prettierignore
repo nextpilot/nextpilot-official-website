@@ -1,0 +1,7 @@
+node_modules
+build
+.vitepress/cache
+.vitepress/dist
+pnpm-lock.yaml
+*.code-workspace
+.git
