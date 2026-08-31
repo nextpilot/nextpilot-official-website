@@ -40,11 +40,23 @@ const products = computed(() => {
 
 <style scoped>
 .product-list-layout {
-  max-width: 1080px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 32px 24px 96px;
 }
 .product-list-layout :deep(.vp-doc) {
   max-width: none;
+}
+
+/* 与 VPDoc 页面保持一致的上/下/左右留白（桌面端 VPDoc 为 .VPDoc 32px + .content 32px 双层 padding） */
+@media (min-width: 768px) {
+  .product-list-layout {
+    padding: 48px 32px 128px;
+  }
+}
+
+@media (min-width: 960px) {
+  .product-list-layout {
+    padding: 48px 64px 128px;
+  }
 }
 </style>

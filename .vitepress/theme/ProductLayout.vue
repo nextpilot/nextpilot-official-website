@@ -99,14 +99,26 @@ onBeforeUnmount(() => document.removeEventListener('click', onTabClick))
 
 <style scoped>
 .product-layout {
-  max-width: 1080px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 32px 24px 96px;
+}
+
+/* 与 VPDoc 页面保持一致的上/下/左右留白（桌面端 VPDoc 为 .VPDoc 32px + .content 32px 双层 padding） */
+@media (min-width: 768px) {
+  .product-layout {
+    padding: 48px 32px 128px;
+  }
+}
+
+@media (min-width: 960px) {
+  .product-layout {
+    padding: 48px 64px 128px;
+  }
 }
 
 .product-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
+  grid-template-columns: minmax(0, 1fr) clamp(280px, 46%, 600px);
   gap: 40px;
   margin: 24px 0 48px;
 }
@@ -116,6 +128,7 @@ onBeforeUnmount(() => document.removeEventListener('click', onTabClick))
   display: block;
   width: 100%;
   aspect-ratio: 4 / 3;
+  max-height: 480px;
   object-fit: cover;
   border: 1px solid var(--vp-c-divider);
   border-radius: 12px;
