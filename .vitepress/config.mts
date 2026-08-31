@@ -6,16 +6,33 @@ import { redirectHead, canonicalHead, SITE_URL } from './head.mts'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  // 站点基本信息：标题 / SEO 描述 / 默认语言
   title: 'NextPilot Flight Control',
-  description: 'NextPilot Flight Control',
+  description:
+    'NextPilot 国产开源先进自动驾驶仪（飞控系统），基于 RT-Thread 实时操作系统、核心算法移植自 PX4，支持多旋翼、固定翼、垂起复合翼，面向教育、科研与工业应用',
   lang: 'zh-CN',
-  // 站点 favicon
-  head: [['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }], ...redirectHead],
+  // 全局 <head>：favicon + SEO meta（keywords / author）+ 客户端跳转脚本
+  head: [
+    ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }],
+    [
+      'meta',
+      {
+        name: 'keywords',
+        content:
+          'NextPilot,飞控,自动驾驶仪,无人机,开源飞控,多旋翼,固定翼,垂起复合翼,RT-Thread,PX4,Pixhawk,ArduPilot,QGroundControl,MAVLink,UAV,autopilot,flight controller',
+      },
+    ],
+    ['meta', { name: 'author', content: 'NextPilot Development Team' }],
+    ...redirectHead,
+  ],
+  // 按页注入 canonical（见 head.mts，与 sitemap 共用 SITE_URL）
   transformHead: canonicalHead,
+  // 内容源目录与构建输出目录
   srcDir: 'source',
   outDir: 'build',
   // VitePress 2.0 的 publicDir 默认相对 srcDir（source/），这里指回仓库根目录的 public/
   vite: { publicDir: '../public' },
+  // 开启页脚「最后更新于」时间戳（基于 Git 提交时间）
   lastUpdated: true,
 
   // 排除根目录的说明文件，避免被当作页面生成
@@ -44,15 +61,18 @@ export default defineConfig({
 
   // 通用主题配置（不区分语言）
   themeConfig: {
+    // 顶部导航 Logo；siteTitle: false 表示不额外显示站点文字标题
     logo: '/logo.png',
     siteTitle: false,
+    // 本地全文搜索
     search: { provider: 'local' },
-
+    // 右上角社交链接
     socialLinks: [
       { icon: 'github', link: 'https://github.com/nextpilot/nextpilot-flight-control' },
     ],
   },
 
+  // 多语言：root = 简体中文（默认），en = English
   locales: {
     root: {
       label: '简体中文',
