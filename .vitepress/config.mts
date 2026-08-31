@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress'
 import { docsSidebar } from './sidebar.mts'
 import { productHeadingTabs } from './markdown/product-heading-tabs.mts'
 import { tabsGroup } from './markdown/tabs-group.mts'
+import { redirectHead, canonicalHead, SITE_URL } from './head.mts'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -9,7 +10,8 @@ export default defineConfig({
   description: 'NextPilot Flight Control',
   lang: 'zh-CN',
   // 站点 favicon
-  head: [['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }]],
+  head: [['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }], ...redirectHead],
+  transformHead: canonicalHead,
   srcDir: 'source',
   outDir: 'build',
   // VitePress 2.0 的 publicDir 默认相对 srcDir（source/），这里指回仓库根目录的 public/
@@ -37,10 +39,8 @@ export default defineConfig({
     },
   },
 
-  // 站点地图：构建时生成 sitemap.xml
-  sitemap: {
-    hostname: 'https://nextpilot.org',
-  },
+  // 站点地图：仅当设置了 SITE_HOST 时生成
+  ...(SITE_URL ? { sitemap: { hostname: SITE_URL } } : {}),
 
   // 通用主题配置（不区分语言）
   themeConfig: {
