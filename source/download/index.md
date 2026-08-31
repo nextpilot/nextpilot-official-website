@@ -22,16 +22,16 @@ NextPilot导航飞控目前只支持NP-H05系列飞控，该飞控采用两块ST
 
 [ins-v4-default.bin](/firmware/ins-v4-default.bin)
 
-## SITL相关脚本 {#SITL相关脚本}
+## 地面站软件
+
+### 百度网盘下载
+
+通过网盘分享的文件：nextpilot-user-assets
+链接: <https://pan.baidu.com/s/1-OiGOEX7B2mDmwkJNmagVg> 提取码: next
+
+### SITL相关脚本 {#SITL相关脚本}
 
 软件在环仿真相关脚本的使用请参考《软件在环仿真》。
 
 - 软件在环仿真启动脚本（必须）：[start-qemu.bat](/scripts/start-qemu.bat)；
 - 日志提取脚本（非必须）：[extract-sd.bat](/scripts/extract-sd.bat)；
-
-## 地面站软件
-
-### 百度网盘
-
-通过网盘分享的文件：nextpilot-user-assets
-链接: <https://pan.baidu.com/s/1-OiGOEX7B2mDmwkJNmagVg> 提取码: next
