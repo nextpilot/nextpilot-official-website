@@ -1,8 +1,8 @@
-import { defineConfig } from 'vitepress'
-import { docsSidebar } from './sidebar.mts'
-import { productHeadingTabs } from './markdown/product-heading-tabs.mts'
-import { tabsGroup } from './markdown/tabs-group.mts'
-import { redirectHead, canonicalHead, SITE_URL } from './head.mts'
+import { defineConfig } from 'vitepress';
+import { docsSidebar } from './sidebar.mts';
+import { productHeadingTabs } from './markdown/product-heading-tabs.mts';
+import { tabsGroup } from './markdown/tabs-group.mts';
+import { redirectHead, canonicalHead, SITE_URL } from './head.mts';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -38,6 +38,9 @@ export default defineConfig({
   // 排除根目录的说明文件，避免被当作页面生成
   srcExclude: ['README.md'],
 
+  // 下载页脚本链接指向 .bat 文件，VitePress 无法识别该扩展名为静态资源，故忽略死链检查
+  ignoreDeadLinks: ['/scripts/start-qemu.bat', '/scripts/extract-sd.bat'],
+
   // frontmatter.permalink -> 固定访问路径（真实路由）
   // rewrites: buildRewrites(),
 
@@ -50,9 +53,9 @@ export default defineConfig({
     lineNumbers: true,
     config: (md) => {
       // 正文二级标题折叠为 tab（仅对 layout: product 页面生效）
-      productHeadingTabs(md)
+      productHeadingTabs(md);
       // 通用 `::: tabs` 容器：`=== 标题` 折叠为 tab
-      tabsGroup(md)
+      tabsGroup(md);
     },
   },
 
@@ -138,4 +141,4 @@ export default defineConfig({
       },
     },
   },
-})
+});
