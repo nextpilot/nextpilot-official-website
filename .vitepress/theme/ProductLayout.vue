@@ -14,8 +14,11 @@ const images = computed<string[]>(() => {
 
 const active = ref(0)
 
+const displayTitle = computed(() => (frontmatter.value.shortTitle || frontmatter.value.title || '') as string)
+const summary = computed(() => (frontmatter.value.summary || frontmatter.value.description || '') as string)
+
 const price = computed(() => (frontmatter.value.price ?? null) as number | null)
-const buy = computed(() => (frontmatter.value.buy || 'https://ffvf62dgcrpcsf5h87lj12mrgn90rx5.taobao.com/') as string)
+const shopUrl = computed(() => (frontmatter.value.shopUrl || 'https://ffvf62dgcrpcsf5h87lj12mrgn90rx5.taobao.com/') as string)
 const tags = computed(() => (frontmatter.value.tags || []) as string[])
 
 // 正文 tab 切换：事件委托，处理 markdown 渲染出的 `.product-tab` 点击
@@ -56,13 +59,13 @@ onBeforeUnmount(() => document.removeEventListener('click', onTabClick))
       </div>
 
       <div class="summary">
-        <h1 class="title">{{ frontmatter.title }}</h1>
-        <p v-if="frontmatter.summary" class="summary-text">{{ frontmatter.summary }}</p>
+        <h1 class="title">{{ displayTitle }}</h1>
+        <p v-if="summary" class="summary-text">{{ summary }}</p>
 
         <div class="price">{{ price != null ? `¥${price}` : '价格面议' }}</div>
 
         <div class="actions">
-          <a :href="buy" class="btn btn-primary" target="_blank" rel="noopener noreferrer"> 立即购买 </a>
+          <a :href="shopUrl" class="btn btn-primary" target="_blank" rel="noopener noreferrer"> 立即购买 </a>
           <a href="/manual/" class="btn btn-secondary">帮助文档</a>
         </div>
 
@@ -168,7 +171,7 @@ onBeforeUnmount(() => document.removeEventListener('click', onTabClick))
 .price {
   font-size: 22px;
   font-weight: 700;
-  color: var(--vp-c-brand-1);
+  color: #e53935;
 }
 .actions {
   display: flex;

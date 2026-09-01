@@ -30,11 +30,11 @@ function readFrontmatter(filePath: string): Record<string, string> {
   return parseFrontmatter(readFileSync(filePath, 'utf-8'))
 }
 
-/** 读取标题：frontmatter.title > 一级标题，缺失返回空串（由调用方回退文件名/目录名） */
+/** 读取展示标题：frontmatter.shortTitle > title > 一级标题，缺失返回空串（由调用方回退文件名/目录名） */
 function readTitle(filePath: string): string {
   if (!existsSync(filePath)) return ''
   const raw = readFileSync(filePath, 'utf-8')
-  return resolveTitle(parseFrontmatter(raw).title, raw)
+  return resolveTitle(parseFrontmatter(raw), raw)
 }
 
 /** 去除文件名/目录名的排序前缀（形如 01-、20240101-） */

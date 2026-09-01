@@ -13,7 +13,7 @@ export default createContentLoader<Record<string, string>>('**/index.md', {
       // 目录 index 的 url 以 / 结尾（如 /product/controller/）；无 title 时存空串，
       // 仅用「键是否存在」表示该目录是否有 index.md（决定面包屑是否可点击）
       if (item.url.endsWith('/')) {
-        map[item.url] = resolveTitle(item.frontmatter.title as string | undefined, item.src || '')
+        map[item.url] = resolveTitle(item.frontmatter as { title?: string; shortTitle?: string }, item.src || '')
       }
     }
     return map

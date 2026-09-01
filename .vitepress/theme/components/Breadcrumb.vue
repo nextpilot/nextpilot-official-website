@@ -64,9 +64,11 @@ const crumbs = computed<Crumb[]>(() => {
 
   // 当前页：优先 frontmatter title，其次 page.title，最后路径末段（去前缀）
   if (segments.length > 1) {
-    const fmTitle = page.value.frontmatter?.title as string | undefined
+    const fm = page.value.frontmatter
+    const shortTitle = fm?.shortTitle as string | undefined
+    const fmTitle = fm?.title as string | undefined
     items.push({
-      text: fmTitle || page.value.title || stripSortPrefix(segments[segments.length - 1]),
+      text: shortTitle || fmTitle || page.value.title || stripSortPrefix(segments[segments.length - 1]),
     })
   }
 

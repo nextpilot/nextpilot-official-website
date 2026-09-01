@@ -4,10 +4,13 @@ import { useData } from 'vitepress'
 
 interface Product {
   title: string
+  shortTitle: string
   summary: string
   cover: string
   tags: string[]
   price: number | null
+  shopUrl: string
+  helpUrl: string
   url: string
   category: string
   categoryName: string
@@ -18,6 +21,11 @@ interface Product {
 const props = defineProps<{
   products: Product[]
 }>()
+
+// 未填写 shopUrl 时的兜底购买链接（与产品详情页 ProductLayout 保持一致）
+const DEFAULT_SHOP_URL = 'https://ffvf62dgcrpcsf5h87lj12mrgn90rx5.taobao.com/'
+// 未填写 helpUrl 时的兜底帮助链接（与产品详情页 ProductLayout 保持一致）
+const DEFAULT_HELP_URL = '/manual/'
 
 const query = ref('')
 const activeCategory = ref('')
@@ -32,6 +40,9 @@ const t = computed(() =>
         search: '搜索产品',
         empty: '没有匹配的产品。',
         cats: '产品分类',
+        buy: '购买',
+        help: '帮助',
+        priceOnRequest: '价格面议',
       }
     : {
         all: 'All',
@@ -39,6 +50,9 @@ const t = computed(() =>
         search: 'Search products',
         empty: 'No matching products.',
         cats: 'Categories',
+        buy: 'Buy',
+        help: 'Help',
+        priceOnRequest: 'Price on request',
       },
 )
 
@@ -59,7 +73,7 @@ const filtered = computed(() => {
   const q = query.value.trim().toLowerCase()
   if (q) {
     list = list.filter((p) => {
-      const haystack = `${p.title} ${p.summary} ${p.categoryName} ${p.tags.join(' ')} ${p.searchText}`.toLowerCase()
+      const haystack = `${p.title} ${p.shortTitle} ${p.summary} ${p.categoryName} ${p.tags.join(' ')} ${p.searchText}`.toLowerCase()
       return haystack.includes(q)
     })
   }
@@ -83,20 +97,28 @@ const filtered = computed(() => {
   <p v-if="!filtered.length" class="product-empty">{{ t.empty }}</p>
 
   <div class="product-grid">
-    <a v-for="p in filtered" :key="p.url" :href="p.url" class="product-card">
-      <img v-if="p.cover" :src="p.cover" :alt="p.title" class="card-cover" />
-      <div class="card-body">
-        <h3 class="card-title">{{ p.title }}</h3>
-        <p v-if="p.summary" class="card-summary">{{ p.summary }}</p>
-        <div v-if="p.tags.length" class="card-tags">
-          <span v-for="t in p.tags" :key="t" class="tag">{{ t }}</span>
+    <div v-for="p in filtered" :key="p.url" class="product-card">
+      <a :href="p.url" class="card-main">
+        <img v-if="p.cover" :src="p.cover" :alt="p.title" class="card-cover" />
+        <div class="card-body">
+          <div class="card-title-row">
+            <h3 class="card-title">{{ p.shortTitle || p.title }}</h3>
+            <span class="card-cat">{{ p.categoryName }}</span>
+          </div>
+          <p v-if="p.summary" class="card-summary">{{ p.summary }}</p>
+          <div v-if="p.tags.length" class="card-tags">
+            <span v-for="t in p.tags" :key="t" class="tag">{{ t }}</span>
+          </div>
         </div>
-        <div class="card-foot">
-          <span class="card-cat">{{ p.categoryName }}</span>
-          <span v-if="p.price != null" class="card-price">¥{{ p.price }}</span>
+      </a>
+      <div class="card-foot">
+        <span class="card-price">{{ p.price != null ? `¥${p.price}` : t.priceOnRequest }}</span>
+        <div class="card-actions">
+          <a :href="p.shopUrl || DEFAULT_SHOP_URL" class="card-btn card-btn-buy" target="_blank" rel="noopener noreferrer">{{ t.buy }}</a>
+          <a :href="p.helpUrl || DEFAULT_HELP_URL" class="card-btn card-btn-help">{{ t.help }}</a>
         </div>
       </div>
-    </a>
+    </div>
   </div>
 </template>
 
@@ -189,6 +211,13 @@ const filtered = computed(() => {
   border-color: var(--vp-c-brand-1);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
+.card-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  text-decoration: none;
+  color: var(--vp-c-text-1);
+}
 .card-cover {
   display: block;
   width: 100%;
@@ -201,6 +230,12 @@ const filtered = computed(() => {
   flex-direction: column;
   gap: 8px;
   padding: 16px;
+}
+.card-title-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 .card-title {
   margin: 0;
@@ -227,10 +262,11 @@ const filtered = computed(() => {
 }
 .card-foot {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  margin-top: auto;
-  padding-top: 8px;
+  gap: 8px;
+  padding: 12px 16px 16px;
   border-top: 1px solid var(--vp-c-divider);
 }
 .card-cat {
@@ -240,6 +276,44 @@ const filtered = computed(() => {
 .card-price {
   font-size: 15px;
   font-weight: 600;
+  color: #e53935;
+  white-space: nowrap;
+}
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+.card-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background 0.25s,
+    border-color 0.25s,
+    color 0.25s;
+}
+.card-btn-buy {
+  color: #fff;
+  background: var(--vp-c-brand-1);
+  border: 1px solid var(--vp-c-brand-1);
+}
+.card-btn-buy:hover {
+  background: var(--vp-c-brand-2);
+  border-color: var(--vp-c-brand-2);
+}
+.card-btn-help {
   color: var(--vp-c-brand-1);
+  background: transparent;
+  border: 1px solid var(--vp-c-brand-1);
+}
+.card-btn-help:hover {
+  color: #fff;
+  background: var(--vp-c-brand-1);
 }
 </style>

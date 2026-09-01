@@ -17,7 +17,7 @@ export default createContentLoader('**/*.md', {
       const seg = item.url.split('/').filter(Boolean)
       if (seg.length < 2) continue
       categories[seg[1]] = {
-        name: item.frontmatter.title || seg[1],
+        name: item.frontmatter.shortTitle || item.frontmatter.title || seg[1],
         order: item.frontmatter.order ?? 999,
       }
     }
@@ -32,10 +32,13 @@ export default createContentLoader('**/*.md', {
         const cat = categories[category]
         return {
           title: item.frontmatter.title || '',
-          summary: item.frontmatter.summary || '',
+          shortTitle: item.frontmatter.shortTitle || '',
+          summary: item.frontmatter.summary || item.frontmatter.description || '',
           cover: item.frontmatter.cover || '',
           tags: item.frontmatter.tags || [],
           price: item.frontmatter.price ?? null,
+          shopUrl: item.frontmatter.shopUrl || '',
+          helpUrl: item.frontmatter.helpUrl || '',
           order: item.frontmatter.order ?? 999,
           url: item.url,
           category,
