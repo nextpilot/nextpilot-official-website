@@ -1,15 +1,14 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import type { DefaultTheme } from 'vitepress'
+import { resolveTitle } from './title.mts'
 
 type SidebarItem = DefaultTheme.SidebarItem
 
 const SRC_DIR = join(process.cwd(), 'source')
 
-/** 读取 md 文件的 frontmatter，返回标量字段映射（无 frontmatter 时返回空对象） */
-function readFrontmatter(filePath: string): Record<string, string> {
-  if (!existsSync(filePath)) return {}
-  const raw = readFileSync(filePath, 'utf-8')
+/** 解析 md 原始内容的 frontmatter，返回标量字段映射（无 frontmatter 时返回空对象） */
+function parseFrontmatter(raw: string): Record<string, string> {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)
   if (!match) return {}
   const result: Record<string, string> = {}
@@ -26,6 +25,19 @@ function readFrontmatter(filePath: string): Record<string, string> {
     result[m[1]] = val
   }
   return result
+}
+
+/** 读取 md 文件的 frontmatter */
+function readFrontmatter(filePath: string): Record<string, string> {
+  if (!existsSync(filePath)) return {}
+  return parseFrontmatter(readFileSync(filePath, 'utf-8'))
+}
+
+/** 读取标题：frontmatter.title > 一级标题，缺失返回空串（由调用方回退文件名/目录名） */
+function readTitle(filePath: string): string {
+  if (!existsSync(filePath)) return ''
+  const raw = readFileSync(filePath, 'utf-8')
+  return resolveTitle(parseFrontmatter(raw).title, raw)
 }
 
 /** 去除文件名/目录名的排序前缀（形如 01-、20240101-） */
@@ -83,7 +95,6 @@ function hasDocs(dirPath: string): boolean {
  * relDir 为该目录相对栏目根目录的路径（如 controller/00-基本概念），用于拼接链接。
  */
 function buildGroup(section: string, relDir: string, dirPath: string, depth: number): SidebarItem {
-  const indexFm = readFrontmatter(join(dirPath, 'index.md'))
   const hasIndex = existsSync(join(dirPath, 'index.md'))
 
   const children: Entry[] = []
@@ -113,7 +124,7 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
         prefix: sortPrefixOf(name),
         path: name,
         item: {
-          text: fm.title || stripSortPrefix(basename(name, '.md')),
+          text: readTitle(full) || stripSortPrefix(basename(name, '.md')),
           link: `/${section}/${relDir}/${basename(name, '.md')}`,
         },
       })
@@ -121,7 +132,7 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
   }
 
   const group: SidebarItem = {
-    text: indexFm.title || stripSortPrefix(basename(dirPath)),
+    text: readTitle(join(dirPath, 'index.md')) || stripSortPrefix(basename(dirPath)),
     items: sortEntries(children),
     // 顶层分组展开，嵌套子分组默认折叠
     collapsed: depth > 0,
@@ -163,7 +174,7 @@ export function docsSidebar(section: string): SidebarItem[] {
         prefix: sortPrefixOf(name),
         path: name,
         item: {
-          text: fm.title || stripSortPrefix(basename(name, '.md')),
+          text: readTitle(full) || stripSortPrefix(basename(name, '.md')),
           link: `/${section}/${basename(name, '.md')}`,
         },
       })
