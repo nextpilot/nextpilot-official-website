@@ -75,7 +75,7 @@ export default defineConfig({
     search: { provider: 'local' },
     // 右上角社交链接
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/nextpilot/nextpilot-flight-control' },
+      { icon: 'github', link: 'https://github.com/nextpilot/nextpilot-official-website' },
     ],
   },
 
