@@ -37,9 +37,9 @@ function readTitle(filePath: string): string {
   return resolveTitle(parseFrontmatter(raw), raw)
 }
 
-/** 去除文件名/目录名的排序前缀（形如 01-、20240101-） */
-function stripSortPrefix(name: string): string {
-  return name.replace(/^\d+-/, '')
+/** 文件名/目录名作为兜底标题：去排序前缀并转大写（如 np-fcc-h05 → NP-FCC-H05） */
+function titleFromName(name: string): string {
+  return name.replace(/^\d+-/, '').toUpperCase()
 }
 
 /** 提取排序前缀数字，无前缀返回 Infinity（排最后） */
@@ -119,7 +119,7 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
         prefix: sortPrefixOf(name),
         path: name,
         item: {
-          text: readTitle(full) || stripSortPrefix(basename(name, '.md')),
+          text: readTitle(full) || titleFromName(basename(name, '.md')),
           link: `/${section}/${relDir}/${basename(name, '.md')}`,
         },
       })
@@ -127,7 +127,7 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
   }
 
   const group: SidebarItem = {
-    text: readTitle(join(dirPath, 'index.md')) || stripSortPrefix(basename(dirPath)),
+    text: readTitle(join(dirPath, 'index.md')) || titleFromName(basename(dirPath)),
     items: sortEntries(children),
     // 顶层分组展开，嵌套子分组默认折叠
     collapsed: depth > 0,
@@ -169,7 +169,7 @@ export function docsSidebar(section: string): SidebarItem[] {
         prefix: sortPrefixOf(name),
         path: name,
         item: {
-          text: readTitle(full) || stripSortPrefix(basename(name, '.md')),
+          text: readTitle(full) || titleFromName(basename(name, '.md')),
           link: `/${section}/${basename(name, '.md')}`,
         },
       })

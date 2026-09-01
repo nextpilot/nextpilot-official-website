@@ -11,9 +11,9 @@ const isZh = computed(() => (lang.value || 'zh-CN').startsWith('zh'))
 // 目录 URL -> 标题（来自各 index.md 的 frontmatter.title）
 const titleMap = titleMapData as Record<string, string>
 
-/** 去除目录名/文件名的排序前缀（形如 01-） */
-function stripSortPrefix(name: string): string {
-  return name.replace(/^\d+-/, '')
+/** 目录名/文件名作为兜底标题：去排序前缀并转大写（如 np-fcc-h05 → NP-FCC-H05） */
+function titleFromName(name: string): string {
+  return name.replace(/^\d+-/, '').toUpperCase()
 }
 
 interface Crumb {
@@ -51,13 +51,13 @@ const crumbs = computed<Crumb[]>(() => {
   if (segments[0]) {
     const link = `/${segments[0]}/`
     const navItem = navLinks.value.find((item) => item.link === link)
-    items.push({ text: navItem?.text || stripSortPrefix(segments[0]), link })
+    items.push({ text: navItem?.text || titleFromName(segments[0]), link })
   }
 
   // 中间目录段：index.md 标题，回退为去掉排序前缀的目录名
   for (let i = 1; i < segments.length - 1; i++) {
     const dirUrl = '/' + segments.slice(0, i + 1).join('/') + '/'
-    const text = titleMap[dirUrl] || stripSortPrefix(segments[i])
+    const text = titleMap[dirUrl] || titleFromName(segments[i])
     // 仅当该目录存在 index.md 时才生成可点击链接，否则为纯文本，避免指向 404
     items.push(dirUrl in titleMap ? { text, link: dirUrl } : { text })
   }
@@ -68,7 +68,7 @@ const crumbs = computed<Crumb[]>(() => {
     const shortTitle = fm?.shortTitle as string | undefined
     const fmTitle = fm?.title as string | undefined
     items.push({
-      text: shortTitle || fmTitle || page.value.title || stripSortPrefix(segments[segments.length - 1]),
+      text: shortTitle || fmTitle || page.value.title || titleFromName(segments[segments.length - 1]),
     })
   }
 
