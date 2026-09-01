@@ -12,7 +12,7 @@ description: NextPilot 各组件所采用的许可证说明，主要代码采用
 | ---- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | 1    | [nextpilot-flight-control](https://github.com/nextpilot/nexpilot-flight-control)       | [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause) |
 | 2    | [nextpilot-windows-toolchain](https://github.com/nextpilot/nexpilot-windows-toolchain) | [BSD 3-clause](https://opensource.org/licenses/BSD-3-Clause) |
-| 3    | [nextpilot-user-guide](https://docs.nextpilot.org)                                     | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)    |
+| 3    | [nextpilot-official-website](https://nextpilot.org)                                     | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)    |
 
 ## BSD 3-clause
 
@@ -51,4 +51,4 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## CC BY 4.0
 
-[Nextpilo-User-Guide](https://docs.nextpilot.org) 采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 许可证，是知识共享 4.0 署名协议，允许任何人复制、修改、商用作品，**仅需标注原作者来源**。
+[nextpilo-official-website](https://nextpilot.org) 采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 许可证，是知识共享 4.0 署名协议，允许任何人复制、修改、商用作品，**仅需标注原作者来源**。

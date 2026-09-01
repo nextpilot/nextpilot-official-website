@@ -270,6 +270,6 @@ FCS 和 INS 芯片的 `bootloader` 是通用的，使用 `Stlink` 或者 `jlink`
 
 ## 常见问题
 
-更多问题请参考 [技术支持](https://nextpilot.org/community/support.html)。
+更多问题请参考 [技术支持](/opensource/community/support)。
 
 ## 更新记录

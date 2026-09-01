@@ -18,7 +18,7 @@ description: 联系 NextPilot 团队：商务合作、技术咨询、定制需�
 
 ### 📖 用户文档
 
-产品手册、开发指南、FAQ，请访问在线文档站：[docs.nextpilot.org](https://docs.nextpilot.org)
+产品手册、开发指南、FAQ，请访问在线文档站：[https://nextpilot.org](https://nextpilot.org)
 
 ---
 

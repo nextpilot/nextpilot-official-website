@@ -1,3 +1,7 @@
+---
+order: 3
+---
+
 # 社区支持
 
 欢迎来到 NextPilot 开发社区！为了营造一个开放和受欢迎的开发环境，我们承诺严格遵守[NextPilot 行为准测](./code-of-conduct.md)。
