@@ -8,6 +8,7 @@ const SRC_DIR = join(process.cwd(), 'source')
 
 /** 读取 md 文件的 frontmatter，返回标量字段映射（无 frontmatter 时返回空对象） */
 function readFrontmatter(filePath: string): Record<string, string> {
+  if (!existsSync(filePath)) return {}
   const raw = readFileSync(filePath, 'utf-8')
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)
   if (!match) return {}
@@ -58,31 +59,64 @@ function sortEntries(entries: Entry[]): SidebarItem[] {
     .map((e) => e.item)
 }
 
-/** 构建一个分组（子目录）及其下的条目 */
-function buildGroup(section: string, dir: string, dirPath: string): SidebarItem {
+/** 判断目录树内是否包含至少一个 md 条目（排除 index.md），用于跳过 imgs 等纯资源目录 */
+function hasDocs(dirPath: string): boolean {
+  for (const name of readdirSync(dirPath)) {
+    const full = join(dirPath, name)
+    const st = statSync(full)
+    if (st.isDirectory()) {
+      if (hasDocs(full)) return true
+    } else if (name.endsWith('.md') && name !== 'index.md') {
+      return true
+    }
+  }
+  return false
+}
+
+/**
+ * 构建一个分组（子目录）及其下的条目，递归处理更深层子目录。
+ * relDir 为该目录相对栏目根目录的路径（如 controller/00-基本概念），用于拼接链接。
+ */
+function buildGroup(section: string, relDir: string, dirPath: string, depth: number): SidebarItem {
   const indexFm = readFrontmatter(join(dirPath, 'index.md'))
   const hasIndex = existsSync(join(dirPath, 'index.md'))
 
   const children: Entry[] = []
   for (const name of readdirSync(dirPath)) {
-    if (!name.endsWith('.md') || name === 'index.md') continue
-    const fm = readFrontmatter(join(dirPath, name))
-    children.push({
-      order: orderOf(fm),
-      prefix: sortPrefixOf(name),
-      path: name,
-      item: {
-        text: fm.title || stripSortPrefix(basename(name, '.md')),
-        link: `/${section}/${dir}/${basename(name, '.md')}`,
-      },
-    })
+    const full = join(dirPath, name)
+    const st = statSync(full)
+
+    if (st.isDirectory()) {
+      // 跳过不含任何 md 条目的目录（如 imgs 图片目录）
+      if (!hasDocs(full)) continue
+      const childRelDir = `${relDir}/${name}`
+      children.push({
+        order: orderOf(readFrontmatter(join(full, 'index.md'))),
+        prefix: sortPrefixOf(name),
+        path: name,
+        item: buildGroup(section, childRelDir, full, depth + 1),
+      })
+    } else if (st.isFile() && name.endsWith('.md') && name !== 'index.md') {
+      const fm = readFrontmatter(full)
+      children.push({
+        order: orderOf(fm),
+        prefix: sortPrefixOf(name),
+        path: name,
+        item: {
+          text: fm.title || stripSortPrefix(basename(name, '.md')),
+          link: `/${section}/${relDir}/${basename(name, '.md')}`,
+        },
+      })
+    }
   }
 
   const group: SidebarItem = {
-    text: indexFm.title || stripSortPrefix(dir),
+    text: indexFm.title || stripSortPrefix(basename(dirPath)),
     items: sortEntries(children),
+    // 顶层分组展开，嵌套子分组默认折叠
+    collapsed: depth > 0,
   }
-  if (hasIndex) group.link = `/${section}/${dir}/`
+  if (hasIndex) group.link = `/${section}/${relDir}/`
   return group
 }
 
@@ -105,7 +139,7 @@ export function docsSidebar(section: string): SidebarItem[] {
         order: orderOf(readFrontmatter(join(full, 'index.md'))),
         prefix: sortPrefixOf(name),
         path: name,
-        item: buildGroup(section, name, full),
+        item: buildGroup(section, name, full, 0),
       })
     } else if (st.isFile() && name.endsWith('.md') && name !== 'index.md') {
       const fm = readFrontmatter(full)
