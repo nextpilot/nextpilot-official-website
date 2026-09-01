@@ -3,7 +3,7 @@ title: NP-RID-Receiver
 summary: 广播式无人机运行识别接收器，满足GB 46750-2025，支持WiFi/蓝牙广播接收，串口输出MAVLink/GB46750协议
 cover: /images/product/datalink/NP-RID-Receiver-S3-PinWX.png
 order: 1
-layout: doc
+layout: product
 buy: https://shop103678810.taobao.com/category.htm?spm=pc_detail.30350276.shop_block.dshopinfo.52f17dd6b1ptE2
 description: >-
   NP-RID-Receiver 广播式无人机运行识别接收器，满足 GB 46750-2025 标准，
