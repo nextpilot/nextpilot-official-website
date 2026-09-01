@@ -81,7 +81,7 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh-CN',
       themeConfig: {
-        outline: { label: '本页目录' },
+        outline: { label: '本页目录', level: [2, 4] },
         docFooter: { prev: '上一页', next: '下一页' },
         lastUpdated: { text: '最后更新于' },
         returnToTopLabel: '回到顶部',
