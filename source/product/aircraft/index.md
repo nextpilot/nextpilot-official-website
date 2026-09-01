@@ -1,5 +1,5 @@
 ---
-title: 无 人 机
+title: 无人机
 order: 1
 description: >-
   NextPilot 面向开发者的无人机机体平台系列，采用碳板堆叠结构与可折叠机臂设计，

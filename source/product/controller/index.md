@@ -1,5 +1,5 @@
 ---
-title: 控 制 器
+title: 控制器
 order: 2
 description: >-
   NextPilot 导航飞控计算机系列，集成双频RTK、三冗余IMU和工业级处理器，
