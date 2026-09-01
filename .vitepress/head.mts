@@ -1,12 +1,15 @@
 import type { HeadConfig, TransformContext } from 'vitepress'
 
-// 站点权威域名：设置了 SITE_HOST 才强制域名归一（跳转 + canonical）；未设置则任意域名可访问。
-// 生产部署时必须在构建环境（EdgeOne Pages 构建命令）设置 SITE_HOST=nextpilot.org，
-// 否则站点不会生成 canonical / sitemap / 跳转脚本。
-const SITE_HOST = process.env.SITE_HOST || ''
+// 站点权威域名，固定为 nextpilot.org（不再依赖 SITE_HOST 环境变量），
+// canonical 与 sitemap 始终指向该域名。
+const SITE_HOST = 'nextpilot.org'
 
-// 完整站点 URL（仅当 SITE_HOST 设置时有意义）
-export const SITE_URL = SITE_HOST ? `https://${SITE_HOST}` : ''
+// 完整站点 URL
+export const SITE_URL = `https://${SITE_HOST}`
+
+// 是否启用客户端域名归一跳转：仅当构建环境设置 USE_URL_REDIRECT=1（或 true）时才注入跳转脚本。
+// 本地开发与预览部署应保持关闭，避免访问时被跳转到线上域名。
+const USE_URL_REDIRECT = process.env.USE_URL_REDIRECT === '1' || process.env.USE_URL_REDIRECT === 'true'
 
 // 源文件路径（相对 srcDir，如 index.md / manual/index.md / manual/foo.md）→ 权威 URL
 // 与 sitemap 一致：目录页尾斜杠（/manual/）、详情页带 .html（/manual/foo.html）
@@ -17,7 +20,7 @@ function canonicalPath(page: string): string | null {
   return '/' + page.replace(/\.md$/, '.html')
 }
 
-// 客户端域名归一脚本（仅当设置了 SITE_HOST 时注入）
+// 客户端域名归一脚本（仅当 USE_URL_REDIRECT 开启时注入）
 const redirectScript: HeadConfig = [
   'script',
   {},
@@ -33,11 +36,10 @@ const redirectScript: HeadConfig = [
   })()`,
 ]
 
-export const redirectHead: HeadConfig[] = SITE_HOST ? [redirectScript] : []
+export const redirectHead: HeadConfig[] = USE_URL_REDIRECT ? [redirectScript] : []
 
-// 多域名归一：给每页加 canonical（仅当设置了 SITE_HOST 时）
+// 给每页加 canonical，始终指向权威域名 nextpilot.org
 export function canonicalHead(ctx: TransformContext): HeadConfig[] {
-  if (!SITE_HOST) return []
   const path = canonicalPath(ctx.page)
   if (!path) return []
   return [['link', { rel: 'canonical', href: `${SITE_URL}${path}` }]]

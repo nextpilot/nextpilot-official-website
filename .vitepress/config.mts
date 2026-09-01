@@ -63,8 +63,8 @@ export default defineConfig({
     },
   },
 
-  // 站点地图：仅当设置了 SITE_HOST 时生成
-  ...(SITE_URL ? { sitemap: { hostname: SITE_URL } } : {}),
+  // 站点地图：始终指向权威域名（nextpilot.org）
+  sitemap: { hostname: SITE_URL },
 
   // 通用主题配置（不区分语言）
   themeConfig: {

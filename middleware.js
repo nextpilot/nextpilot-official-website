@@ -1,15 +1,19 @@
 /* global URL, process */
 // EdgeOne Pages 中间件：域名归一与跳转。
-// 仅当设置了环境变量 SITE_HOST 时才强制归一；未设置则所有域名都放行。
+// 站点权威域名固定为 nextpilot.org；仅当设置 USE_URL_REDIRECT=1（或 true）时才强制归一，否则所有域名放行。
 // 注：EdgeOne 边缘运行时读取环境变量的方式以官方文档为准，此处按 Node 兼容写法读取 process.env。
-const SITE_HOST = (typeof process !== 'undefined' && process.env && process.env.SITE_HOST) || ''
-const SITE_URL = SITE_HOST ? 'https://' + SITE_HOST : ''
+const SITE_HOST = 'nextpilot.org'
+const SITE_URL = 'https://' + SITE_HOST
+const USE_URL_REDIRECT =
+  typeof process !== 'undefined' &&
+  process.env &&
+  (process.env.USE_URL_REDIRECT === '1' || process.env.USE_URL_REDIRECT === 'true')
 
 export function middleware(context) {
   const { request, redirect } = context
   const url = new URL(request.url)
 
-  if (!SITE_HOST) return context.next()
+  if (!USE_URL_REDIRECT) return context.next()
 
   if (url.hostname === SITE_HOST) {
     return context.next()
