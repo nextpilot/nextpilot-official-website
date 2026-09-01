@@ -1,15 +1,14 @@
-import { defineConfig } from 'vitepress';
-import { docsSidebar } from './sidebar.mts';
-import { productHeadingTabs } from './markdown/product-heading-tabs.mts';
-import { tabsGroup } from './markdown/tabs-group.mts';
-import { redirectHead, canonicalHead, SITE_URL } from './head.mts';
+import { defineConfig } from 'vitepress'
+import { docsSidebar } from './sidebar.mts'
+import { productHeadingTabs } from './markdown/product-heading-tabs.mts'
+import { tabsGroup } from './markdown/tabs-group.mts'
+import { redirectHead, canonicalHead, SITE_URL } from './head.mts'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   // 站点基本信息：标题 / SEO 描述 / 默认语言
   title: 'NextPilot Flight Control',
-  description:
-    'NextPilot 国产开源先进自动驾驶仪（飞控系统），基于 RT-Thread 实时操作系统、核心算法移植自 PX4，支持多旋翼、固定翼、垂起复合翼，面向教育、科研与工业应用',
+  description: 'NextPilot 国产开源先进自动驾驶仪（飞控系统），基于 RT-Thread 实时操作系统、核心算法移植自 PX4，支持多旋翼、固定翼、垂起复合翼，面向教育、科研与工业应用',
   lang: 'zh-CN',
   // 全局 <head>：favicon + SEO meta（keywords / author）+ 客户端跳转脚本
   head: [
@@ -18,8 +17,7 @@ export default defineConfig({
       'meta',
       {
         name: 'keywords',
-        content:
-          'NextPilot,飞控,自动驾驶仪,无人机,开源飞控,多旋翼,固定翼,垂起复合翼,RT-Thread,PX4,Pixhawk,ArduPilot,QGroundControl,MAVLink,UAV,autopilot,flight controller',
+        content: 'NextPilot,飞控,自动驾驶仪,无人机,开源飞控,多旋翼,固定翼,垂起复合翼,RT-Thread,PX4,Pixhawk,ArduPilot,QGroundControl,MAVLink,UAV,autopilot,flight controller',
       },
     ],
     ['meta', { name: 'author', content: 'NextPilot Development Team' }],
@@ -57,9 +55,9 @@ export default defineConfig({
     lineNumbers: true,
     config: (md) => {
       // 正文二级标题折叠为 tab（仅对 layout: product 页面生效）
-      productHeadingTabs(md);
+      productHeadingTabs(md)
       // 通用 `::: tabs` 容器：`=== 标题` 折叠为 tab
-      tabsGroup(md);
+      tabsGroup(md)
     },
   },
 
@@ -74,9 +72,7 @@ export default defineConfig({
     // 本地全文搜索
     search: { provider: 'local' },
     // 右上角社交链接
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/nextpilot/nextpilot-official-website' },
-    ],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/nextpilot/nextpilot-official-website' }],
   },
 
   // 多语言：root = 简体中文（默认），en = English
@@ -102,8 +98,7 @@ export default defineConfig({
           linkText: '回到首页',
         },
         footer: {
-          message:
-            '本文档采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> 国际协议，开放共享、转载、修改、商用，但须保留署名来源',
+          message: '本文档采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> 国际协议，开放共享、转载、修改、商用，但须保留署名来源',
           copyright: `Copyright © ${new Date().getFullYear()} NextPilot Development Team`,
         },
         nav: [
@@ -145,4 +140,4 @@ export default defineConfig({
       },
     },
   },
-});
+})

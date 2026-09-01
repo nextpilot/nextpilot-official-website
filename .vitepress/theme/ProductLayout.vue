@@ -15,9 +15,7 @@ const images = computed<string[]>(() => {
 const active = ref(0)
 
 const price = computed(() => (frontmatter.value.price ?? null) as number | null)
-const buy = computed(
-  () => (frontmatter.value.buy || 'https://ffvf62dgcrpcsf5h87lj12mrgn90rx5.taobao.com/') as string,
-)
+const buy = computed(() => (frontmatter.value.buy || 'https://ffvf62dgcrpcsf5h87lj12mrgn90rx5.taobao.com/') as string)
 const tags = computed(() => (frontmatter.value.tags || []) as string[])
 
 // 正文 tab 切换：事件委托，处理 markdown 渲染出的 `.product-tab` 点击
@@ -49,22 +47,9 @@ onBeforeUnmount(() => document.removeEventListener('click', onTabClick))
 
     <div class="product-hero">
       <div class="gallery">
-        <img
-          v-if="images.length"
-          :src="images[active]"
-          :alt="frontmatter.title"
-          class="gallery-main"
-        />
+        <img v-if="images.length" :src="images[active]" :alt="frontmatter.title" class="gallery-main" />
         <div v-if="images.length > 1" class="gallery-thumbs">
-          <button
-            v-for="(img, i) in images"
-            :key="img"
-            type="button"
-            class="thumb"
-            :class="{ active: i === active }"
-            :aria-label="`查看第 ${i + 1} 张图片`"
-            @click="active = i"
-          >
+          <button v-for="(img, i) in images" :key="img" type="button" class="thumb" :class="{ active: i === active }" :aria-label="`查看第 ${i + 1} 张图片`" @click="active = i">
             <img :src="img" :alt="frontmatter.title" />
           </button>
         </div>
@@ -77,9 +62,7 @@ onBeforeUnmount(() => document.removeEventListener('click', onTabClick))
         <div class="price">{{ price != null ? `¥${price}` : '价格面议' }}</div>
 
         <div class="actions">
-          <a :href="buy" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-            立即购买
-          </a>
+          <a :href="buy" class="btn btn-primary" target="_blank" rel="noopener noreferrer"> 立即购买 </a>
           <a href="/manual/" class="btn btn-secondary">帮助文档</a>
         </div>
 

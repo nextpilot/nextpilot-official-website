@@ -15,11 +15,7 @@ interface Group {
 }
 
 function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 }
 
 /** 从 inline children 中提取纯文本（用于 tab 标题），跳过标题锚点的零宽空格 */
@@ -71,25 +67,12 @@ export function productHeadingTabs(md: any): void {
       return t
     }
 
-    const buttons = groups
-      .map(
-        (g, i) =>
-          `<button type="button" class="product-tab${i === 0 ? ' is-active' : ''}" data-tab="${i}" role="tab" aria-selected="${i === 0}">${escapeHtml(g.title)}</button>`,
-      )
-      .join('')
+    const buttons = groups.map((g, i) => `<button type="button" class="product-tab${i === 0 ? ' is-active' : ''}" data-tab="${i}" role="tab" aria-selected="${i === 0}">${escapeHtml(g.title)}</button>`).join('')
 
-    const out: any[] = [
-      html(
-        `<div class="product-tabs"><div class="product-tab-list" role="tablist">${buttons}</div><div class="product-tab-panels">`,
-      ),
-    ]
+    const out: any[] = [html(`<div class="product-tabs"><div class="product-tab-list" role="tablist">${buttons}</div><div class="product-tab-panels">`)]
 
     groups.forEach((g, i) => {
-      out.push(
-        html(
-          `<div class="product-tab-panel${i === 0 ? ' is-active' : ''}" data-panel="${i}" role="tabpanel">`,
-        ),
-      )
+      out.push(html(`<div class="product-tab-panel${i === 0 ? ' is-active' : ''}" data-panel="${i}" role="tabpanel">`))
       out.push(...g.tokens)
       out.push(html('</div>'))
     })

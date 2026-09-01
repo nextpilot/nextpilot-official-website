@@ -4,10 +4,7 @@
 // 注：EdgeOne 边缘运行时读取环境变量的方式以官方文档为准，此处按 Node 兼容写法读取 process.env。
 const SITE_HOST = 'nextpilot.org'
 const SITE_URL = 'https://' + SITE_HOST
-const USE_URL_REDIRECT =
-  typeof process !== 'undefined' &&
-  process.env &&
-  (process.env.USE_URL_REDIRECT === '1' || process.env.USE_URL_REDIRECT === 'true')
+const USE_URL_REDIRECT = typeof process !== 'undefined' && process.env && (process.env.USE_URL_REDIRECT === '1' || process.env.USE_URL_REDIRECT === 'true')
 
 export function middleware(context) {
   const { request, redirect } = context

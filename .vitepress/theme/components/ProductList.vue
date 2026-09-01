@@ -59,8 +59,7 @@ const filtered = computed(() => {
   const q = query.value.trim().toLowerCase()
   if (q) {
     list = list.filter((p) => {
-      const haystack =
-        `${p.title} ${p.summary} ${p.categoryName} ${p.tags.join(' ')} ${p.searchText}`.toLowerCase()
+      const haystack = `${p.title} ${p.summary} ${p.categoryName} ${p.tags.join(' ')} ${p.searchText}`.toLowerCase()
       return haystack.includes(q)
     })
   }
@@ -71,30 +70,14 @@ const filtered = computed(() => {
 <template>
   <div class="product-toolbar">
     <div class="product-cats" role="group" :aria-label="t.cats">
-      <button
-        class="cat-chip"
-        :class="{ active: activeCategory === '' }"
-        @click="activeCategory = ''"
-      >
+      <button class="cat-chip" :class="{ active: activeCategory === '' }" @click="activeCategory = ''">
         {{ t.all }}
       </button>
-      <button
-        v-for="c in categories"
-        :key="c.slug"
-        class="cat-chip"
-        :class="{ active: activeCategory === c.slug }"
-        @click="activeCategory = c.slug"
-      >
+      <button v-for="c in categories" :key="c.slug" class="cat-chip" :class="{ active: activeCategory === c.slug }" @click="activeCategory = c.slug">
         {{ c.name }}
       </button>
     </div>
-    <input
-      v-model="query"
-      type="search"
-      class="product-search"
-      :placeholder="t.placeholder"
-      :aria-label="t.search"
-    />
+    <input v-model="query" type="search" class="product-search" :placeholder="t.placeholder" :aria-label="t.search" />
   </div>
 
   <p v-if="!filtered.length" class="product-empty">{{ t.empty }}</p>

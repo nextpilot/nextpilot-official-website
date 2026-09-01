@@ -5,13 +5,7 @@ import globals from 'globals'
 
 export default [
   {
-    ignores: [
-      'node_modules/**',
-      'build/**',
-      '.vitepress/cache/**',
-      '.vitepress/dist/**',
-      '.markdownlint-cli2.cjs',
-    ],
+    ignores: ['node_modules/**', 'build/**', '.vitepress/cache/**', '.vitepress/dist/**', '.markdownlint-cli2.cjs'],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

@@ -16,10 +16,7 @@ function parseFrontmatter(raw: string): Record<string, string> {
     const m = line.match(/^([A-Za-z_][\w-]*):\s*(.*)$/)
     if (!m) continue
     let val = m[2].trim()
-    if (
-      val.length >= 2 &&
-      ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'")))
-    ) {
+    if (val.length >= 2 && ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'")))) {
       val = val.slice(1, -1)
     }
     result[m[1]] = val
@@ -71,9 +68,7 @@ interface Entry {
 
 /** 按 order > 排序前缀 > 完整路径 稳定排序，返回纯 SidebarItem[] */
 function sortEntries(entries: Entry[]): SidebarItem[] {
-  return entries
-    .sort((a, b) => a.order - b.order || a.prefix - b.prefix || a.path.localeCompare(b.path))
-    .map((e) => e.item)
+  return entries.sort((a, b) => a.order - b.order || a.prefix - b.prefix || a.path.localeCompare(b.path)).map((e) => e.item)
 }
 
 /** 判断目录树内是否包含至少一个 md 条目（排除 index.md），用于跳过 imgs 等纯资源目录 */

@@ -45,9 +45,6 @@ export default createContentLoader('**/*.md', {
           searchText: (item.src || '').replace(/^---[\s\S]*?---\n?/, ''),
         }
       })
-      .sort(
-        (a, b) =>
-          a.categoryOrder - b.categoryOrder || a.order - b.order || a.url.localeCompare(b.url),
-      )
+      .sort((a, b) => a.categoryOrder - b.categoryOrder || a.order - b.order || a.url.localeCompare(b.url))
   },
 })
