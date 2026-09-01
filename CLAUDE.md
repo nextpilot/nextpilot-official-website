@@ -19,7 +19,7 @@ NextPilot（`nextpilot-flight-control`）是一款国产开源先进自动驾驶
 已完成的核心工作：
 
 - VitePress 基础配置
-- `aboutus` / `manual` / `develop` / `community` 自动侧边栏生成
+- `about` / `manual` / `develop` / `community` 自动侧边栏生成
 - 产品列表页（`createContentLoader` + `ProductList` 组件）
 
 待完成或待完善：
@@ -56,12 +56,24 @@ nextpilot-official-website/
 │   └── ...                       # 其余 VitePress 相关文件
 ├── source/                        # 内容源目录，Markdown 页面都放在这里
 │   ├── index.md                  # 首页
-│   ├── aboutus/                  # 关于我们栏目
+│   ├── about/                    # 关于我们栏目
 │   ├── solution/                 # 解决方案栏目
 │   ├── product/                  # 产品中心
-│   ├── manual/                   # 用户手册
-│   ├── develop/                  # 开发指南
-│   ├── community/                # 社区支持
+│   │   ├── aircraft/             # 无人机平台
+│   │   ├── controller/           # 控制器
+│   │   ├── datalink/             # 通信链路
+│   │   ├── navigator/            # 导航传感
+│   │   └── peripheral/           # 其它外设
+│   ├── manual/                   # 用户手册（产品导向）
+│   │   ├── aircraft/             # 无人机平台
+│   │   ├── autopilot/            # 飞行控制
+│   │   ├── datalink/             # 通信链路
+│   │   ├── navigator/            # 导航传感
+│   │   └── peripheral/           # 其它外设
+│   ├── opensource/               # 开源项目
+│   │   ├── community/            # 社区支持
+│   │   ├── develop/              # 开发指南
+│   │   └── manual/               # 用户手册（开源文档）
 │   ├── discovery/                # 发现/展示栏目（占位待建）
 │   ├── news/                     # 新闻资讯
 │   ├── download/                 # 资源下载
@@ -70,6 +82,7 @@ nextpilot-official-website/
 ├── public/                        # 静态资源目录，打包后直接输出
 │   ├── images/                   # 图片资源
 │   ├── firmware/                 # 固件/下载文件
+│   ├── scripts/                  # 脚本文件
 │   ├── CNAME                     # 域名配置文件
 │   ├── favicon.png               # 站点图标
 │   └── logo.png                  # Logo
@@ -131,11 +144,11 @@ nextpilot-official-website/
 
 ### 7.1 关于我们 / 解决方案
 
-- 定位：`aboutus` 与 `solution` 都属于静态页面栏目，分别用于品牌介绍与解决方案概览。
+- 定位：`about` 与 `solution` 都属于静态页面栏目，分别用于品牌介绍与解决方案概览。
 - 目录规则：均采用扁平结构：`<栏目>/<xx-page.md>`，每个页面对应一个单独文档，不做深层嵌套。
-- 标题规则：`aboutus` 侧边栏条目优先取 `frontmatter.title`，其次取文件名去掉排序前缀；`solution` 列表页标题优先取 `frontmatter.title`，否则回退到文件名去掉排序前缀。
+- 标题规则：`about` 侧边栏条目优先取 `frontmatter.title`，其次取文件名去掉排序前缀；`solution` 列表页标题优先取 `frontmatter.title`，否则回退到文件名去掉排序前缀。
 - 排序规则：统一以 `frontmatter.order` 为主，再按文件名排序前缀排序。
-- 约束：`aboutus` 使用自动 sidebar，`solution` 属于 `page` 类型，不显示侧边栏，使用 `createContentLoader` + 列表组件渲染。
+- 约束：`about` 使用自动 sidebar，`solution` 属于 `page` 类型，不显示侧边栏，使用 `createContentLoader` + 列表组件渲染。
 
 ### 7.2 产品中心
 

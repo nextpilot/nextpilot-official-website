@@ -5,8 +5,8 @@
 编译好的网页托管在本仓库的 [gh-pages](https://github.com/nextpilot/nextpilot-flight-control/tree/gh-pages) 分支，可通过以下链接访问：
 
 - 官方网站：<https://nextpilot.org>
-- 用户手册：<https://nextpilot.org/manual>
-- 开发指南：<https://nextpilot.org/develop>
+- 用户手册：<https://nextpilot.org/opensource/manual>
+- 开发指南：<https://nextpilot.org/opensource/develop>
 
 ## 技 术 栈
 
@@ -75,23 +75,36 @@ pnpm docs:preview
 │       └── index.mts
 ├── source/                        # 内容源目录，VitePress srcDir
 │   ├── index.md                   # 首页
-│   ├── aboutus/                   # 关于我们
+│   ├── about/                     # 关于我们
 │   ├── blog/                      # 技术博客
-│   ├── community/                 # 社区支持
-│   ├── develop/                   # 开发指南
 │   ├── discovery/                 # 展示/占位栏目
 │   ├── download/                  # 资源下载
 │   ├── en/                        # 英文站内容
-│   ├── manual/                    # 用户手册
+│   ├── manual/                    # 用户手册（产品导向）
+│   │   ├── aircraft/              # 无人机平台
+│   │   ├── autopilot/             # 飞行控制
+│   │   ├── datalink/              # 通信链路
+│   │   ├── navigator/             # 导航传感
+│   │   └── peripheral/            # 其它外设
 │   ├── news/                      # 新闻资讯
+│   ├── opensource/                # 开源项目
+│   │   ├── community/             # 社区支持
+│   │   ├── develop/               # 开发指南
+│   │   └── manual/                # 用户手册（开源文档）
 │   ├── product/                   # 产品中心
-│   ├── solution/                  # 解决方案
-│   └── ...
+│   │   ├── aircraft/              # 无人机平台
+│   │   ├── controller/            # 控制器
+│   │   ├── datalink/              # 通信链路
+│   │   ├── navigator/             # 导航传感
+│   │   └── peripheral/            # 其它外设
+│   └── solution/                  # 解决方案
 ├── public/                        # 静态资源目录
 │   ├── CNAME
 │   ├── favicon.png
 │   ├── logo.png
-│   └── images/
+│   ├── firmware/                  # 固件/下载文件
+│   ├── images/                    # 图片资源
+│   └── scripts/                   # 脚本
 ├── build/                         # 生产构建输出，自动生成
 ├── package.json
 ├── pnpm-lock.yaml

@@ -103,7 +103,7 @@ export default defineConfig({
         },
         nav: [
           { text: '首页', link: '/' },
-          { text: '关于我们', link: '/aboutus/' },
+          { text: '关于我们', link: '/about/' },
           // { text: '新闻资讯', link: '/news/' },
           { text: '解决方案', link: '/solution/' },
           { text: '产品中心', link: '/product/' },
@@ -113,7 +113,7 @@ export default defineConfig({
           { text: '技术博客', link: '/blog/' },
         ],
         sidebar: {
-          '/aboutus/': docsSidebar('aboutus'),
+          '/about/': docsSidebar('about'),
           '/manual/': docsSidebar('manual'),
           '/opensource/': docsSidebar('opensource'),
         },
