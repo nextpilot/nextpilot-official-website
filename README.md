@@ -93,7 +93,7 @@ pnpm docs:preview
 │   │   └── manual/                # 用户手册（开源文档）
 │   ├── product/                   # 产品中心
 │   │   ├── aircraft/              # 无人机平台
-│   │   ├── controller/            # 控制器
+│   │   ├── autopilot/             # 飞行控制
 │   │   ├── datalink/              # 通信链路
 │   │   ├── navigator/             # 导航传感
 │   │   └── peripheral/            # 其它外设

@@ -87,7 +87,7 @@ function hasDocs(dirPath: string): boolean {
 
 /**
  * 构建一个分组（子目录）及其下的条目，递归处理更深层子目录。
- * relDir 为该目录相对栏目根目录的路径（如 controller/00-基本概念），用于拼接链接。
+ * relDir 为该目录相对栏目根目录的路径（如 autopilot/00-基本概念），用于拼接链接。
  */
 function buildGroup(section: string, relDir: string, dirPath: string, depth: number): SidebarItem {
   const hasIndex = existsSync(join(dirPath, 'index.md'))

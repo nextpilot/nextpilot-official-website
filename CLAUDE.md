@@ -60,7 +60,7 @@ nextpilot-official-website/
 │   ├── solution/                 # 解决方案栏目
 │   ├── product/                  # 产品中心
 │   │   ├── aircraft/             # 无人机平台
-│   │   ├── controller/           # 控制器
+│   │   ├── autopilot/            # 飞行控制
 │   │   ├── datalink/             # 通信链路
 │   │   ├── navigator/            # 导航传感
 │   │   └── peripheral/           # 其它外设
@@ -153,7 +153,7 @@ nextpilot-official-website/
 ### 7.2 产品中心
 
 - 定位：`product` 是产品展示栏目，采用列表页 + 详情页结构。
-- 目录规则：产品目录结构为 `product/<xx-category>/<yy-product.md>`，`xx` 与 `yy` 为两位整数排序前缀；分类目录为 `aircraft`、`controller`、`datalink`、`navigator`、`peripheral`。
+- 目录规则：产品目录结构为 `product/<xx-category>/<yy-product.md>`，`xx` 与 `yy` 为两位整数排序前缀；分类目录为 `aircraft`、`autopilot`、`datalink`、`navigator`、`peripheral`。
 - 标题规则：分类标识（slug，用于筛选）优先取 `frontmatter.category`，否则用目录名去掉排序前缀；分类显示名优先取 `index.md` 的 `frontmatter.title`，否则目录名去掉排序前缀；产品名优先取 `frontmatter.title`，其次一级标题，再退回文件名去掉排序前缀。
 - 排序规则：分类排序优先取 `index.md` 的 `frontmatter.order`，再比较目录名前缀；产品排序优先取 `frontmatter.order`，再比较文件名前缀。
 - 过滤规则：列表页必须过滤 `index.md` 和 `draft: true`，并支持按分类筛选与全文搜索；分类筛选不能使用 `tags`。
@@ -205,7 +205,7 @@ permalink: /product/fcs-v1
 # --------------------------------
 # 文章短标题、分类、标签、作者和日期
 shortTitle: 短标题
-category: controller
+category: autopilot
 tags: [飞控, 仿真]
 author: 作者名
 date: 2026-08-28

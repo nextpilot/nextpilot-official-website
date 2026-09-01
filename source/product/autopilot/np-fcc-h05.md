@@ -7,11 +7,11 @@ description: >-
   内置双冗余IMU、双频RTK定位，支持动平台起降、视觉导航、集群编队，
   适用于10kg~300kg级多旋翼、固定翼、垂起、倾转等机型。
 summary: 高性能工业级一体化导航飞控，双冗余IMU、双频RTK定位，适用10kg~300kg级多旋翼、固定翼、垂起等机型
-cover: /images/product/controller/fcc-top-view1.png
+cover: /images/product/autopilot/fcc-top-view1.png
 gallery:
-  - /images/product/controller/fcc-top-view1.png
-  - /images/product/controller/fcc-top-view2.png
-  - /images/product/controller/fcc-front-view.png
+  - /images/product/autopilot/fcc-top-view1.png
+  - /images/product/autopilot/fcc-top-view2.png
+  - /images/product/autopilot/fcc-front-view.png
 helpUrl: /manual/autopilot/np-fcc-h05
 ---
 
@@ -21,7 +21,7 @@ helpUrl: /manual/autopilot/np-fcc-h05
 
 NP-FCC-H05 是 NextPilot 团队研发的高性能、工业级、一体化导航飞控产品，搭载了高性能、双冗余度、内置减震的惯性测量单元（IMU），具备可靠性高、稳定性好、抗震动能力强的特点；采用了自研导航算法和失控保护策略，定位精度高、抗干扰能力强；集成了强大功能，包括动平台起降、视觉导航、集群编队飞行等，并提供外部飞行控制接口，支持二次开发，满足各类场景的应用开发需求。该产品适用于 10kg~300kg 级各种类型的无人机平台，包括多旋翼、固定翼、垂起、倾转等机型等，搭配专业地面站，提供强大的飞行功能和安全的飞行保障。
 
-![产品图-导航飞控](/images/product/controller/fcc-top-view1.png)
+![产品图-导航飞控](/images/product/autopilot/fcc-top-view1.png)
 
 ### 产品特色
 
@@ -53,7 +53,7 @@ NP-FCC-H05 是 NextPilot 团队研发的高性能、工业级、一体化导航�
 
 导航飞控配套调试线缆如下图所示：
 
-![调试线缆](/images/product/controller/fcc-cable.png)
+![调试线缆](/images/product/autopilot/fcc-cable.png)
 
 ## 技术参数
 
@@ -85,7 +85,7 @@ NP-FCC-H05 是 NextPilot 团队研发的高性能、工业级、一体化导航�
 
 飞控提供了两个 SMA 接头用于双天线连接，其中右侧为主天线接头，左侧为辅天线接头；提供了航空连接器，型号为 J30J-144ZKW-J，接口布局如下图所示。
 
-![飞控接口](/images/product/controller/fcc-front-view.png)
+![飞控接口](/images/product/autopilot/fcc-front-view.png)
 
 ### 接口定义
 
