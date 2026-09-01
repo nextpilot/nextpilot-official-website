@@ -1,17 +1,17 @@
 ---
-title: NP-SIM-H50
-summary: 高等级无人机飞行训练模拟器，UE5沉浸式视景、六自由度模型，支持HIL/SITL双模仿真
-cover: /images/product/peripheral/sim-software-view.png
-order: 1
 layout: product
-gallery:
-  - /images/product/peripheral/sim-software-view.png
-  - /images/product/peripheral/sim-desktop-model.png
-  - /images/product/peripheral/sim-base-model.png
+order: 1
+title: NP-SIM-H50
 description: >-
   NP-Simulator 高等级无人机飞行训练模拟器，采用虚幻引擎5（UE5）沉浸式视景与
   六自由度飞行动力学模型，支持 HIL/SITL 双模仿真、全地形全天候仿真、
   多机协同编队训练，提供基地级和便携式两种产品形态。
+summary: 高等级无人机飞行训练模拟器，UE5沉浸式视景、六自由度模型，支持HIL/SITL双模仿真
+cover: /images/product/peripheral/sim-software-view.png
+gallery:
+  - /images/product/peripheral/sim-software-view.png
+  - /images/product/peripheral/sim-desktop-model.png
+  - /images/product/peripheral/sim-base-model.png
 ---
 
 ## 产品详情

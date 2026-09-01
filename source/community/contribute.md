@@ -1,6 +1,7 @@
 ---
-title: 贡献代码
 order: 2
+title: 贡献代码
+description: 如何向 NextPilot 飞控项目贡献代码，包括 Git 协作流程、代码风格与格式化规范。
 ---
 
 # 贡献代码

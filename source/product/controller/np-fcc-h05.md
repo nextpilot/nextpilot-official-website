@@ -1,17 +1,17 @@
 ---
-title: NP-FCC-H05
-summary: 高性能工业级一体化导航飞控，双冗余IMU、双频RTK定位，适用10kg~300kg级多旋翼、固定翼、垂起等机型
-cover: /images/product/controller/fcc-top-view1.png
-order: 1
 layout: product
-gallery:
-  - /images/product/controller/fcc-top-view1.png
-  - /images/product/controller/fcc-top-view2.png
-  - /images/product/controller/fcc-front-view.png
+order: 1
+title: NP-FCC-H05
 description: >-
   NP-FCC-H05 是 NextPilot 自研的高性能工业级一体化导航飞控，
   内置双冗余IMU、双频RTK定位，支持动平台起降、视觉导航、集群编队，
   适用于10kg~300kg级多旋翼、固定翼、垂起、倾转等机型。
+summary: 高性能工业级一体化导航飞控，双冗余IMU、双频RTK定位，适用10kg~300kg级多旋翼、固定翼、垂起等机型
+cover: /images/product/controller/fcc-top-view1.png
+gallery:
+  - /images/product/controller/fcc-top-view1.png
+  - /images/product/controller/fcc-top-view2.png
+  - /images/product/controller/fcc-front-view.png
 ---
 
 ## 产品详情

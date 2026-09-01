@@ -1,6 +1,6 @@
 ---
-title: 控制器
 order: 2
+title: 控制器
 description: >-
   NextPilot 导航飞控计算机系列，集成双频RTK、三冗余IMU和工业级处理器，
   为多旋翼、固定翼、垂起、倾转等无人系统提供精准的导航、制导与控制。

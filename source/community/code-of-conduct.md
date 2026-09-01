@@ -1,6 +1,7 @@
 ---
-title: 行为准则
 order: 3
+title: 行为准则
+description: NextPilot 社区贡献者公约与行为准则，致力于建设开放、友善、多元、包容、健康的社区环境。
 ---
 
 # 行为准则

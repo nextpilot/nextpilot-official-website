@@ -1,13 +1,14 @@
 ---
+order: 4
 title: MAVLink协议定制开发
-cover: /images/solution/mavlink.png
+description: MAVLink 协议定制开发，从协议层私有化到 SDK 封装，构建安全高效的无人机通信体系。
 summary: |
   从协议层私有化到 SDK 封装，构建安全、高效的无人机通信体系。
   - MAVLink 帧头/校验私有化定制
   - 帧内容加密解密与密钥管理
   - MAVSDK 跨平台 SDK 定制封装
   - 自定义消息与 API 接口定制
-order: 4
+cover: /images/solution/mavlink.png
 ---
 
 # MAVLink 协议定制开发

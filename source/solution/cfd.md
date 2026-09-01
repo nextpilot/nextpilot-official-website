@@ -1,13 +1,14 @@
 ---
+order: 1
 title: 无人机总体设计优化
-cover: /images/solution/openvsp.png
+description: 基于 NASA OpenVSP 的参数化建模与 CFD 分析，提供飞行器总体设计、气动优化与性能评估服务。
 summary: |
   基于 NASA OpenVSP 的参数化建模与 CFD 分析，覆盖概念设计到性能评估的全流程气动优化。
   - 飞行器气动数据库 CFD 计算
   - 飞行性能评估与操稳特性分析
   - 气动外形快速迭代与优化设计
   - 6DOF 非线性飞行动力学建模
-order: 1
+cover: /images/solution/openvsp.png
 ---
 
 # 无人机总体设计优化

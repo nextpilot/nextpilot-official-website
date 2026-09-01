@@ -1,6 +1,6 @@
 ---
-title: 导航传感
 order: 4
+title: 导航传感
 description: >-
   NextPilot 高精度导航传感系列，涵盖大气数据计算机与地面差分基准站，
   提供空速、气压高度、温度等大气参数，以及 GNSS RTK 厘米级差分定位能力。

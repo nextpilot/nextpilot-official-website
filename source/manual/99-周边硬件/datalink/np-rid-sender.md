@@ -1,16 +1,16 @@
 ---
-title: NP-RID-Sender
-summary: 广播式无人机运行识别发射器，满足GB 46750-2025，支持MAVLink/DroneCAN，通过WiFi/蓝牙广播运行状态
-cover: /images/product/datalink/np-rid-sender-gh-board.png
-order: 2
 layout: doc
-gallery:
-  - /images/product/datalink/np-rid-sender-gh-board.png
-  - /images/product/datalink/np-rid-sender-gh-appearance.png
+order: 2
+title: NP-RID-Sender
 description: >-
   NP-RID-Sender 广播式无人机运行识别发射器，满足 GB 46750-2025 标准，
   支持 MAVLink/DroneCAN 协议连接飞控，通过 WiFi 或蓝牙广播无人机运行状态，
   适配 Ardupilot、PX4 等主流飞控，满足无人机飞行监管需求。
+summary: 广播式无人机运行识别发射器，满足GB 46750-2025，支持MAVLink/DroneCAN，通过WiFi/蓝牙广播运行状态
+cover: /images/product/datalink/np-rid-sender-gh-board.png
+gallery:
+  - /images/product/datalink/np-rid-sender-gh-board.png
+  - /images/product/datalink/np-rid-sender-gh-appearance.png
 ---
 
 ## 产品说明

@@ -1,13 +1,14 @@
 ---
+order: 3
 title: QGC地面站定制开发
-cover: /images/solution/qgroundcontrol.png
+description: 基于 QGroundControl 的全栈地面站定制开发，支持一站多机、航线规划、数据转发与远程指控。
 summary: |
   基于 QGroundControl 的全栈地面站开发，具备复杂指控平台交付经验。
   - 一站多机协同监控与多站一机
   - 航线规划、飞行显控、飞前检查
   - 数据转发、远程指挥大厅接入
   - 日志回放、MAVLink 调试工具集
-order: 3
+cover: /images/solution/qgroundcontrol.png
 ---
 
 # QGC 地面站定制开发

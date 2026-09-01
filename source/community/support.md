@@ -1,6 +1,7 @@
 ---
-title: 技术支持
 order: 1
+title: 技术支持
+description: 获取 NextPilot 技术支持的渠道与故障诊断流程，包括 Discussions、Issue 反馈与飞行日志分析。
 ---
 
 # 技术支持

@@ -1,13 +1,14 @@
 ---
+order: 5
 title: SiM飞行训练模拟器
-cover: /images/solution/sim-software-view.png
+description: 面向专业培训机构与行业单位的无人机飞行仿真模拟训练系统，覆盖技能养成全流程。
 summary: |
   面向专业培训机构与行业单位的高等级无人机飞行仿真模拟训练系统，覆盖技能养成全周期的沉浸式训练平台。
   - 多机型高保真飞行操控仿真，与真机一致
   - 行业级任务流程深度模拟与特情处置
   - 基地级/便携式双形态，UE5 沉浸视景
   - 软硬件在环双模支持，国产自主可控
-order: 5
+cover: /images/solution/sim-software-view.png
 ---
 
 # SiM 飞行训练模拟器

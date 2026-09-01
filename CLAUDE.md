@@ -100,8 +100,10 @@ nextpilot-official-website/
 
 ### 6.1 标题
 
-- 文件夹标题：优先取 `index.md` 的 `frontmatter.title`，否则读取一级标题，再退回目录名去掉排序前缀
-- 文档页面标题：优先取 `frontmatter.title` > 一级标题 > 文件名去掉排序前缀
+- 文件夹标题：优先取 `index.md` 的 `frontmatter.shortTitle` > `frontmatter.title` > 一级标题 > 目录名去掉排序前缀
+- 文档页面标题：优先取 `frontmatter.shortTitle` > `frontmatter.title` > 一级标题 > 文件名去掉排序前缀
+- `shortTitle`（展示短标题）可选，用于卡片、侧边栏、面包屑、详情 H1 等展示场景，未填写时回退到 `title`
+- SEO/浏览器标题（`<title>`）由 VitePress 依据 `frontmatter.title` 生成
 - 建议每个页面都显式写 `frontmatter.title`，并尽量与文件命名保持一致
 - 标题尽量与目录名语义匹配，体现栏目和内容主题，不要出现重复或过度泛化
 
@@ -176,22 +178,34 @@ nextpilot-official-website/
 
 ```yaml
 ---
+# 页面布局
+layout: doc
+# 文章排序
+order: 10
+# 草稿版本
+draft: false
+# --------------------------------
+# 主要用于SEO
 title: 标题
 description: 一句话摘要，用于列表页与 SEO
-summary: 一句话简介
 permalink: /product/fcs-v1
+# --------------------------------
+# 文章短标题、分类、标签、作者和日期
+shortTitle: 短标题
 category: controller
 tags: [飞控, 仿真]
+author: 作者名
+date: 2026-08-28
+# --------------------------------
+# 主要用于卡片
+summary: 一句话简介
 cover: /images/blog/xxx.png
 gallery:
   - /images/blog/xxx-1.png
   - /images/blog/xxx-2.png
 price: 100
-buy: https://shop.example.com/xxx
-order: 10
-date: 2026-08-28
-author: 作者名
-draft: false
+shopUrl: https://shop.example.com/xxx
+helpUrl: /manual/xxx
 ---
 ```
 
@@ -202,7 +216,10 @@ draft: false
 - `draft: true` 在开发环境允许预览，但构建和列表页必须排除草稿，未填写 `draft` 时按正式内容处理
 - `tags` 不用于产品分类筛选
 - `date` 仅用于显示，不参与排序
-- `gallery`（图片数组）用于产品详情页多图图库，优先于单张 `cover`；`buy`（外部购买链接）可选，未填写则不显示「立即购买」按钮
+- `gallery`（图片数组）用于产品详情页多图图库，优先于单张 `cover`；`shopUrl`（外部购买链接）可选，未填写则不显示「立即购买」按钮
+- `helpUrl`（帮助文档链接）可选，用于产品列表卡片的「帮助」按钮，未填写时回退到 `/manual/`
+- `shortTitle`（展示短标题）可选，用于卡片/侧边栏/面包屑/详情 H1，未填写时回退到 `title`
+- `summary`（列表卡片/详情页摘要）未填写时回退到 `description`
 
 ## 9. 写作规范
 

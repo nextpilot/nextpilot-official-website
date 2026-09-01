@@ -1,13 +1,14 @@
 ---
+order: 2
 title: PX4开源飞控定制开发
-cover: /images/solution/px4.png
+description: PX4 开源飞控定制开发，高性能高可靠性飞控系统，深度适配国产硬件，满足工业化与军用环境要求。
 summary: |
   高性能高可靠性飞行控制系统，深度适配国产硬件，满足工业化与军用环境要求。
   - 全国产化软硬件方案，支持 Keil 开发
   - 控制算法优化与传感器适配校准
   - 虚拟飞行仿真 / 半实物仿真系统
   - 工业化定制，满足 GJB150 环境试验
-order: 2
+cover: /images/solution/px4.png
 ---
 
 # PX4 开源飞控定制开发

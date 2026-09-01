@@ -1,6 +1,7 @@
 ---
-title: 开源许可
 order: 4
+title: 开源许可
+description: NextPilot 各组件所采用的许可证说明，主要代码采用 BSD 3-Clause，文档采用 CC BY 4.0。
 ---
 
 # 开源许可
