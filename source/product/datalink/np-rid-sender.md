@@ -12,6 +12,7 @@ gallery:
   - /images/product/datalink/np-rid-sender-gh-board.png
   - /images/product/datalink/np-rid-sender-gh-appearance.png
 shopUrl: https://shop103678810.taobao.com/category.htm?spm=pc_detail.30350276.shop_block.dshopinfo.52f17dd6b1ptE2
+helpUrl: /manual/datalink/np-rid-sender
 ---
 
 ## 产品说明

@@ -12,6 +12,7 @@ gallery:
   - /images/product/controller/fcc-top-view1.png
   - /images/product/controller/fcc-top-view2.png
   - /images/product/controller/fcc-front-view.png
+helpUrl: /manual/autopilot/np-fcc-h05
 ---
 
 ## 产品详情

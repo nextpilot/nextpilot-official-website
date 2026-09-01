@@ -14,6 +14,7 @@ gallery:
   - /images/product/aircraft/pcb-via.png
   - /images/product/aircraft/payload-board.png
   - /images/product/aircraft/assembly-px4.png
+helpUrl: /manual/aircraft/np-snail-550
 ---
 
 ## 产品详情

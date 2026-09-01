@@ -11,6 +11,7 @@ cover: /images/product/navigator/airspeed-top-view.png
 gallery:
   - /images/product/navigator/airspeed-top-view.png
   - /images/product/navigator/airspeed-front-view.png
+helpUrl: /manual/navigator/np-ads-h05
 ---
 
 ## 产品详情
