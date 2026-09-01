@@ -36,7 +36,11 @@ export default defineConfig({
   lastUpdated: true,
 
   // 排除根目录的说明文件，避免被当作页面生成
-  srcExclude: ['README.md'],
+  srcExclude: [
+    'README.md',
+    // 基本概念章节尚未完成，先排除编译
+    'manual/01-基本概念/**',
+  ],
 
   // 下载页脚本链接指向 .bat 文件，VitePress 无法识别该扩展名为静态资源，故忽略死链检查
   ignoreDeadLinks: ['/scripts/start-qemu.bat', '/scripts/extract-sd.bat'],

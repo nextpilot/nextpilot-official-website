@@ -45,6 +45,11 @@ function orderOf(fm: Record<string, string>): number {
   return Number.isFinite(n) ? n : Infinity
 }
 
+/** frontmatter.draft 为 true 的草稿不进入侧边栏（与构建排除保持一致） */
+function isDraft(fm: Record<string, string>): boolean {
+  return fm.draft === 'true'
+}
+
 interface Entry {
   order: number
   prefix: number
@@ -89,15 +94,20 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
     if (st.isDirectory()) {
       // 跳过不含任何 md 条目的目录（如 imgs 图片目录）
       if (!hasDocs(full)) continue
+      const childFm = readFrontmatter(join(full, 'index.md'))
+      // 草稿分组不进入侧边栏
+      if (isDraft(childFm)) continue
       const childRelDir = `${relDir}/${name}`
       children.push({
-        order: orderOf(readFrontmatter(join(full, 'index.md'))),
+        order: orderOf(childFm),
         prefix: sortPrefixOf(name),
         path: name,
         item: buildGroup(section, childRelDir, full, depth + 1),
       })
     } else if (st.isFile() && name.endsWith('.md') && name !== 'index.md') {
       const fm = readFrontmatter(full)
+      // 草稿条目不进入侧边栏
+      if (isDraft(fm)) continue
       children.push({
         order: orderOf(fm),
         prefix: sortPrefixOf(name),
@@ -135,14 +145,19 @@ export function docsSidebar(section: string): SidebarItem[] {
     const st = statSync(full)
 
     if (st.isDirectory()) {
+      const fm = readFrontmatter(join(full, 'index.md'))
+      // 草稿分组不进入侧边栏
+      if (isDraft(fm)) continue
       entries.push({
-        order: orderOf(readFrontmatter(join(full, 'index.md'))),
+        order: orderOf(fm),
         prefix: sortPrefixOf(name),
         path: name,
         item: buildGroup(section, name, full, 0),
       })
     } else if (st.isFile() && name.endsWith('.md') && name !== 'index.md') {
       const fm = readFrontmatter(full)
+      // 草稿条目不进入侧边栏
+      if (isDraft(fm)) continue
       entries.push({
         order: orderOf(fm),
         prefix: sortPrefixOf(name),
