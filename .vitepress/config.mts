@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 import { docsSidebar } from './sidebar.mts'
 import { productHeadingTabs } from './markdown/product-heading-tabs.mts'
 import { tabsGroup } from './markdown/tabs-group.mts'
-import { redirectHead, canonicalHead, SITE_URL } from './head.mts'
+import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './head.mts'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -22,6 +22,7 @@ export default defineConfig({
     ],
     ['meta', { name: 'author', content: 'NextPilot Development Team' }],
     ...redirectHead,
+    ...baiduAnalyticsHead,
   ],
   // 按页注入 canonical（见 head.mts，与 sitemap 共用 SITE_URL）
   transformHead: canonicalHead,

@@ -38,6 +38,24 @@ const redirectScript: HeadConfig = [
 
 export const redirectHead: HeadConfig[] = USE_URL_REDIRECT ? [redirectScript] : []
 
+// 百度统计站点 ID（token，来自百度统计后台「代码获取」）
+const BAIDU_TONGJI_ID = 'e420040ee09f65a191badecde7e2629d'
+
+// 百度统计脚本：异步加载，不阻塞页面渲染
+const baiduAnalyticsScript: HeadConfig = [
+  'script',
+  {},
+  `var _hmt = _hmt || []
+;(function () {
+  var hm = document.createElement('script')
+  hm.src = 'https://hm.baidu.com/hm.js?${BAIDU_TONGJI_ID}'
+  var s = document.getElementsByTagName('script')[0]
+  s.parentNode.insertBefore(hm, s)
+})()`,
+]
+
+export const baiduAnalyticsHead: HeadConfig[] = [baiduAnalyticsScript]
+
 // 给每页加 canonical，始终指向权威域名 nextpilot.org
 export function canonicalHead(ctx: TransformContext): HeadConfig[] {
   const path = canonicalPath(ctx.page)
