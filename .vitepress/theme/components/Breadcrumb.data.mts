@@ -1,5 +1,13 @@
 import { createContentLoader } from 'vitepress'
-import { resolveTitle } from '../../title.mts'
+
+/** 解析展示标题：frontmatter.shortTitle > title > 一级标题（# ...） */
+function resolveTitle(fm: { title?: string; shortTitle?: string } | undefined, content: string): string {
+  if (fm?.shortTitle) return fm.shortTitle
+  if (fm?.title) return fm.title
+  const body = content.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '')
+  const m = body.match(/^#\s+(.+)$/m)
+  return m ? m[1].trim() : ''
+}
 
 /**
  * 面包屑标题映射：扫描所有 index.md，构建「目录 URL -> 标题」。

@@ -21,20 +21,20 @@ const price = computed(() => (frontmatter.value.price ?? null) as number | null)
 const shopUrl = computed(() => (frontmatter.value.shopUrl || 'https://ffvf62dgcrpcsf5h87lj12mrgn90rx5.taobao.com/') as string)
 const tags = computed(() => (frontmatter.value.tags || []) as string[])
 
-// 正文 tab 切换：事件委托，处理 markdown 渲染出的 `.product-tab` 点击
+// 正文 tab 切换：事件委托，处理 markdown 渲染出的 `.heading-tab` 点击
 function onTabClick(e: MouseEvent) {
-  const btn = (e.target as HTMLElement).closest('.product-tab') as HTMLElement | null
+  const btn = (e.target as HTMLElement).closest('.heading-tab') as HTMLElement | null
   if (!btn) return
-  const root = btn.closest('.product-tabs') as HTMLElement | null
+  const root = btn.closest('.heading-tabs') as HTMLElement | null
   if (!root) return
   const idx = btn.dataset.tab
-  root.querySelectorAll('.product-tab').forEach((b) => {
+  root.querySelectorAll('.heading-tab').forEach((b) => {
     const el = b as HTMLElement
     const on = el.dataset.tab === idx
     el.classList.toggle('is-active', on)
     el.setAttribute('aria-selected', String(on))
   })
-  root.querySelectorAll('.product-tab-panel').forEach((p) => {
+  root.querySelectorAll('.heading-tab-panel').forEach((p) => {
     const el = p as HTMLElement
     el.classList.toggle('is-active', el.dataset.panel === idx)
   })
@@ -232,18 +232,18 @@ onBeforeUnmount(() => document.removeEventListener('click', onTabClick))
   max-width: none;
 }
 
-/* 正文 tabs（由 product-heading-tabs 插件注入到 <Content /> 内，故用 :deep()） */
-.product-body :deep(.product-tabs) {
+/* 正文 tabs（由 plugin-heading-tab 插件注入到 <Content /> 内，故用 :deep()） */
+.product-body :deep(.heading-tabs) {
   margin-top: 8px;
 }
-.product-body :deep(.product-tab-list) {
+.product-body :deep(.heading-tab-list) {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
   border-bottom: 1px solid var(--vp-c-divider);
   margin-bottom: 24px;
 }
-.product-body :deep(.product-tab) {
+.product-body :deep(.heading-tab) {
   padding: 10px 18px;
   font-size: 16px;
   font-weight: 600;
@@ -257,22 +257,22 @@ onBeforeUnmount(() => document.removeEventListener('click', onTabClick))
     color 0.2s,
     border-color 0.2s;
 }
-.product-body :deep(.product-tab:hover) {
+.product-body :deep(.heading-tab:hover) {
   color: var(--vp-c-brand-1);
 }
-.product-body :deep(.product-tab.is-active) {
+.product-body :deep(.heading-tab.is-active) {
   color: var(--vp-c-brand-1);
   border-bottom-color: var(--vp-c-brand-1);
   font-weight: 700;
 }
-.product-body :deep(.product-tab-panel) {
+.product-body :deep(.heading-tab-panel) {
   display: none;
 }
-.product-body :deep(.product-tab-panel.is-active) {
+.product-body :deep(.heading-tab-panel.is-active) {
   display: block;
 }
 /* 面板内的 h2 标题与 tab 标签重复，且自带 border-top 会和 tab 栏的 border-bottom 叠成两条线，故隐藏 */
-.product-body :deep(.product-tab-panel > h2) {
+.product-body :deep(.heading-tab-panel > h2) {
   display: none;
 }
 

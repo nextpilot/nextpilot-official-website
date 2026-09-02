@@ -1,11 +1,8 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import type { DefaultTheme } from 'vitepress'
-import { resolveTitle } from './title.mts'
 
 type SidebarItem = DefaultTheme.SidebarItem
-
-const SRC_DIR = join(process.cwd(), 'source')
 
 /** 解析 md 原始内容的 frontmatter，返回标量字段映射（无 frontmatter 时返回空对象） */
 function parseFrontmatter(raw: string): Record<string, string> {
@@ -28,6 +25,15 @@ function parseFrontmatter(raw: string): Record<string, string> {
 function readFrontmatter(filePath: string): Record<string, string> {
   if (!existsSync(filePath)) return {}
   return parseFrontmatter(readFileSync(filePath, 'utf-8'))
+}
+
+/** 解析展示标题：frontmatter.shortTitle > title > 一级标题（# ...） */
+function resolveTitle(fm: { title?: string; shortTitle?: string } | undefined, content: string): string {
+  if (fm?.shortTitle) return fm.shortTitle
+  if (fm?.title) return fm.title
+  const body = content.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '')
+  const m = body.match(/^#\s+(.+)$/m)
+  return m ? m[1].trim() : ''
 }
 
 /** 读取展示标题：frontmatter.shortTitle > title > 一级标题，缺失返回空串（由调用方回退文件名/目录名） */
@@ -141,8 +147,8 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
  * 子目录映射为分组（标题取 index.md 的 title，链接指向分组首页），
  * 目录下的 md 映射为条目，均排除 index.md。
  */
-export function docsSidebar(section: string): SidebarItem[] {
-  const base = join(SRC_DIR, section)
+export function docsSidebar(srcDir: string, section: string): SidebarItem[] {
+  const base = join(process.cwd(), srcDir, section)
   if (!existsSync(base)) return []
 
   const entries: Entry[] = []

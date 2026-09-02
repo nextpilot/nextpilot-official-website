@@ -51,7 +51,8 @@ pnpm docs:preview  # 对应 package.json 中的 vitepress preview
 nextpilot-official-website/
 ├── .vitepress/                     # VitePress 站点配置与主题扩展
 │   ├── config.mts                 # 站点主配置：nav / sidebar / locales / rewrites
-│   ├── sidebar.ts                # 自动生成侧边栏的逻辑
+│   ├── config/                    # 配置辅助模块（sidebar / metahead）
+│   ├── markdown/                  # markdown-it 插件
 │   ├── theme/                    # 自定义主题、组件与全局样式
 │   └── ...                       # 其余 VitePress 相关文件
 ├── source/                        # 内容源目录，Markdown 页面都放在这里
@@ -160,7 +161,7 @@ nextpilot-official-website/
 - 约束：卡片展示依赖 `title / cover / summary / price / tags` 等 frontmatter，未填写字段不显示；路由优先使用 `frontmatter.permalink`，否则回退文件路径。
 - 布局：产品详情页使用 `layout: product` 自定义布局（`.vitepress/theme/ProductLayout.vue`），左侧图库 + 右侧摘要（标题/简介/价格/CTA），下方渲染详细正文；正文不写首行 `# 标题`（标题由 `frontmatter.title` 在布局中渲染）。
 - 列表页布局：产品列表页（`product/index.md`）使用 `layout: catalog`（`.vitepress/theme/CatalogLayout.vue`），布局自动读取同名数据加载器 `.vitepress/theme/CatalogLayout.data.mts` 并按当前目录分类过滤后渲染 `ProductList` 网格，无需在 md 里写 `<script setup>` 与 `<ProductList>`；`product/<category>/index.md` 若同样声明 `layout: catalog`，则自动只展示该分类。加载器以 `frontmatter.layout === 'product'` 识别产品详情页，不绑定栏目目录。
-- 正文 tabs：正文中每个二级标题（`##`）会自动折叠为一个 tab（由 `.vitepress/markdown/product-heading-tabs.mts` 插件在构建期生成，对声明 `layout: product` 的页面生效）；少于两个二级标题时不生成 tab。
+- 正文 tabs：正文中每个二级标题（`##`）会自动折叠为一个 tab（由 `.vitepress/markdown/plugin-heading-tab.mts` 插件在构建期生成，对声明 `layout: product` 的页面生效）；少于两个二级标题时不生成 tab。
 
 ### 7.3 用户手册 / 开发指南 / 社区支持
 
@@ -267,7 +268,7 @@ helpUrl: /manual/xxx
 - 自定义 Vue 组件放在 `.vitepress/theme/components/` 并通过 `enhanceApp` 全局注册
 - `docsSidebar()`、`buildRewrites()` 等辅助函数应放在 `.vitepress/` 的独立模块中，`config.mts` 只负责 import
 - TypeScript 代码文件统一用 `.mts` 扩展名（ESM），普通模块文件名用 kebab-case；`createContentLoader` 数据文件与所用布局同名同目录（如 `CatalogLayout.data.mts`，`.data.` 是 VitePress 识别加载器的必需后缀）；markdown-it 插件放在 `.vitepress/markdown/` 下
-- 通用 tab 组：`::: tabs` 容器内每个 `=== 标题` 行折叠为一个 tab（由 `.vitepress/markdown/tabs-group.mts` 的 block rule 生成，任意页面可用），语法为 `::: tabs` / `=== 标题` / 内容 / `:::`
+- 通用 tab 组：`::: tabs` 容器内每个 `@tab 标题` 行折叠为一个 tab（由 `.vitepress/markdown/plugin-markdown-tab.mts` 的 block rule 生成，任意页面可用），语法为 `::: tabs` / `@tab 标题` / 内容 / `:::`
 - 若开启 `cleanUrls`，会导致静态托管环境下出现 404，故必须保持 `cleanUrls` 关闭；非首页页面仍产出 `xxx.html`
 - 通过 VitePress 的 `rewrites` 实现真实路由：`/manual/foo` → `manual/foo.md`（去前导 `/`、补 `.md`），否则会生成无扩展名文件
 

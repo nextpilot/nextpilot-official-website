@@ -1,8 +1,11 @@
 import { defineConfig } from 'vitepress'
-import { docsSidebar } from './sidebar.mts'
-import { productHeadingTabs } from './markdown/product-heading-tabs.mts'
-import { tabsGroup } from './markdown/tabs-group.mts'
-import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './head.mts'
+import { docsSidebar } from './config/sidebar.mts'
+import { headingTab } from './markdown/plugin-heading-tab.mts'
+import { markdownTab } from './markdown/plugin-markdown-tab.mts'
+import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/metahead.mts'
+
+// 内容源目录（相对项目根），作为 srcDir 配置项并传给 docsSidebar
+const srcDir = 'source'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -24,10 +27,10 @@ export default defineConfig({
     ...redirectHead,
     ...baiduAnalyticsHead,
   ],
-  // 按页注入 canonical（见 head.mts，与 sitemap 共用 SITE_URL）
+  // 按页注入 canonical（见 config/metahead.mts，与 sitemap 共用 SITE_URL）
   transformHead: canonicalHead,
   // 内容源目录与构建输出目录
-  srcDir: 'source',
+  srcDir,
   outDir: 'build',
   // VitePress 2.0 的 publicDir 默认相对 srcDir（source/），这里指回仓库根目录的 public/
   vite: { publicDir: '../public' },
@@ -56,9 +59,9 @@ export default defineConfig({
     lineNumbers: true,
     config: (md) => {
       // 正文二级标题折叠为 tab（仅对 layout: product 页面生效）
-      productHeadingTabs(md)
-      // 通用 `::: tabs` 容器：`=== 标题` 折叠为 tab
-      tabsGroup(md)
+      headingTab(md)
+      // 通用 `::: tabs` 容器：`@tab 标题` 折叠为 tab
+      markdownTab(md)
     },
   },
 
@@ -114,9 +117,9 @@ export default defineConfig({
           { text: '技术博客', link: '/blog/' },
         ],
         sidebar: {
-          '/about/': docsSidebar('about'),
-          '/manual/': docsSidebar('manual'),
-          '/opensource/': docsSidebar('opensource'),
+          '/about/': docsSidebar(srcDir, 'about'),
+          '/manual/': docsSidebar(srcDir, 'manual'),
+          '/opensource/': docsSidebar(srcDir, 'opensource'),
         },
       },
     },

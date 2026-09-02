@@ -63,10 +63,12 @@ pnpm docs:preview
 .
 ├── .vitepress/                     # VitePress 站点配置与主题扩展
 │   ├── config.mts                 # 站点主配置
-│   ├── sidebar.mts                # 自动生成侧边栏
+│   ├── config/                    # 配置辅助模块
+│   │   ├── sidebar.mts            # 自动生成侧边栏
+│   │   └── metahead.mts           # head 标签（canonical / 跳转 / 统计）
 │   ├── markdown/                  # Markdown 扩展插件
-│   │   ├── product-heading-tabs.mts
-│   │   └── tabs-group.mts
+│   │   ├── plugin-heading-tab.mts
+│   │   └── plugin-markdown-tab.mts
 │   └── theme/                     # 自定义主题与布局组件
 │       ├── CatalogLayout.vue
 │       ├── CatalogLayout.data.mts

@@ -30,12 +30,12 @@ function extractText(tokens: any[]): string {
   return out.trim()
 }
 
-export function productHeadingTabs(md: any): void {
+export function headingTab(md: any): void {
   // `config(md)` 可能被调用多次，避免重复注册同一 core rule（会导致重复渲染）
-  if (md.__productHeadingTabsRegistered) return
-  md.__productHeadingTabsRegistered = true
+  if (md.__headingTabRegistered) return
+  md.__headingTabRegistered = true
 
-  md.core.ruler.push('product_heading_tabs', (state: any) => {
+  md.core.ruler.push('heading_tab', (state: any) => {
     // 仅对声明 `layout: product` 的页面生效（详情页），与目录无关
     if (state.env?.frontmatter?.layout !== 'product') return
 
@@ -67,12 +67,12 @@ export function productHeadingTabs(md: any): void {
       return t
     }
 
-    const buttons = groups.map((g, i) => `<button type="button" class="product-tab${i === 0 ? ' is-active' : ''}" data-tab="${i}" role="tab" aria-selected="${i === 0}">${escapeHtml(g.title)}</button>`).join('')
+    const buttons = groups.map((g, i) => `<button type="button" class="heading-tab${i === 0 ? ' is-active' : ''}" data-tab="${i}" role="tab" aria-selected="${i === 0}">${escapeHtml(g.title)}</button>`).join('')
 
-    const out: any[] = [html(`<div class="product-tabs"><div class="product-tab-list" role="tablist">${buttons}</div><div class="product-tab-panels">`)]
+    const out: any[] = [html(`<div class="heading-tabs"><div class="heading-tab-list" role="tablist">${buttons}</div><div class="heading-tab-panels">`)]
 
     groups.forEach((g, i) => {
-      out.push(html(`<div class="product-tab-panel${i === 0 ? ' is-active' : ''}" data-panel="${i}" role="tabpanel">`))
+      out.push(html(`<div class="heading-tab-panel${i === 0 ? ' is-active' : ''}" data-panel="${i}" role="tabpanel">`))
       out.push(...g.tokens)
       out.push(html('</div>'))
     })
