@@ -11,7 +11,7 @@ description: NextPilot 飞控固件、导航固件与地面站软件的版本发
 
 | 版本      | 说明     | 固件下载                                                                                                                                                                                                                 | 备注                                                                                                  |
 | --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| v1.0-beta | 首版发布 | 真机飞行固件：[fcs-v4-default.bin](/firmware/fcs-v4-default.bin) <br />硬件在环固件 HITL：[fcs-v4-default-hitl.bin](/firmware/fcs-v4-default-hitl.bin)<br /> 软件在环固件 SITL：[sitl-qemu.bin](/firmware/sitl-qemu.bin) | 仅支持 NP-FCC-H05 系列硬件<br />不论什么机型，必须连接空速计！！！<br />匹配的导航固件版本 v1.0<br /> |
+| v1.0-beta | 首版发布 | 真机飞行固件：[fcs-v4-default.bin](/assets/files/fcs-v4-default.bin) <br />硬件在环固件 HITL：[fcs-v4-default-hitl.bin](/assets/files/fcs-v4-default-hitl.bin)<br /> 软件在环固件 SITL：[sitl-qemu.bin](/assets/files/sitl-qemu.bin) | 仅支持 NP-FCC-H05 系列硬件<br />不论什么机型，必须连接空速计！！！<br />匹配的导航固件版本 v1.0<br /> |
 
 ## 导航固件
 
@@ -19,7 +19,7 @@ description: NextPilot 飞控固件、导航固件与地面站软件的版本发
 
 | 版本 | 说明     | 固件下载                                           | 备注                                                               |
 | ---- | -------- | -------------------------------------------------- | ------------------------------------------------------------------ |
-| v1.0 | 首版发布 | [ins-v4-default.bin](/firmware/ins-v4-default.bin) | 仅支持 NP-FCC-H05 系列硬件<br />不论什么机型，必须连接空速计！！！ |
+| v1.0 | 首版发布 | [ins-v4-default.bin](/assets/files/ins-v4-default.bin) | 仅支持 NP-FCC-H05 系列硬件<br />不论什么机型，必须连接空速计！！！ |
 
 ## 地面站软件
 

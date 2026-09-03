@@ -7,13 +7,13 @@ description: >-
   机臂可折叠，采用碳板堆叠结构并预留过孔，载荷板支持堆叠扩展，
   兼容主流动力系统，零配件均为市面标准产品，易于维修更换。
 summary: 面向开发者的四轴无人机机体平台，X构型、对角轴距584mm、机臂可折叠，碳板堆叠结构
-cover: /images/product/aircraft/full-state.png
+cover: /assets/images/product/aircraft/full-state.png
 gallery:
-  - /images/product/aircraft/full-state.png
-  - /images/product/aircraft/folded-state.png
-  - /images/product/aircraft/pcb-via.png
-  - /images/product/aircraft/payload-board.png
-  - /images/product/aircraft/assembly-px4.png
+  - /assets/images/product/aircraft/full-state.png
+  - /assets/images/product/aircraft/folded-state.png
+  - /assets/images/product/aircraft/pcb-via.png
+  - /assets/images/product/aircraft/payload-board.png
+  - /assets/images/product/aircraft/assembly-px4.png
 helpUrl: /manual/aircraft/np-snail-550
 ---
 
@@ -33,23 +33,23 @@ helpUrl: /manual/aircraft/np-snail-550
 
 - 整机效果如下图
 
-![完整状态](/images/product/aircraft/full-state.png)
+<img src="/assets/images/product/aircraft/full-state.png" alt="完整状态" loading="lazy" />
 
 - 机臂杆可折叠
 
-![折叠状态](/images/product/aircraft/folded-state.png)
+<img src="/assets/images/product/aircraft/folded-state.png" alt="折叠状态" loading="lazy" />
 
 - 板上预留过孔
 
-![板上预留过孔](/images/product/aircraft/pcb-via.png)
+<img src="/assets/images/product/aircraft/pcb-via.png" alt="板上预留过孔" loading="lazy" />
 
 - 载荷板可叠拼
 
-![载荷板可叠拼](/images/product/aircraft/payload-board.png)
+<img src="/assets/images/product/aircraft/payload-board.png" alt="载荷板可叠拼" loading="lazy" />
 
 - 组装飞控效果
 
-![组装示例](/images/product/aircraft/assembly-px4.png)
+<img src="/assets/images/product/aircraft/assembly-px4.png" alt="组装示例" loading="lazy" />
 
 ### 材料清单
 

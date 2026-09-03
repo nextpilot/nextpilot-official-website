@@ -72,7 +72,7 @@ enum UrlTableErrors { ...
 
 ## 分支模型
 
-![](/images/community/github-flow.png)
+<img src="/assets/images/community/github-flow.png" alt="" loading="lazy" />
 
 NextPilot 依托 Github Flow 进行项目迭代，它只有一个长期分支，就是 master，因此用起来非常简单。
 
@@ -135,17 +135,17 @@ git commit -m "your commit message" -s
 
 VS Code 使用快捷键 `ctr + ,`打开设置页面，搜索`sign off`，然后勾选`Allways Sign Off`
 
-![](/images/community/vscode-git-sign-off.png)
+<img src="/assets/images/community/vscode-git-sign-off.png" alt="" loading="lazy" />
 
 ### Vscode 辅助插件
 
 在 vscode 商店中搜索插件 `git-commit-plugin`，点击安装：
 
-![](/images/community/20221021163100119.png)
+<img src="/assets/images/community/20221021163100119.png" alt="" loading="lazy" />
 
 安装完插件后，在 vscode 侧边栏`源代码管理`页面，点击下图所示图标
 
-![](/images/community/20221021163428794.png)
+<img src="/assets/images/community/20221021163428794.png" alt="" loading="lazy" />
 
 激活插件后，选择提交类型，如：🐞fix 修复 bug。可选的提交类型有：
 
@@ -159,11 +159,11 @@ VS Code 使用快捷键 `ctr + ,`打开设置页面，搜索`sign off`，然后�
 - 🧪test：增加测试
 - 🔧build：构建过程或辅助工具的变动
 
-![](/images/community/20221021163614865.png)
+<img src="/assets/images/community/20221021163614865.png" alt="" loading="lazy" />
 
 然后可以根据需要依次填写 Scope、Subject、Body、Footer，或者选择 Complete 完成提交，**ESC** 按键可以取消本次提交
 
-![](/images/community/20221021164334189.png)
+<img src="/assets/images/community/20221021164334189.png" alt="" loading="lazy" />
 
 - Scope(可选)，说明本次提交的影响范围，比如数据层、控制层、视图层等等，视项目不同而不同。
 - Subject(必须)，commit 的简短描述，一般不超过 50个字符。

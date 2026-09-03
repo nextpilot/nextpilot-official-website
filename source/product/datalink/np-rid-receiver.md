@@ -7,7 +7,7 @@ description: >-
   支持 WiFi/蓝牙广播信号接收，最多同时接收50个无人机广播信号，
   可通过串口输出 MAVLink 或 GB46750 协议数据至监管软件系统。
 summary: 广播式无人机运行识别接收器，满足GB 46750-2025，支持WiFi/蓝牙广播接收，串口输出MAVLink/GB46750协议
-cover: /images/product/datalink/NP-RID-Receiver-S3-PinWX.png
+cover: /assets/images/product/datalink/NP-RID-Receiver-S3-PinWX.png
 shopUrl: https://shop103678810.taobao.com/category.htm?spm=pc_detail.30350276.shop_block.dshopinfo.52f17dd6b1ptE2
 helpUrl: /manual/datalink/np-rid-receiver
 ---
@@ -44,7 +44,7 @@ NP-RID-Receiver 是 NextPilot 推出的一款广播式无人机运行识别接�
 
 | 硬件外观                                                                           | 硬件名称                 | 说明                                                                                                                                            |
 | ---------------------------------------------------------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| ![NP-RID-Receiver-S3-PinWX](/images/product/datalink/NP-RID-Receiver-S3-PinWX.png) | NP-RID-Receiver-S3-PinWX | 主控芯片：ESP32-S3<br />可连接外置天线<br />一个 USB 扩展两路串口，分别用于调试与数据输出<br />所有引脚通过排针对外引出，方便进行扩展与二次开发 |
+| <img src="/assets/images/product/datalink/NP-RID-Receiver-S3-PinWX.png" alt="NP-RID-Receiver-S3-PinWX" loading="lazy" /> | NP-RID-Receiver-S3-PinWX | 主控芯片：ESP32-S3<br />可连接外置天线<br />一个 USB 扩展两路串口，分别用于调试与数据输出<br />所有引脚通过排针对外引出，方便进行扩展与二次开发 |
 
 ## 技术参数
 
@@ -107,7 +107,7 @@ RID 设备出厂默认输出 MAVLink 协议，可直接通过地面站查看接�
 - 参数说明：显示当前所有参数，关于参数具体说明请参考[参数汇总](#参数汇总)；
 - 固件升级：可以升级程序以及网页，具体升级说明请参考[OTA 升级](#ota升级)。
 
-![网页界面 1](/images/product/datalink/rid-webui.png)
+<img src="/assets/images/product/datalink/rid-webui.png" alt="网页界面 1" loading="lazy" />
 
 ### 查看状态、配置参数
 
@@ -119,7 +119,7 @@ RID 设备出厂默认输出 MAVLink 协议，可直接通过地面站查看接�
 
 直接使用 Type-C 数据线，连接产品**USB 串口**至计算机，打开串口调试上位机软件（如 MobaXterm、JCom 等），选择端口号，设置波特率 115200。通过串口调试上位机输入相关命令即可进行参数查看、参数设置、设备重启等操作。
 
-![串口配置](/images/product/datalink/rid-serial-config.png)
+<img src="/assets/images/product/datalink/rid-serial-config.png" alt="串口配置" loading="lazy" />
 
 #### 常用命令
 
@@ -215,7 +215,7 @@ param set CFG_BAUD 115200
 
 | 板子                   | 当前固件版本 | 点击下载                                                                                                                                      |
 | ---------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| NP-RID-Sender-S3-PinWX | V1.0         | [OTA 升级 app 固件](/firmware/NP-RID-Receiver-S3-PinWX-V1.0_app.bin)<br />[OTA 升级网页固件](/firmware/NP-RID-Receiver-S3-PinWX-V1.0_www.bin) |
+| NP-RID-Sender-S3-PinWX | V1.0         | [OTA 升级 app 固件](/assets/files/NP-RID-Receiver-S3-PinWX-V1.0_app.bin)<br />[OTA 升级网页固件](/assets/files/NP-RID-Receiver-S3-PinWX-V1.0_www.bin) |
 |                        |              |                                                                                                                                               |
 
 ### 连接热点
@@ -228,7 +228,7 @@ param set CFG_BAUD 115200
 
 连接热点后，在浏览器输入<http://192.168.4.1，在最下方**固件(app)**下点击。>
 
-![OTA 升级 app](/images/product/datalink/rid-ota-app.png)
+<img src="/assets/images/product/datalink/rid-ota-app.png" alt="OTA 升级 app" loading="lazy" />
 
 在打开的对话框中选择下载的**app.bin**固件，然后点击`更新固件`。
 

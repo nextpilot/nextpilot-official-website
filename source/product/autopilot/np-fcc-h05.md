@@ -7,11 +7,11 @@ description: >-
   内置双冗余IMU、双频RTK定位，支持动平台起降、视觉导航、集群编队，
   适用于10kg~300kg级多旋翼、固定翼、垂起、倾转等机型。
 summary: 高性能工业级一体化导航飞控，双冗余IMU、双频RTK定位，适用10kg~300kg级多旋翼、固定翼、垂起等机型
-cover: /images/product/autopilot/fcc-top-view1.png
+cover: /assets/images/product/autopilot/fcc-top-view1.png
 gallery:
-  - /images/product/autopilot/fcc-top-view1.png
-  - /images/product/autopilot/fcc-top-view2.png
-  - /images/product/autopilot/fcc-front-view.png
+  - /assets/images/product/autopilot/fcc-top-view1.png
+  - /assets/images/product/autopilot/fcc-top-view2.png
+  - /assets/images/product/autopilot/fcc-front-view.png
 helpUrl: /manual/autopilot/np-fcc-h05
 ---
 
@@ -21,7 +21,7 @@ helpUrl: /manual/autopilot/np-fcc-h05
 
 NP-FCC-H05 是 NextPilot 团队研发的高性能、工业级、一体化导航飞控产品，搭载了高性能、双冗余度、内置减震的惯性测量单元（IMU），具备可靠性高、稳定性好、抗震动能力强的特点；采用了自研导航算法和失控保护策略，定位精度高、抗干扰能力强；集成了强大功能，包括动平台起降、视觉导航、集群编队飞行等，并提供外部飞行控制接口，支持二次开发，满足各类场景的应用开发需求。该产品适用于 10kg~300kg 级各种类型的无人机平台，包括多旋翼、固定翼、垂起、倾转等机型等，搭配专业地面站，提供强大的飞行功能和安全的飞行保障。
 
-![产品图-导航飞控](/images/product/autopilot/fcc-top-view1.png)
+<img src="/assets/images/product/autopilot/fcc-top-view1.png" alt="产品图-导航飞控" loading="lazy" />
 
 ### 产品特色
 
@@ -53,7 +53,7 @@ NP-FCC-H05 是 NextPilot 团队研发的高性能、工业级、一体化导航�
 
 导航飞控配套调试线缆如下图所示：
 
-![调试线缆](/images/product/autopilot/fcc-cable.png)
+<img src="/assets/images/product/autopilot/fcc-cable.png" alt="调试线缆" loading="lazy" />
 
 ## 技术参数
 
@@ -85,7 +85,7 @@ NP-FCC-H05 是 NextPilot 团队研发的高性能、工业级、一体化导航�
 
 飞控提供了两个 SMA 接头用于双天线连接，其中右侧为主天线接头，左侧为辅天线接头；提供了航空连接器，型号为 J30J-144ZKW-J，接口布局如下图所示。
 
-![飞控接口](/images/product/autopilot/fcc-front-view.png)
+<img src="/assets/images/product/autopilot/fcc-front-view.png" alt="飞控接口" loading="lazy" />
 
 ### 接口定义
 
@@ -251,23 +251,23 @@ NP-FCC-H05 是 NextPilot 团队研发的高性能、工业级、一体化导航�
 
 根据使用场景选择固件，以下为最新版本固件（通过 `FCS-USB` 口烧录），历史固件请查看[发布记录](../../download/changelog)。
 
-- 真机飞行固件：[fcs-v4-default.bin](/firmware/fcs-v4-default.bin)
+- 真机飞行固件：[fcs-v4-default.bin](/assets/files/fcs-v4-default.bin)
 
-- 硬件在环固件 HITL：[fcs-v4-default-hitl.bin](/firmware/fcs-v4-default-hitl.bin)
+- 硬件在环固件 HITL：[fcs-v4-default-hitl.bin](/assets/files/fcs-v4-default-hitl.bin)
 
-- 软件在环固件 SITL：[fcs-v4-sitl-qemu.bin](/firmware/sitl-qemu.bin)
+- 软件在环固件 SITL：[fcs-v4-sitl-qemu.bin](/assets/files/sitl-qemu.bin)
 
 ### 导航固件
 
 以下为最新版本固件（通过 `AHRS-USB` 口烧录），历史固件请查看[发布记录](../../download/changelog)。
 
-- 组合导航固件：[ins-v4-default.bin](/firmware/ins-v4-default.bin)
+- 组合导航固件：[ins-v4-default.bin](/assets/files/ins-v4-default.bin)
 
 ### 启动固件
 
 FCS 和 INS 芯片的 `bootloader` 是通用的，使用 `Stlink` 或者 `jlink` 烧入：
 
-- bootloader 固件：[bl-fcs-ins.bin](/firmware/bl-fcs-ins.bin)
+- bootloader 固件：[bl-fcs-ins.bin](/assets/files/bl-fcs-ins.bin)
 
 ## 常见问题
 

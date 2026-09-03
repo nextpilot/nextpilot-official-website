@@ -12,6 +12,9 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
+    "paths": {
+      "@root/*": ["./*"]
+    },
     "types": ["node"]
   },
   "include": [".vitepress/**/*.mts", ".vitepress/**/*.ts", ".vitepress/**/*.vue"]

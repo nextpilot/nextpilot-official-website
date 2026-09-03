@@ -7,10 +7,10 @@ description: >-
   差压传感器、MS5611 气压高度传感器与 RM3100 地磁传感器，支持动压/静压双路测量、
   全温区补偿，提供精准的空速、气压高度与温度数据。
 summary: 工业级大气数据计算机，内置差压/气压高度/地磁传感器，精确测量空速、气压高度与温度
-cover: /images/product/navigator/airspeed-top-view.png
+cover: /assets/images/product/navigator/airspeed-top-view.png
 gallery:
-  - /images/product/navigator/airspeed-top-view.png
-  - /images/product/navigator/airspeed-front-view.png
+  - /assets/images/product/navigator/airspeed-top-view.png
+  - /assets/images/product/navigator/airspeed-front-view.png
 helpUrl: /manual/navigator/np-ads-h05
 ---
 
@@ -33,7 +33,7 @@ NP-ADS-H05 是 NextPilot 团队研发的工业级大气数据计算机，其内�
 - 气压高度传感器：MS5611
 - 地磁传感器：RM3100
 
-<!-- ![空速计](/images/product/navigator/airspeed-top-view.png) -->
+<!-- <img src="/assets/images/product/navigator/airspeed-top-view.png" alt="空速计" loading="lazy" /> -->
 
 ## 技术参数
 
@@ -62,7 +62,7 @@ NP-ADS-H05 是 NextPilot 团队研发的工业级大气数据计算机，其内�
 
 大气数据计算机提供了航空连接器，型号为 J30J-21ZKW-J，接口布局如下图右侧所示。
 
-![空速计接口](/images/product/navigator/airspeed-front-view.png)
+<img src="/assets/images/product/navigator/airspeed-front-view.png" alt="空速计接口" loading="lazy" />
 
 ### 接口定义
 

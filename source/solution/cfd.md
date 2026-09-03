@@ -8,7 +8,7 @@ summary: |
   - 飞行性能评估与操稳特性分析
   - 气动外形快速迭代与优化设计
   - 6DOF 非线性飞行动力学建模
-cover: /images/solution/openvsp.png
+cover: /assets/images/solution/openvsp.png
 ---
 
 # 无人机总体设计优化
@@ -23,7 +23,7 @@ NextPilot 团队提供飞行器概念设计、气动外形优化、飞行性能�
 
 ## 气动数据库计算和分析（CFD）
 
-![](/images/solution/openvsp.png)
+<img src="/assets/images/solution/openvsp.png" alt="" loading="lazy" />
 
 [OpenVSP](https://openvsp.org/) 是一款由 NASA 开发的免费开源飞行器三维建模软件，支持 Windows、Linux 和 macOS。
 

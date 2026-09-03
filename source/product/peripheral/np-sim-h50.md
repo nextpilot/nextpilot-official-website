@@ -7,11 +7,11 @@ description: >-
   六自由度飞行动力学模型，支持 HIL/SITL 双模仿真、全地形全天候仿真、
   多机协同编队训练，提供基地级和便携式两种产品形态。
 summary: 高等级无人机飞行训练模拟器，UE5沉浸式视景、六自由度模型，支持HIL/SITL双模仿真
-cover: /images/product/peripheral/sim-software-view.png
+cover: /assets/images/product/peripheral/sim-software-view.png
 gallery:
-  - /images/product/peripheral/sim-software-view.png
-  - /images/product/peripheral/sim-desktop-model.png
-  - /images/product/peripheral/sim-base-model.png
+  - /assets/images/product/peripheral/sim-software-view.png
+  - /assets/images/product/peripheral/sim-desktop-model.png
+  - /assets/images/product/peripheral/sim-base-model.png
 ---
 
 ## 产品详情
@@ -20,7 +20,7 @@ gallery:
 
 本产品是一款面向专业培训机构、行业应用单位及院校的高等级无人机飞行仿真模拟训练系统，致力于解决无人机操控人才培养中“训练设备适配性差、仿真度低、教学资源零散”等行业痛点。系统以高精度飞行动力学模型与三维仿真引擎为核心，严格遵循真实飞行原理与行业作业规范，打造覆盖技能养成全周期的沉浸式训练平台。
 
-![飞行训练模拟器](/images/product/peripheral/sim-software-view.png)
+<img src="/assets/images/product/peripheral/sim-software-view.png" alt="飞行训练模拟器" loading="lazy" />
 
 ### 核心功能
 
@@ -41,9 +41,9 @@ gallery:
 | 操控席位 | 3 人席位控制台                          | 便携操作                 |
 | 适用场景 | 固定训练中心、基地                      | 外场训练                 |
 
-![基地级仿真环境](/images/product/peripheral/sim-base-model.png)
+<img src="/assets/images/product/peripheral/sim-base-model.png" alt="基地级仿真环境" loading="lazy" />
 
-![便携式仿真环境](/images/product/peripheral/sim-desktop-model.png)
+<img src="/assets/images/product/peripheral/sim-desktop-model.png" alt="便携式仿真环境" loading="lazy" />
 
 ### 技术特点
 

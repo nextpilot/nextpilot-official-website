@@ -26,4 +26,4 @@ description: 联系 NextPilot 团队：商务合作、技术咨询、定制需�
 
 扫码加入 `NextPilot社区支持` 群，我们会在群里提供技术支持，全力为大家答疑解惑。
 
-<img src="/images/about/add-to-group.jpeg" width="450" height="250" />
+<img src="/assets/images/about/add-to-group.jpeg" width="450" height="250" />

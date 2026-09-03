@@ -7,10 +7,10 @@ description: >-
   支持 MAVLink/DroneCAN 协议连接飞控，通过 WiFi 或蓝牙广播无人机运行状态，
   适配 Ardupilot、PX4 等主流飞控，满足无人机飞行监管需求。
 summary: 广播式无人机运行识别发射器，满足GB 46750-2025，支持MAVLink/DroneCAN，通过WiFi/蓝牙广播运行状态
-cover: /images/product/datalink/np-rid-sender-gh-board.png
+cover: /assets/images/product/datalink/np-rid-sender-gh-board.png
 gallery:
-  - /images/product/datalink/np-rid-sender-gh-board.png
-  - /images/product/datalink/np-rid-sender-gh-appearance.png
+  - /assets/images/product/datalink/np-rid-sender-gh-board.png
+  - /assets/images/product/datalink/np-rid-sender-gh-appearance.png
 shopUrl: https://shop103678810.taobao.com/category.htm?spm=pc_detail.30350276.shop_block.dshopinfo.52f17dd6b1ptE2
 helpUrl: /manual/datalink/np-rid-sender
 ---
@@ -49,8 +49,8 @@ NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射�
 
 | 硬件外观                                                                           | 硬件名称                 | 说明                                                                                                     |
 | ---------------------------------------------------------------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------- |
-| ![NP-RID-Sender-S3-GH](/images/product/datalink/np-rid-sender-gh-board.png)        | NP-RID-Sender-S3-GH      | 主控芯片：ESP32-S3<br />具备所有功能，可直接安装至无人机<br />连接外置天线<br />调试串口为 UART2         |
-| ![NP-RID-Sender-C3-PinMini](/images/product/datalink/np-rid-sender-c3-pinmini.png) | NP-RID-Sender-C3-PinMini | 主控芯片：ESP32-C3<br />无外置天线、只支持蓝牙不支持 WiFi 广播，一般用于测试使用。<br />调试串口为 UART0 |
+| <img src="/assets/images/product/datalink/np-rid-sender-gh-board.png" alt="NP-RID-Sender-S3-GH" loading="lazy" />        | NP-RID-Sender-S3-GH      | 主控芯片：ESP32-S3<br />具备所有功能，可直接安装至无人机<br />连接外置天线<br />调试串口为 UART2         |
+| <img src="/assets/images/product/datalink/np-rid-sender-c3-pinmini.png" alt="NP-RID-Sender-C3-PinMini" loading="lazy" /> | NP-RID-Sender-C3-PinMini | 主控芯片：ESP32-C3<br />无外置天线、只支持蓝牙不支持 WiFi 广播，一般用于测试使用。<br />调试串口为 UART0 |
 
 ## 接口说明
 
@@ -99,7 +99,7 @@ NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射�
 
 连接如下图：
 
-![连接示例 1](/images/product/datalink/fcs-connection-1.png)
+<img src="/assets/images/product/datalink/fcs-connection-1.png" alt="连接示例 1" loading="lazy" />
 
 > 说明：
 >
@@ -117,23 +117,23 @@ NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射�
 
 点击左上角主菜单按钮，然后选择 Application Settings。
 
-![进入设置界面](/images/product/datalink/qgc-settings.png)
+<img src="/assets/images/product/datalink/qgc-settings.png" alt="进入设置界面" loading="lazy" />
 
 然后在软件配置界面左侧列表中选择**RemoteID**。
 
-![选择 RemoteID](/images/product/datalink/qgc-remoteid.png)
+<img src="/assets/images/product/datalink/qgc-remoteid.png" alt="选择 RemoteID" loading="lazy" />
 
 #### 设置产品唯一标识
 
 打开 BasicID 区域下 Broadcast 滑块按钮。填入一个 20 字符的产品唯一标识。
 
-![设置唯一标识](/images/product/datalink/qgc-unique-id.png)
+<img src="/assets/images/product/datalink/qgc-unique-id.png" alt="设置唯一标识" loading="lazy" />
 
 #### 设置实名认证
 
 打开 OperatorID 区域下 Broadcast 滑块按钮。填入一个 8 字符的实名认证信息，即操作手身份证后 8位。
 
-![设置实名认证](/images/product/datalink/qgc-realname.png)
+<img src="/assets/images/product/datalink/qgc-realname.png" alt="设置实名认证" loading="lazy" />
 
 #### 设置运行类别
 
@@ -143,25 +143,25 @@ NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射�
 - 选择 CAA，即可设置为特定类；
 - 选择 UTM，即可设置为审定类。
 
-![qgc_basic_id](/images/product/datalink/qgc_basic_id.png)
+<img src="/assets/images/product/datalink/qgc_basic_id.png" alt="qgc_basic_id" loading="lazy" />
 
 #### 设置无人机分类
 
 现有名称与 GB46750 规范内的名称对应关系如下图：
 
-![qgc_basic_id_2](/images/product/datalink/qgc_basic_id_2.png)
+<img src="/assets/images/product/datalink/qgc_basic_id_2.png" alt="qgc_basic_id_2" loading="lazy" />
 
 #### 设置操控站位置信息
 
 建议选择 Fixed，然后填入地面站经纬度、高度。
 
-![设置操控站位置](/images/product/datalink/qgc-station-position.png)
+<img src="/assets/images/product/datalink/qgc-station-position.png" alt="设置操控站位置" loading="lazy" />
 
 如果选择的不是 Fixed，则 RID 自动使用飞控起飞点的位置。
 
 #### 正常状态
 
-![正常状态](/images/product/datalink/qgc-normal.png)
+<img src="/assets/images/product/datalink/qgc-normal.png" alt="正常状态" loading="lazy" />
 
 ### 连接网页查看状态
 
@@ -169,7 +169,7 @@ NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射�
 
 RID 上电后，自动启动 WiFi 热点（热点名称 NP-RID-xxxxxx，密码 nextpilot），通过笔记本连接热点后，打开浏览器，输入<http://192.168.4.1，即可显示设备运行状态。>
 
-![网页查看状态](/images/product/datalink/rid-web-status.png)
+<img src="/assets/images/product/datalink/rid-web-status.png" alt="网页查看状态" loading="lazy" />
 
 ## 调试串口设置参数
 
@@ -181,7 +181,7 @@ RID 上电后，自动启动 WiFi 热点（热点名称 NP-RID-xxxxxx，密码 n
 
 使用调试线（4pin 转 4pin 杜邦线）连接 RID 设备与产品附带的**USB 转 TTL**串口模块，然后将串口模块插入计算机。连接原理如下图所示：
 
-![调试串口连接](/images/product/datalink/debug-serial.png)
+<img src="/assets/images/product/datalink/debug-serial.png" alt="调试串口连接" loading="lazy" />
 
 > 这里以 NP-RID-Sender-S3-GH 板子为例，如果使用其他板子，请在[接口说明](#接口说明)章节找到对应板子的调试串口，与 USB 转 TTL 模块连接，然后再将 USB 转 TTL 模块插入计算机。
 
@@ -189,7 +189,7 @@ RID 上电后，自动启动 WiFi 热点（热点名称 NP-RID-xxxxxx，密码 n
 
 在计算机打开 JCom 串口调试助手（下载链接[JCom | 专业的实时曲线串口助手 - Jooiee](https://www.jooiee.com/cms/ruanjian/115.html)）后，设置串口号（自动识别）、波特率（115200），点击打开。**输入对应命令后再输入一个回车**，然后点击发送按钮即可。
 
-![参数设置](/images/product/datalink/np-rid-set-params.png)
+<img src="/assets/images/product/datalink/np-rid-set-params.png" alt="参数设置" loading="lazy" />
 
 ### 常用参数命令
 
@@ -306,13 +306,13 @@ param set GB_OP_CATEGORY 1
 
 | 板子                     | 当前固件版本 | 点击下载                                                             |
 | ------------------------ | ------------ | -------------------------------------------------------------------- |
-| NP-RID-Sender-S3-GH      | V1.1         | [OTA 升级 app 固件](/firmware/NP-RID-Sender-S3-GH-V1.1_OTA.bin)      |
-| NP-RID-Sender-C3-PinMini | V1.0         | [OTA 升级 app 固件](/firmware/NP-RID-Sender-C3-PinMini-V1.0_OTA.bin) |
+| NP-RID-Sender-S3-GH      | V1.1         | [OTA 升级 app 固件](/assets/files/NP-RID-Sender-S3-GH-V1.1_OTA.bin)      |
+| NP-RID-Sender-C3-PinMini | V1.0         | [OTA 升级 app 固件](/assets/files/NP-RID-Sender-C3-PinMini-V1.0_OTA.bin) |
 
 ### 上传固件
 
 连接 RID 设备热点，打开网页[http://192.168.4.1](http://192.168.4.1)，点击选择文件，选择下载的固件后点击 Update 按钮即可。
 
-![上传固件](/images/product/datalink/rid-ota-upload.png)
+<img src="/assets/images/product/datalink/rid-ota-upload.png" alt="上传固件" loading="lazy" />
 
 升级后设备自动重启。

@@ -10,17 +10,17 @@ NextPilot 导航飞控目前只支持 NP-FCC-H05 系列飞控，该飞控采用�
 
 根据使用场景选择固件，以下为最新版本固件（通过 FCS-USB 口烧录），历史固件请查看[发布记录](./changelog)。
 
-- 真机飞行固件：[fcs-v4-default.bin](/firmware/fcs-v4-default.bin)
+- 真机飞行固件：[fcs-v4-default.bin](/assets/files/fcs-v4-default.bin)
 
-- 硬件在环固件 HITL：[fcs-v4-default-hitl.bin](/firmware/fcs-v4-default-hitl.bin)
+- 硬件在环固件 HITL：[fcs-v4-default-hitl.bin](/assets/files/fcs-v4-default-hitl.bin)
 
-- 软件在环固件 SITL：[sitl-qemu.bin](/firmware/sitl-qemu.bin)
+- 软件在环固件 SITL：[sitl-qemu.bin](/assets/files/sitl-qemu.bin)
 
 ## 导航固件
 
 以下为最新版本固件（通过 AHRS-USB 口烧录），历史固件请查看[发布记录](./changelog)。
 
-[ins-v4-default.bin](/firmware/ins-v4-default.bin)
+[ins-v4-default.bin](/assets/files/ins-v4-default.bin)
 
 ## 地面站软件
 
@@ -33,5 +33,5 @@ NextPilot 导航飞控目前只支持 NP-FCC-H05 系列飞控，该飞控采用�
 
 软件在环仿真相关脚本的使用请参考《软件在环仿真》。
 
-- 软件在环仿真启动脚本（必须）：[start-qemu.bat](/scripts/start-qemu.bat)；
-- 日志提取脚本（非必须）：[extract-sd.bat](/scripts/extract-sd.bat)；
+- 软件在环仿真启动脚本（必须）：[start-qemu.bat](/assets/scripts/start-qemu.bat)；
+- 日志提取脚本（非必须）：[extract-sd.bat](/assets/scripts/extract-sd.bat)；

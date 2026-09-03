@@ -7,10 +7,10 @@ description: >-
   GNSS 卫星板卡，可输出 RTCM 差分修正数据与 RTK 定位结果，
   配合机载RTK模块实现厘米级定位，适用于无人机地面基准站应用场景。
 summary: 便携式地面差分基准站，全星座多频点GNSS，输出RTCM差分修正数据，实现厘米级RTK定位
-cover: /images/product/navigator/base-station-product.png
+cover: /assets/images/product/navigator/base-station-product.png
 gallery:
-  - /images/product/navigator/base-station-product.png
-  - /images/product/navigator/base-station-logo.png
+  - /assets/images/product/navigator/base-station-product.png
+  - /assets/images/product/navigator/base-station-logo.png
 helpUrl: /manual/navigator/np-rtk-base
 ---
 
@@ -25,7 +25,7 @@ NP-RTK-UM982R 是 NextPilot 团队研发一款地面差分基准站，支持市�
 1. 支持单点定位、RTK、动动 RTk；
 1. 可输出位置、速度、航向、差分修正数据。
 
-<!-- ![基准站](/images/product/navigator/base-station-product.png) -->
+<!-- <img src="/assets/images/product/navigator/base-station-product.png" alt="基准站" loading="lazy" /> -->
 
 ## 技术参数
 
@@ -53,7 +53,7 @@ NP-RTK-UM982R 是 NextPilot 团队研发一款地面差分基准站，支持市�
 
 基准站提供了航空连接器，型号为 FGG-2B-319-CLL，如下图所示：
 
-![基准站连接器](/images/product/navigator/base-station-logo.png)
+<img src="/assets/images/product/navigator/base-station-logo.png" alt="基准站连接器" loading="lazy" />
 
 ### 接口定义
 

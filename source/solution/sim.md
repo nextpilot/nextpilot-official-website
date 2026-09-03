@@ -8,7 +8,7 @@ summary: |
   - 行业级任务流程深度模拟与特情处置
   - 基地级/便携式双形态，UE5 沉浸视景
   - 软硬件在环双模支持，国产自主可控
-cover: /images/solution/sim-software-view.png
+cover: /assets/images/solution/sim-software-view.png
 ---
 
 # SiM 飞行训练模拟器
@@ -17,7 +17,7 @@ cover: /images/solution/sim-software-view.png
 
 本产品是一款面向专业培训机构、行业应用单位及院校的高等级无人机飞行仿真模拟训练系统，致力于解决无人机操控人才培养中“训练设备适配性差、仿真度低、教学资源零散”等行业痛点。系统以高精度飞行动力学模型与三维仿真引擎为核心，严格遵循真实飞行原理与行业作业规范，打造覆盖技能养成全周期的沉浸式训练平台。
 
-![img](/images/solution/sim-software-view.png)
+<img src="/assets/images/solution/sim-software-view.png" alt="img" loading="lazy" />
 
 ## 核心功能
 
@@ -38,9 +38,9 @@ cover: /images/solution/sim-software-view.png
 | 操控席位 | 3 人席位控制台                          | 便携操作                 |
 | 适用场景 | 固定训练中心、基地                      | 外场训练                 |
 
-![img](/images/solution/sim-base-model.png)
+<img src="/assets/images/solution/sim-base-model.png" alt="img" loading="lazy" />
 
-![img](/images/solution/sim-desktop-model.png)
+<img src="/assets/images/solution/sim-desktop-model.png" alt="img" loading="lazy" />
 
 ## 技术特点
 

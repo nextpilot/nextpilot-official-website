@@ -1,3 +1,4 @@
+import { resolve } from 'node:path'
 import { defineConfig } from 'vitepress'
 import { docsSidebar } from './config/sidebar.mts'
 import { headingTab } from './markdown/plugin-heading-tab.mts'
@@ -33,7 +34,14 @@ export default defineConfig({
   srcDir,
   outDir: 'build',
   // VitePress 2.0 的 publicDir 默认相对 srcDir（source/），这里指回仓库根目录的 public/
-  vite: { publicDir: '../public' },
+  vite: {
+    publicDir: '../public',
+    resolve: {
+      alias: {
+        '@root': resolve(process.cwd()),
+      },
+    },
+  },
   // 开启页脚「最后更新于」时间戳（基于 Git 提交时间）
   lastUpdated: true,
 
@@ -45,7 +53,7 @@ export default defineConfig({
   ],
 
   // 下载页脚本链接指向 .bat 文件，VitePress 无法识别该扩展名为静态资源，故忽略死链检查
-  ignoreDeadLinks: ['/scripts/start-qemu.bat', '/scripts/extract-sd.bat'],
+  ignoreDeadLinks: ['/assets/scripts/start-qemu.bat', '/assets/scripts/extract-sd.bat'],
 
   // frontmatter.permalink -> 固定访问路径（真实路由）
   // rewrites: buildRewrites(),
@@ -53,8 +61,6 @@ export default defineConfig({
   // 数学公式支持（LaTeX，通过 markdown-it-mathjax3）
   markdown: {
     math: true,
-    // 图片懒加载：为 <img> 添加 loading="lazy"
-    image: { lazyLoad: true },
     // 代码块显示行号
     lineNumbers: true,
     config: (md) => {

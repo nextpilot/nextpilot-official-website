@@ -8,12 +8,12 @@ summary: |
   - 控制算法优化与传感器适配校准
   - 虚拟飞行仿真 / 半实物仿真系统
   - 工业化定制，满足 GJB150 环境试验
-cover: /images/solution/px4.png
+cover: /assets/images/solution/px4.png
 ---
 
 # PX4 开源飞控定制开发
 
-<img src="/images/solution/px4.png" width="300" height="200"/>
+<img src="/assets/images/solution/px4.png" width="300" height="200"/>
 
 ## 全国产化软硬件
 
