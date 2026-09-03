@@ -9,7 +9,7 @@ const { page, lang } = useData()
 const route = useRoute()
 
 // 未填写 shopUrl 时的兜底购买链接（与产品详情页 ProductLayout 保持一致）
-const DEFAULT_SHOP_URL = 'https://ffvf62dgcrpcsf5h87lj12mrgn90rx5.taobao.com/'
+const DEFAULT_SHOP_URL = 'https://shop103678810.taobao.com'
 // 未填写 helpUrl 时的兜底帮助链接（与产品详情页 ProductLayout 保持一致）
 const DEFAULT_HELP_URL = '/manual/'
 

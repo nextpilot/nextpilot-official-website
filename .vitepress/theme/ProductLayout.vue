@@ -18,7 +18,7 @@ const displayTitle = computed(() => (frontmatter.value.shortTitle || frontmatter
 const summary = computed(() => (frontmatter.value.summary || frontmatter.value.description || '') as string)
 
 const price = computed(() => (frontmatter.value.price ?? null) as number | null)
-const shopUrl = computed(() => (frontmatter.value.shopUrl || 'https://ffvf62dgcrpcsf5h87lj12mrgn90rx5.taobao.com/') as string)
+const shopUrl = computed(() => (frontmatter.value.shopUrl || 'https://shop103678810.taobao.com') as string)
 const tags = computed(() => (frontmatter.value.tags || []) as string[])
 
 // 正文 tab 切换：事件委托，处理 markdown 渲染出的 `.heading-tab` 点击
