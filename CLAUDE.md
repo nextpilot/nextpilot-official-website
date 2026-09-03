@@ -81,9 +81,7 @@ nextpilot-official-website/
 │   ├── blog/                     # 博客
 │   └── en/                       # 英文站内容目录
 ├── public/                        # 静态资源目录，打包后直接输出
-│   ├── images/                   # 图片资源
-│   ├── firmware/                 # 固件/下载文件
-│   ├── scripts/                  # 脚本文件
+│   ├── assets/                   # 静态资源（images/ files/ scripts/）
 │   ├── CNAME                     # 域名配置文件
 │   ├── favicon.png               # 站点图标
 │   └── logo.png                  # Logo
@@ -107,8 +105,9 @@ nextpilot-official-website/
   - `两位整数` 是时间不敏感栏目（比如 product、solution等）的排序前缀
   - `yyyymmdd` 是时间敏感类型栏目（比如 blog、news等）的排序前缀
 - 文件和目录名一律小写，且只允许：数字、小写字母、横杠（优先）、下划线（谨慎）、小数点（仅用于版本号），不允许中文或特殊字符
-- 图片统一放在 `public/images/<栏目>/`，Markdown 中使用 `/images/...` 绝对路径引用
+- 图片统一放在 `public/assets/images/<栏目>/`，用绝对路径 `/assets/images/...` 引用（正文 `<img>` 与 `frontmatter` 的 `cover`/`gallery` 均如此）
 - 图片文件名应使用有意义的英文小写 slug，去掉自动生成的时间戳前缀（如 `image-20260623150217001.png` → `sim-main.png`）
+- 下载类文件：固件 `.bin` 放 `public/assets/files/`、脚本 `.bat` 放 `public/assets/scripts/`，均用绝对路径 `/assets/files/...`、`/assets/scripts/...` 引用
 
 ## 6. 标题与排序
 
@@ -213,10 +212,10 @@ date: 2026-08-28
 # --------------------------------
 # 主要用于卡片
 summary: 一句话简介
-cover: /images/blog/xxx.png
+cover: /assets/images/blog/xxx.png
 gallery:
-  - /images/blog/xxx-1.png
-  - /images/blog/xxx-2.png
+  - /assets/images/blog/xxx-1.png
+  - /assets/images/blog/xxx-2.png
 price: 100
 shopUrl: https://shop.example.com/xxx
 helpUrl: /manual/xxx

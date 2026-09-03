@@ -104,9 +104,7 @@ pnpm docs:preview
 │   ├── CNAME
 │   ├── favicon.png
 │   ├── logo.png
-│   ├── firmware/                  # 固件/下载文件
-│   ├── images/                    # 图片资源
-│   └── scripts/                   # 脚本
+│   └── assets/                    # 静态资源（images/ files/ scripts/）
 ├── build/                         # 生产构建输出，自动生成
 ├── package.json
 ├── pnpm-lock.yaml
