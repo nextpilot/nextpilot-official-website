@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import type { DefaultTheme } from 'vitepress'
+import { stripPrefixes, stripSegmentPrefix } from './rewrites.mts'
 
 type SidebarItem = DefaultTheme.SidebarItem
 
@@ -45,7 +46,7 @@ function readTitle(filePath: string): string {
 
 /** 文件名/目录名作为兜底标题：去排序前缀并转大写（如 np-fcc-h05 → NP-FCC-H05） */
 function titleFromName(name: string): string {
-  return name.replace(/^\d+-/, '').toUpperCase()
+  return stripSegmentPrefix(name).toUpperCase()
 }
 
 /** 提取排序前缀数字，无前缀返回 Infinity（排最后） */
@@ -126,7 +127,7 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
         path: name,
         item: {
           text: readTitle(full) || titleFromName(basename(name, '.md')),
-          link: `/${section}/${relDir}/${basename(name, '.md')}`,
+          link: `/${section}/${stripPrefixes(relDir)}/${stripSegmentPrefix(basename(name, '.md'))}`,
         },
       })
     }
@@ -138,7 +139,7 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
     // 顶层分组展开，嵌套子分组默认折叠
     collapsed: depth > 0,
   }
-  if (hasIndex) group.link = `/${section}/${relDir}/`
+  if (hasIndex) group.link = `/${section}/${stripPrefixes(relDir)}/`
   return group
 }
 
@@ -176,7 +177,7 @@ export function docsSidebar(srcDir: string, section: string): SidebarItem[] {
         path: name,
         item: {
           text: readTitle(full) || titleFromName(basename(name, '.md')),
-          link: `/${section}/${basename(name, '.md')}`,
+          link: `/${section}/${stripSegmentPrefix(basename(name, '.md'))}`,
         },
       })
     }

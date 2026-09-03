@@ -9,10 +9,10 @@ hero:
   actions:
     - theme: brand
       text: 飞行仿真
-      link: /opensource/manual/06-飞行仿真/01-软件在环仿真
+      link: /opensource/guide/simulation/sitl
     - theme: brand
       text: 用户手册
-      link: /opensource/manual/
+      link: /opensource/guide/
     - theme: brand
       text: 开发指南
       link: /opensource/develop/
@@ -23,11 +23,11 @@ hero:
 features:
   - title: 飞行仿真
     details: 不需要硬件，NextPilot-Ground-Control 地面控制站集成了虚拟飞行仿真功能。在地面控制站中创建一个虚拟飞机链接，即可立即开始飞行。
-    link: /opensource/manual/06-飞行仿真/01-软件在环仿真
+    link: /opensource/guide/simulation/sitl
     linkText: 查看文档
   - title: 用户手册
     details: NextPilot 飞控系统的用户手册，涵盖装机、配置、飞行操作与数据分析。
-    link: /opensource/manual/
+    link: /opensource/guide/
     linkText: 查看文档
   - title: 开发指南
     details: 飞控开发与二次开发指南，了解代码结构、贡献流程与开发环境搭建。

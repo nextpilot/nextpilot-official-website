@@ -5,6 +5,7 @@ import { headingTab } from './markdown/plugin-heading-tab.mts'
 import { markdownTab } from './markdown/plugin-markdown-tab.mts'
 import { markdownCard } from './markdown/plugin-markdown-card.mts'
 import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/headconfig.mts'
+import { buildRewrites } from './config/rewrites.mts'
 
 // 内容源目录（相对项目根），作为 srcDir 配置项并传给 docsSidebar
 const srcDir = 'source'
@@ -50,14 +51,14 @@ export default defineConfig({
   srcExclude: [
     'README.md',
     // 基本概念章节尚未完成，先排除编译
-    'manual/01-基本概念/**',
+    'opensource/guide/01-concepts/**',
   ],
 
   // 下载页脚本链接指向 .bat 文件，VitePress 无法识别该扩展名为静态资源，故忽略死链检查
   ignoreDeadLinks: ['/assets/scripts/start-qemu.bat', '/assets/scripts/extract-sd.bat'],
 
-  // frontmatter.permalink -> 固定访问路径（真实路由）
-  // rewrites: buildRewrites(),
+  // 去掉 URL 中的排序前缀（见 config/rewrites.mts）
+  rewrites: buildRewrites,
 
   // 数学公式支持（LaTeX，通过 markdown-it-mathjax3）
   markdown: {

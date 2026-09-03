@@ -21,12 +21,11 @@ NextPilot（`nextpilot-flight-control`）是一款国产开源先进自动驾驶
 - VitePress 基础配置
 - `about` / `manual` / `develop` / `community` 自动侧边栏生成
 - 产品列表页（`createContentLoader` + `CatalogLayout` 布局）
+- URL 排序前缀去除：`buildRewrites()`（`rewrites` 已启用，URL 不含 `NN-` 前缀）
 
 待完成或待完善：
 
 - 文章列表页：`news` / `blog`
-- `permalink` 重写：`buildRewrites()`
-- `.vitepress/config.mts` 中的 `rewrites` 仍保持注释状态
 
 ## 3. 环境与技术栈
 
@@ -74,7 +73,7 @@ nextpilot-official-website/
 │   ├── opensource/               # 开源项目
 │   │   ├── community/            # 社区支持
 │   │   ├── develop/              # 开发指南
-│   │   └── manual/               # 用户手册（开源文档）
+│   │   └── guide/                # 用户手册（开源文档）
 │   ├── discovery/                # 发现/展示栏目（占位待建）
 │   ├── news/                     # 新闻资讯
 │   ├── download/                 # 资源下载
@@ -105,6 +104,7 @@ nextpilot-official-website/
   - `两位整数` 是时间不敏感栏目（比如 product、solution等）的排序前缀
   - `yyyymmdd` 是时间敏感类型栏目（比如 blog、news等）的排序前缀
 - 文件和目录名一律小写，且只允许：数字、小写字母、横杠（优先）、下划线（谨慎）、小数点（仅用于版本号），不允许中文或特殊字符
+- 排序前缀（`NN-` / `yyyymmdd-`）只用于文件系统排序，不进入最终 URL，由 `rewrites` 在构建期去除（见 §12.1）
 - 图片统一放在 `public/assets/images/<栏目>/`，用绝对路径 `/assets/images/...` 引用（正文 `<img>` 与 `frontmatter` 的 `cover`/`gallery` 均如此）
 - 图片文件名应使用有意义的英文小写 slug，去掉自动生成的时间戳前缀（如 `image-20260623150217001.png` → `sim-main.png`）
 - 下载类文件：固件 `.bin` 放 `public/assets/files/`、脚本 `.bat` 放 `public/assets/scripts/`，均用绝对路径 `/assets/files/...`、`/assets/scripts/...` 引用
@@ -270,7 +270,8 @@ helpUrl: /manual/xxx
 - 通用 tab 组：`::: tabs` 容器内每个 `@tab 标题` 行折叠为一个 tab（由 `.vitepress/markdown/plugin-markdown-tab.mts` 的 block rule 生成，任意页面可用），语法为 `::: tabs` / `@tab 标题` / 内容 / `:::`；也可在 `::: tabs` 后指定自定义分隔符（如 `::: tabs ===`、`::: tabs ##`）
 - 卡片容器：`::: xxx-card` 按类型渲染不同卡片（由 `.vitepress/markdown/plugin-markdown-card.mts` 生成），内容为 YAML 代码块包裹的卡片列表；当前支持图文卡片 `::: image-card`（cover / link / name / desc / author / avatar）、链接卡片 `::: link-card`（link / name / desc）、产品卡片 `::: product-card`（cover / link / name / summary / price / category / shopUrl / helpUrl，样式同产品列表卡片）
 - 若开启 `cleanUrls`，会导致静态托管环境下出现 404，故必须保持 `cleanUrls` 关闭；非首页页面仍产出 `xxx.html`
-- 通过 VitePress 的 `rewrites` 实现真实路由：`/manual/foo` → `manual/foo.md`（去前导 `/`、补 `.md`），否则会生成无扩展名文件
+- 通过 VitePress 的 `rewrites`（函数形式 `(id: string) => string`）去除 URL 中的排序前缀：`buildRewrites()` 接收相对 `srcDir` 的源路径（含 `.md`），返回去前缀的目标路径（含 `.md`），VitePress 自动转 `.html`（如 `guide/03-quickstart/01-preparation.md` → `/guide/quickstart/preparation.html`）
+- `rewrites` 只改页面真实 URL，不自动改写 markdown 内链与 frontmatter 裸 URL：`docsSidebar()` 生成的链接、正文内链、frontmatter 的 `link:` 都必须手动写成去前缀后的干净路径，否则会死链
 
 ### 12.2 内容处理原则
 

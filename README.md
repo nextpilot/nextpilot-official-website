@@ -5,7 +5,7 @@
 编译好的网页托管在本仓库的 [gh-pages](https://github.com/nextpilot/nextpilot-flight-control/tree/gh-pages) 分支，可通过以下链接访问：
 
 - 官方网站：<https://nextpilot.org>
-- 用户手册：<https://nextpilot.org/opensource/manual>
+- 用户手册：<https://nextpilot.org/opensource/guide>
 - 开发指南：<https://nextpilot.org/opensource/develop>
 
 ## 技 术 栈
@@ -92,7 +92,7 @@ pnpm docs:preview
 │   ├── opensource/                # 开源项目
 │   │   ├── community/             # 社区支持
 │   │   ├── develop/               # 开发指南
-│   │   └── manual/                # 用户手册（开源文档）
+│   │   └── guide/                 # 用户手册（开源文档）
 │   ├── product/                   # 产品中心
 │   │   ├── aircraft/              # 无人机平台
 │   │   ├── autopilot/             # 飞行控制
