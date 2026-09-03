@@ -12,11 +12,18 @@
  * ```
  *
  * 每个 `@tab 标题` 行作为 tab 分隔符（标题为 tab 名），`:::` 关闭容器。
+ * 分隔符默认 `@tab`，也可在 `::: tabs` 后指定自定义分隔符（如 `::: tabs ===`、`::: tabs ##`），
+ * 此时用该分隔符（后跟标题）切分 tab，如 `=== 标题`、`## 标题`。
  * 无需在 config.mts 注册 customContainers，本插件的 block rule 直接解析。
  */
 
 function escapeHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+}
+
+// 转义正则元字符，供自定义分隔符拼入正则
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
 export function markdownTab(md: any): void {
@@ -28,8 +35,13 @@ export function markdownTab(md: any): void {
   md.block.ruler.before('fence', 'markdown_tabs', (state: any, startLine: number, endLine: number, silent: boolean) => {
     const start = state.bMarks[startLine] + state.tShift[startLine]
     const max = state.eMarks[startLine]
-    if (state.src.slice(start, max).trim() !== '::: tabs') return false
+    // 解析 `::: tabs` 与可选自定义分隔符（默认 @tab，如 `::: tabs ===` / `::: tabs ##`）
+    const openText = state.src.slice(start, max).trim()
+    const openMatch = openText.match(/^::: tabs(?:\s+(\S+))?$/)
+    if (!openMatch) return false
     if (silent) return true
+    const delimiter = openMatch[1] || '@tab'
+    const delimRe = new RegExp('^' + escapeRegExp(delimiter) + '\\s+(.+)$')
 
     const savedLineMax = state.lineMax
     const indent = state.sCount[startLine]
@@ -44,7 +56,7 @@ export function markdownTab(md: any): void {
       closeLine++
     }
 
-    // 按 `@tab 标题` 切分内层行
+    // 按分隔符切分内层行
     const tabs: { title: string; start: number; end: number }[] = []
     let curTitle = ''
     let curStart = startLine + 1
@@ -52,9 +64,9 @@ export function markdownTab(md: any): void {
       const p = state.bMarks[line] + state.tShift[line]
       const m = state.eMarks[line]
       const t = state.src.slice(p, m).trim()
-      const mm = t.match(/^@tab\s+(.+)$/)
+      const mm = t.match(delimRe)
       if (mm) {
-        // 跳过第一个 `@tab` 之前的空内容（如 `::: tabs` 后的空行），避免生成空 tab
+        // 跳过第一个分隔符之前的空内容（如 `::: tabs` 后的空行），避免生成空 tab
         if (curTitle && curStart < line) tabs.push({ title: curTitle, start: curStart, end: line })
         curTitle = mm[1].trim()
         curStart = line + 1
