@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import type { DefaultTheme } from 'vitepress'
-import { stripPrefixes, stripSegmentPrefix } from './rewrites.mts'
+import { resolvePageRoute, stripSegmentPrefix } from './rewrites.mts'
 
 type SidebarItem = DefaultTheme.SidebarItem
 
@@ -127,7 +127,7 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
         path: name,
         item: {
           text: readTitle(full) || titleFromName(basename(name, '.md')),
-          link: `/${section}/${stripPrefixes(relDir)}/${stripSegmentPrefix(basename(name, '.md'))}`,
+          link: `/${resolvePageRoute(`${section}/${relDir}/${name}`)}`,
         },
       })
     }
@@ -139,7 +139,7 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
     // 顶层分组展开，嵌套子分组默认折叠
     collapsed: depth > 0,
   }
-  if (hasIndex) group.link = `/${section}/${stripPrefixes(relDir)}/`
+  if (hasIndex) group.link = `/${resolvePageRoute(`${section}/${relDir}/index.md`)}`
   return group
 }
 
@@ -177,11 +177,62 @@ export function docsSidebar(srcDir: string, section: string): SidebarItem[] {
         path: name,
         item: {
           text: readTitle(full) || titleFromName(basename(name, '.md')),
-          link: `/${section}/${stripSegmentPrefix(basename(name, '.md'))}`,
+          link: `/${resolvePageRoute(`${section}/${name}`)}`,
         },
       })
     }
   }
 
   return sortEntries(entries)
+}
+
+/** 判断目录树内是否包含至少一个 md 文件（含 index.md），用于跳过纯资源目录 */
+function hasAnyMd(dirPath: string): boolean {
+  for (const name of readdirSync(dirPath)) {
+    const full = join(dirPath, name)
+    const st = statSync(full)
+    if (st.isDirectory()) {
+      if (hasAnyMd(full)) return true
+    } else if (name.endsWith('.md')) {
+      return true
+    }
+  }
+  return false
+}
+
+/**
+ * 某栏目需要显示该栏目侧边栏的所有路由前缀：栏目根路由 + 被 permalink 逃逸出栏目根的子目录路由。
+ * 例如 `manual/05-测试下` 声明 `permalink: /mytest22`，其页面 URL 在 `/mytest22/` 下，
+ * 但物理上仍属于 manual，故要把 `/mytest22/` 也映射到 manual 侧边栏。
+ */
+export function sectionRoutes(srcDir: string, section: string): string[] {
+  const base = join(process.cwd(), srcDir, section)
+  if (!existsSync(base)) return []
+
+  const columnRoute = '/' + resolvePageRoute(`${section}/index.md`)
+  const prefixes = [columnRoute]
+
+  const walk = (dirPath: string, relDir: string) => {
+    for (const name of readdirSync(dirPath)) {
+      const full = join(dirPath, name)
+      if (!statSync(full).isDirectory() || !hasAnyMd(full)) continue
+      const childRel = relDir ? `${relDir}/${name}` : name
+      const route = '/' + resolvePageRoute(`${section}/${childRel}/index.md`)
+      // 仍在栏目根路由下的子目录已被栏目根覆盖，只额外注册逃逸出去的路由
+      if (!route.startsWith(columnRoute)) prefixes.push(route)
+      walk(full, childRel)
+    }
+  }
+  walk(base, '')
+  return prefixes
+}
+
+/** 构建所有栏目的侧边栏映射（路由前缀 -> 侧边栏项），供 config.mts 的 themeConfig.sidebar 使用 */
+export function docsSidebars(srcDir: string, sections: string[]): Record<string, SidebarItem[]> {
+  const result: Record<string, SidebarItem[]> = {}
+  for (const section of sections) {
+    const items = docsSidebar(srcDir, section)
+    for (const route of sectionRoutes(srcDir, section)) result[route] = items
+  }
+  return result
 }

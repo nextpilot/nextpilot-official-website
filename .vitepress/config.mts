@@ -1,19 +1,20 @@
-import { resolve } from 'node:path'
-import { defineConfig } from 'vitepress'
-import { docsSidebar } from './config/sidebar.mts'
-import { headingTab } from './markdown/plugin-heading-tab.mts'
-import { markdownTab } from './markdown/plugin-markdown-tab.mts'
-import { markdownCard } from './markdown/plugin-markdown-card.mts'
-import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/headconfig.mts'
-import { buildRewrites } from './config/rewrites.mts'
+import { resolve } from 'node:path';
+import { defineConfig } from 'vitepress';
+import { docsSidebars } from './config/sidebar.mts';
+import { headingTab } from './markdown/plugin-heading-tab.mts';
+import { markdownTab } from './markdown/plugin-markdown-tab.mts';
+import { markdownCard } from './markdown/plugin-markdown-card.mts';
+import { rewriteLink } from './markdown/plugin-rewrite-link.mts';
+import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/headconfig.mts';
+import { buildRewrites } from './config/rewrites.mts';
 
 // 内容源目录（相对项目根），作为 srcDir 配置项并传给 docsSidebar
-const srcDir = 'source'
+const srcDir = 'source';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   // 站点基本信息：标题 / SEO 描述 / 默认语言
-  title: 'NextPilot Flight Control',
+  title: 'NextPilot 一款面向教育、研究与工业等领域的国产先进自动驾驶仪',
   description: 'NextPilot 国产开源先进自动驾驶仪（飞控系统），基于 RT-Thread 实时操作系统、核心算法移植自 PX4，支持多旋翼、固定翼、垂起复合翼，面向教育、科研与工业应用',
   lang: 'zh-CN',
   // 全局 <head>：favicon + SEO meta（keywords / author）+ 客户端跳转脚本
@@ -67,11 +68,13 @@ export default defineConfig({
     lineNumbers: true,
     config: (md) => {
       // 正文二级标题折叠为 tab（仅对 layout: product 页面生效）
-      headingTab(md)
+      headingTab(md);
       // 通用 `::: tabs` 容器：`@tab 标题` 折叠为 tab
-      markdownTab(md)
+      markdownTab(md);
       // 卡片容器：`::: card [标题]`
-      markdownCard(md)
+      markdownCard(md);
+      // 站内 .md 链接：物理路径（含排序前缀）自动改写为最终 URL
+      rewriteLink(md);
     },
   },
 
@@ -126,11 +129,7 @@ export default defineConfig({
           { text: '资料下载', link: '/download/' },
           { text: '技术博客', link: '/blog/' },
         ],
-        sidebar: {
-          '/about/': docsSidebar(srcDir, 'about'),
-          '/manual/': docsSidebar(srcDir, 'manual'),
-          '/opensource/': docsSidebar(srcDir, 'opensource'),
-        },
+        sidebar: docsSidebars(srcDir, ['about', 'manual', 'opensource']),
       },
     },
     en: {
@@ -147,4 +146,4 @@ export default defineConfig({
       },
     },
   },
-})
+});
