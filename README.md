@@ -65,7 +65,7 @@ pnpm docs:preview
 │   ├── config.mts                 # 站点主配置
 │   ├── config/                    # 配置辅助模块
 │   │   ├── sidebar.mts            # 自动生成侧边栏
-│   │   └── metahead.mts           # head 标签（canonical / 跳转 / 统计）
+│   │   └── headconfig.mts           # head 标签（canonical / 跳转 / 统计）
 │   ├── markdown/                  # Markdown 扩展插件
 │   │   ├── plugin-heading-tab.mts
 │   │   └── plugin-markdown-tab.mts

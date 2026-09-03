@@ -51,7 +51,7 @@ pnpm docs:preview  # 对应 package.json 中的 vitepress preview
 nextpilot-official-website/
 ├── .vitepress/                     # VitePress 站点配置与主题扩展
 │   ├── config.mts                 # 站点主配置：nav / sidebar / locales / rewrites
-│   ├── config/                    # 配置辅助模块（sidebar / metahead）
+│   ├── config/                    # 配置辅助模块（sidebar / headconfig）
 │   ├── markdown/                  # markdown-it 插件
 │   ├── theme/                    # 自定义主题、组件与全局样式
 │   └── ...                       # 其余 VitePress 相关文件

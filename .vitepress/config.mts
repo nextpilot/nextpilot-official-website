@@ -4,7 +4,7 @@ import { docsSidebar } from './config/sidebar.mts'
 import { headingTab } from './markdown/plugin-heading-tab.mts'
 import { markdownTab } from './markdown/plugin-markdown-tab.mts'
 import { markdownCard } from './markdown/plugin-markdown-card.mts'
-import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/metahead.mts'
+import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/headconfig.mts'
 
 // 内容源目录（相对项目根），作为 srcDir 配置项并传给 docsSidebar
 const srcDir = 'source'
@@ -29,7 +29,7 @@ export default defineConfig({
     ...redirectHead,
     ...baiduAnalyticsHead,
   ],
-  // 按页注入 canonical（见 config/metahead.mts，与 sitemap 共用 SITE_URL）
+  // 按页注入 canonical（见 config/headconfig.mts，与 sitemap 共用 SITE_URL）
   transformHead: canonicalHead,
   // 内容源目录与构建输出目录
   srcDir,
