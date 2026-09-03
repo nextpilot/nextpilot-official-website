@@ -1,29 +1,22 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData } from 'vitepress'
-
-interface Solution {
-  title: string
-  cover: string
-  summary: string
-  url: string
-}
-
-const props = defineProps<{
-  solutions: Solution[]
-}>()
+// @ts-expect-error `data` 由 VitePress 在构建期注入
+import { data as solutions } from './SolutionLayout.data.mts'
+import Breadcrumb from './components/Breadcrumb.vue'
 
 const { lang } = useData()
 const isZh = computed(() => (lang.value || 'zh-CN').startsWith('zh'))
 
+// 解析每个解决方案的 summary 为 intro（首段）+ bullets（- 列表项）
 const items = computed(() =>
-  props.solutions.map((s) => {
-    const lines = s.summary
+  solutions.map((s: any) => {
+    const lines = (s.summary || '')
       .split('\n')
-      .map((l) => l.trim())
+      .map((l: string) => l.trim())
       .filter(Boolean)
-    const intro = lines.find((l) => !l.startsWith('-')) ?? ''
-    const bullets = lines.filter((l) => l.startsWith('-')).map((l) => l.replace(/^-\s*/, ''))
+    const intro = lines.find((l: string) => !l.startsWith('-')) ?? ''
+    const bullets = lines.filter((l: string) => l.startsWith('-')).map((l: string) => l.replace(/^-\s*/, ''))
     return { ...s, intro, bullets }
   }),
 )
@@ -41,20 +34,47 @@ const grid = computed(() => {
 </script>
 
 <template>
-  <div class="solution-grid">
-    <a v-for="s in items" :key="s.url" :href="s.url" class="solution-card" :class="[grid]">
-      <img v-if="s.cover" :src="s.cover" :alt="s.title" class="card-cover" />
-      <h3 class="card-title">{{ s.title }}</h3>
-      <p v-if="s.intro" class="card-intro">{{ s.intro }}</p>
-      <ul v-if="s.bullets.length" class="card-bullets">
-        <li v-for="b in s.bullets" :key="b">{{ b }}</li>
-      </ul>
-      <span class="card-more">{{ isZh ? '查看详情 →' : 'View details →' }}</span>
-    </a>
+  <div class="solution-layout">
+    <Breadcrumb />
+    <div class="vp-doc">
+      <Content />
+    </div>
+    <div class="solution-grid">
+      <a v-for="s in items" :key="s.url" :href="s.url" class="solution-card" :class="[grid]">
+        <img v-if="s.cover" :src="s.cover" :alt="s.title" class="card-cover" />
+        <h3 class="card-title">{{ s.title }}</h3>
+        <p v-if="s.intro" class="card-intro">{{ s.intro }}</p>
+        <ul v-if="s.bullets.length" class="card-bullets">
+          <li v-for="b in s.bullets" :key="b">{{ b }}</li>
+        </ul>
+        <span class="card-more">{{ isZh ? '查看详情 →' : 'View details →' }}</span>
+      </a>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.solution-layout {
+  margin: 0 auto;
+  padding: 24px 24px 96px;
+}
+.solution-layout :deep(.vp-doc) {
+  max-width: none;
+}
+
+/* 与 VPDoc 页面保持一致的上/下/左右留白 */
+@media (min-width: 768px) {
+  .solution-layout {
+    padding: 24px 32px 128px;
+  }
+}
+
+@media (min-width: 960px) {
+  .solution-layout {
+    padding: 24px 64px 128px;
+  }
+}
+
 .solution-grid {
   display: flex;
   flex-wrap: wrap;

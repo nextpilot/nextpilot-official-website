@@ -148,7 +148,7 @@ nextpilot-official-website/
 - 目录规则：均采用扁平结构：`<栏目>/<xx-page.md>`，每个页面对应一个单独文档，不做深层嵌套。
 - 标题规则：`about` 侧边栏条目优先取 `frontmatter.title`，其次取文件名去掉排序前缀；`solution` 列表页标题优先取 `frontmatter.title`，否则回退到文件名去掉排序前缀。
 - 排序规则：统一以 `frontmatter.order` 为主，再按文件名排序前缀排序。
-- 约束：`about` 使用自动 sidebar，`solution` 属于 `page` 类型，不显示侧边栏，使用 `createContentLoader` + 列表组件渲染。
+- 约束：`about` 使用自动 sidebar；`solution` 列表页使用 `layout: solution`（`.vitepress/theme/SolutionLayout.vue`），布局自动读取同名数据加载器 `.vitepress/theme/SolutionLayout.data.mts` 渲染方案卡片网格，不显示侧边栏。
 
 ### 7.2 产品中心
 
