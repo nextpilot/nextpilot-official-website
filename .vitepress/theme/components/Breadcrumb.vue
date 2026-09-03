@@ -4,73 +4,28 @@ import { useData, useRoute } from 'vitepress'
 // @ts-expect-error `data` 由 VitePress 在构建期注入
 import { data as titleMapData } from './Breadcrumb.data.mts'
 
-const { page, theme, lang } = useData()
+const { lang } = useData()
 const route = useRoute()
 const isZh = computed(() => (lang.value || 'zh-CN').startsWith('zh'))
 
-// 目录 URL -> 标题（来自各 index.md 的 frontmatter.title）
-const titleMap = titleMapData as Record<string, string>
-
-/** 目录名/文件名作为兜底标题：去排序前缀并转大写（如 np-fcc-h05 → NP-FCC-H05） */
-function titleFromName(name: string): string {
-  return name.replace(/^\d+-/, '').toUpperCase()
-}
+// 页面路由 -> 完整物理面包屑（顶级栏目 … 当前页），由 Breadcrumb.data.mts 按物理路径构建
+const trails = titleMapData.trails as Record<string, { text: string; link?: string }[]>
 
 interface Crumb {
   text: string
   link?: string
 }
 
-// 展开 nav（含下拉菜单 items），便于按链接反查栏目中文名
-const navLinks = computed(() => {
-  const flat: { text?: string; link: string }[] = []
-  for (const item of theme.value.nav ?? []) {
-    if ('link' in item && item.link) flat.push({ text: item.text, link: item.link })
-    if ('items' in item && item.items) {
-      for (const sub of item.items) {
-        if ('link' in sub && sub.link) flat.push({ text: sub.text, link: sub.link })
-      }
-    }
-  }
-  return flat
-})
-
 const crumbs = computed<Crumb[]>(() => {
   // 归一化路径：去掉 .html 后缀与末尾斜杠
   let path = decodeURIComponent(route.path).replace(/\.html$/, '')
   if (path !== '/') path = path.replace(/\/$/, '')
-  const segments = path.split('/').filter(Boolean)
-
-  // 英文站去掉语言前缀 en，避免把 en 当成一级栏目
-  if (!isZh.value && segments[0] === 'en') segments.splice(0, 1)
 
   const homeLink = isZh.value ? '/' : '/en/'
   const items: Crumb[] = [{ text: isZh.value ? '首页' : 'Home', link: homeLink }]
 
-  // 一级栏目：从 nav（含下拉项）按链接匹配栏目名，匹配不到回退到路径段
-  if (segments[0]) {
-    const link = `/${segments[0]}/`
-    const navItem = navLinks.value.find((item) => item.link === link)
-    items.push({ text: navItem?.text || titleFromName(segments[0]), link })
-  }
-
-  // 中间目录段：index.md 标题，回退为去掉排序前缀的目录名
-  for (let i = 1; i < segments.length - 1; i++) {
-    const dirUrl = '/' + segments.slice(0, i + 1).join('/') + '/'
-    const text = titleMap[dirUrl] || titleFromName(segments[i])
-    // 仅当该目录存在 index.md 时才生成可点击链接，否则为纯文本，避免指向 404
-    items.push(dirUrl in titleMap ? { text, link: dirUrl } : { text })
-  }
-
-  // 当前页：优先 frontmatter title，其次 page.title，最后路径末段（去前缀）
-  if (segments.length > 1) {
-    const fm = page.value.frontmatter
-    const shortTitle = fm?.shortTitle as string | undefined
-    const fmTitle = fm?.title as string | undefined
-    items.push({
-      text: shortTitle || fmTitle || page.value.title || titleFromName(segments[segments.length - 1]),
-    })
-  }
+  // 物理路径分级的面包屑（已含顶级栏目与当前页，末项无链接）
+  for (const c of trails[path] || []) items.push(c)
 
   return items
 })
