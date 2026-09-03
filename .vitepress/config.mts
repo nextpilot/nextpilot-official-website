@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress'
 import { docsSidebar } from './config/sidebar.mts'
 import { headingTab } from './markdown/plugin-heading-tab.mts'
 import { markdownTab } from './markdown/plugin-markdown-tab.mts'
+import { markdownCard } from './markdown/plugin-markdown-card.mts'
 import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/metahead.mts'
 
 // 内容源目录（相对项目根），作为 srcDir 配置项并传给 docsSidebar
@@ -68,6 +69,8 @@ export default defineConfig({
       headingTab(md)
       // 通用 `::: tabs` 容器：`@tab 标题` 折叠为 tab
       markdownTab(md)
+      // 卡片容器：`::: card [标题]`
+      markdownCard(md)
     },
   },
 
