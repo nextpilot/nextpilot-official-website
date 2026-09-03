@@ -249,7 +249,7 @@ NP-FCC-H05 是 NextPilot 团队研发的高性能、工业级、一体化导航�
 
 ### 飞控固件
 
-根据使用场景选择固件，以下为最新版本固件（通过 `FCS-USB` 口烧录），历史固件请查看[发布记录](../../download/changelog)。
+根据使用场景选择固件，以下为最新版本固件（通过 `FCS-USB` 口烧录），历史固件请查看[发布记录](../../download/changelog.md)。
 
 - 真机飞行固件：[fcs-v4-default.bin](/assets/files/fcs-v4-default.bin)
 
@@ -259,7 +259,7 @@ NP-FCC-H05 是 NextPilot 团队研发的高性能、工业级、一体化导航�
 
 ### 导航固件
 
-以下为最新版本固件（通过 `AHRS-USB` 口烧录），历史固件请查看[发布记录](../../download/changelog)。
+以下为最新版本固件（通过 `AHRS-USB` 口烧录），历史固件请查看[发布记录](../../download/changelog.md)。
 
 - 组合导航固件：[ins-v4-default.bin](/assets/files/ins-v4-default.bin)
 
@@ -271,6 +271,6 @@ FCS 和 INS 芯片的 `bootloader` 是通用的，使用 `Stlink` 或者 `jlink`
 
 ## 常见问题
 
-更多问题请参考 [技术支持](/opensource/community/support)。
+更多问题请参考 [技术支持](/opensource/community/support.md)。
 
 ## 更新记录

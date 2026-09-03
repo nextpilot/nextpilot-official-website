@@ -8,7 +8,7 @@ NextPilot 导航飞控目前只支持 NP-FCC-H05 系列飞控，该飞控采用�
 
 ## 飞控固件
 
-根据使用场景选择固件，以下为最新版本固件（通过 FCS-USB 口烧录），历史固件请查看[发布记录](./changelog)。
+根据使用场景选择固件，以下为最新版本固件（通过 FCS-USB 口烧录），历史固件请查看[发布记录](./changelog.md)。
 
 - 真机飞行固件：[fcs-v4-default.bin](/assets/files/fcs-v4-default.bin)
 
@@ -18,7 +18,7 @@ NextPilot 导航飞控目前只支持 NP-FCC-H05 系列飞控，该飞控采用�
 
 ## 导航固件
 
-以下为最新版本固件（通过 AHRS-USB 口烧录），历史固件请查看[发布记录](./changelog)。
+以下为最新版本固件（通过 AHRS-USB 口烧录），历史固件请查看[发布记录](./changelog.md)。
 
 [ins-v4-default.bin](/assets/files/ins-v4-default.bin)
 

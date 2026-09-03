@@ -23,4 +23,4 @@ NextPilot 一款功能丰富、高度扩展、稳定可靠的先进自动驾驶�
 
 ## 体验 NextPilot
 
-不需要硬件，NextPilot-Ground-Control 地面控制站集成了[虚拟飞行仿真](simulation/sitl.md)功能。在地面控制站中创建一个虚拟飞机链接，即可立即开始飞行。
+不需要硬件，NextPilot-Ground-Control 地面控制站集成了[虚拟飞行仿真](06-simulation/01-sitl.md)功能。在地面控制站中创建一个虚拟飞机链接，即可立即开始飞行。

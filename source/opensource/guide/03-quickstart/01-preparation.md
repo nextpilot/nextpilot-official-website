@@ -2,15 +2,15 @@
 
 ## 硬件准备
 
-推荐使用 NextPilot 自研飞控产品，整套硬件包括导航飞控计算机（简称飞控）、空速计、基准站、调试接口板与配套线缆等。目前我们推出的一款工业级导航飞控产品[NP-FCC-H05](../../../product/autopilot/np-fcc-h05)，飞控产品如下图所示：
+推荐使用 NextPilot 自研飞控产品，整套硬件包括导航飞控计算机（简称飞控）、空速计、基准站、调试接口板与配套线缆等。目前我们推出的一款工业级导航飞控产品[NP-FCC-H05](../../../product/autopilot/np-fcc-h05.md)，飞控产品如下图所示：
 
 <img src="/assets/images/manual/fcs-wireframe.png" alt="fcs-wireframe" loading="lazy" />{alt="fcs-wireframe" style="zoom:30%; display:block; margin:0 auto;"}
 
-关于 NP-FCC-H05 系列产品介绍请参考[产品文档](../../../product/autopilot/np-fcc-h05)，包括系统组成、功能性能。
+关于 NP-FCC-H05 系列产品介绍请参考[产品文档](../../../product/autopilot/np-fcc-h05.md)，包括系统组成、功能性能。
 
 > **重要说明**
 >
-> - 目前支持的飞控硬件只有[NP-FCC-H05](../../../product/autopilot/np-fcc-h05)一款产品，后续计划支持更多开源硬件；
+> - 目前支持的飞控硬件只有[NP-FCC-H05](../../../product/autopilot/np-fcc-h05.md)一款产品，后续计划支持更多开源硬件；
 
 另外需要准备一个无人机飞行平台，当前飞控支持有多旋翼、固定翼、VTOL 三大类机型。
 
@@ -22,10 +22,10 @@
 
 ## 烧写固件
 
-飞控出厂默认烧写了[最新固件](../../../download/)，如果需要更换固件版本，可以从[这里下载](../../../download/changelog)。
+飞控出厂默认烧写了[最新固件](../../../download/)，如果需要更换固件版本，可以从[这里下载](../../../download/changelog.md)。
 
-准备好固件后，参考[烧录固件章节](../advanced/flash-firmware.md)中烧录固件章节。
+准备好固件后，参考[烧录固件章节](../07-advanced/flash-firmware.md)中烧录固件章节。
 
 > Nextpilot 目前采取了飞控、导航分离的技术架构，即飞行控制系统（FCS）与惯性导航系统（INS）程序分别运行在两块相同但独立的主控芯片上，故要实现飞行，需要通过 FCS_USB 烧写 FCS 固件、通过 INS_USB 烧写 INS 固件。
 >
-> 出厂时默认已经烧写最新稳定版本固件，如需要更换固件请自行下载并烧写，另外需要注意固件的对应关系，详细请查看[发布记录](../../../download/changelog)说明。
+> 出厂时默认已经烧写最新稳定版本固件，如需要更换固件请自行下载并烧写，另外需要注意固件的对应关系，详细请查看[发布记录](../../../download/changelog.md)说明。

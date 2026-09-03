@@ -19,13 +19,15 @@ NextPilot（`nextpilot-flight-control`）是一款国产开源先进自动驾驶
 已完成的核心工作：
 
 - VitePress 基础配置
-- `about` / `manual` / `develop` / `community` 自动侧边栏生成
+- `about` / `manual` / `opensource` 自动侧边栏生成
 - 产品列表页（`createContentLoader` + `CatalogLayout` 布局）
 - URL 排序前缀去除：`buildRewrites()`（`rewrites` 已启用，URL 不含 `NN-` 前缀）
+- `permalink` 路由重写（绝对/相对地址，侧边栏与正文内链统一解析）
 
 待完成或待完善：
 
 - 文章列表页：`news` / `blog`
+- `yyyymmdd` 日期前缀倒序排列（当前按数字升序）
 
 ## 3. 环境与技术栈
 
@@ -50,7 +52,7 @@ pnpm docs:preview  # 对应 package.json 中的 vitepress preview
 nextpilot-official-website/
 ├── .vitepress/                     # VitePress 站点配置与主题扩展
 │   ├── config.mts                 # 站点主配置：nav / sidebar / locales / rewrites
-│   ├── config/                    # 配置辅助模块（sidebar / headconfig）
+│   ├── config/                    # 配置辅助模块（sidebar / headconfig / rewrites）
 │   ├── markdown/                  # markdown-it 插件
 │   ├── theme/                    # 自定义主题、组件与全局样式
 │   └── ...                       # 其余 VitePress 相关文件
@@ -98,39 +100,35 @@ nextpilot-official-website/
 
 以下为维护与内容创作的统一约定，适用于新增页面、目录结构和图片命名。
 
-- 目录格式推荐：`<column>/<xx-category>/<...>/<yy-markdown.md>`
-  - `<column>` 为栏目，`<category>` 为分类，`<...>` 为子分类，目录层级建议不超过 5 级
-  - `xx`、`yy` 是排序前缀，通常为 `两位整数`，或者 `yyyymmdd` 日期格式
-  - `两位整数` 是时间不敏感栏目（比如 product、solution等）的排序前缀
-  - `yyyymmdd` 是时间敏感类型栏目（比如 blog、news等）的排序前缀
+- 所有 `文件夹` 统一叫为栏目（之前有称为分类、分组等），顶级文件夹为顶级栏目，下级文件夹为子栏目
+- 所有 `markdown 文件` 统一叫为页面（之前有称为产品、文章等）
+- 目录格式推荐：`<column>/<xx-subcolumn>/<...>/<yy-markdown.md>`
+  - `<column>` 为栏目，`<subcolumn>` 为子栏目，目录层级建议不超过 5 级
+  - `xx` 是`两位整数`排序前缀，通常用于时间不敏感栏目（比如 product、solution 等）
+  - `yyyymmdd` 是`日期格式`排序前缀，用于敏感类型栏目（比如 blog、news 等）
 - 文件和目录名一律小写，且只允许：数字、小写字母、横杠（优先）、下划线（谨慎）、小数点（仅用于版本号），不允许中文或特殊字符
-- 排序前缀（`NN-` / `yyyymmdd-`）只用于文件系统排序，不进入最终 URL，由 `rewrites` 在构建期去除（见 §12.1）
 - 图片统一放在 `public/assets/images/<栏目>/`，用绝对路径 `/assets/images/...` 引用（正文 `<img>` 与 `frontmatter` 的 `cover`/`gallery` 均如此）
 - 图片文件名应使用有意义的英文小写 slug，去掉自动生成的时间戳前缀（如 `image-20260623150217001.png` → `sim-main.png`）
 - 下载类文件：固件 `.bin` 放 `public/assets/files/`、脚本 `.bat` 放 `public/assets/scripts/`，均用绝对路径 `/assets/files/...`、`/assets/scripts/...` 引用
 
-## 6. 标题与排序
+## 6. 名称、排序和路由
 
-### 6.1 标题
+以下的名称、排序和路由主要用于侧边栏、面包屑导航等。
 
-- 文件夹标题：优先取 `index.md` 的 `frontmatter.shortTitle` > `frontmatter.title` > 一级标题 > 目录名去掉排序前缀
-- 文档页面标题：优先取 `frontmatter.shortTitle` > `frontmatter.title` > 一级标题 > 文件名去掉排序前缀
-- `shortTitle`（展示短标题）可选，用于卡片、侧边栏、面包屑、详情 H1 等展示场景，未填写时回退到 `title`
-- SEO/浏览器标题（`<title>`）由 VitePress 依据 `frontmatter.title` 生成
-- 建议每个页面都显式写 `frontmatter.title`，并尽量与文件命名保持一致
-- 标题尽量与目录名语义匹配，体现栏目和内容主题，不要出现重复或过度泛化
+> **核心原则：`permalink` 只决定 URL（链接），不改变栏目/分类归属；侧边栏、面包屑等导航一律按物理路径（源文件目录）划分栏目。**
 
-### 6.2 排序
+### 6.1 栏目
 
-- 文件夹排序：优先取 `index.md` 的 `frontmatter.order`，再比较目录名前缀
-- 文档页面排序：优先取 `frontmatter.order`，再比较文件名前缀
-- `frontmatter.order`（越小越靠前），相同时继续比较排序前缀，仍相同时按完整路径稳定排序
-- `两位整数` 是时间不敏感栏目（比如 product、solution等）的排序前缀，按照从小到大排序
-- `yyyymmdd` 是时间敏感类型栏目（比如 blog、news等）的排序前缀，按时间倒序排列
+- 栏目的名称，获取优先级：`index.md.frontmatter.shortTitle` > `index.md.frontmatter.title` > `index.md.一级标题` > `文件夹名（除去排序前缀）`
+- 栏目的排序，获取优先级：`index.md.frontmatter.order` > `栏目文件夹的排序前缀`，且按照从小到大排序
+- 栏目的链接，获取 `index.md.frontmatter.permalink` > `栏目文件夹路由（去除排序前缀）`；如果 `index.md.frontmatter.permalink` 是相对地址，则需要根据上级栏目的链接进行拼接。`index.md` 自身文件名恒为 `index`（落在 `<栏目路由>/index.html`），其 `permalink` 只决定栏目路由
 
-说明：
+### 6.2 页面
 
-- `frontmatter.date` 仅用于显示，不参与排序，`date` 不覆盖文件名中的日期排序前缀。
+- 页面的名称，获取优先级：`frontmatter.shortTitle` > `frontmatter.title` > `一级标题` > `页面文件名（除去排序前缀）`，优先级从高到低。
+- 页面的排序，获取优先级：`frontmatter.order` > `页面文件的排序前缀`，`xx` 按照从小到大排序，`yyyymmdd` 是页面创建日期，按照倒序排列（倒序当前未实现，待办）
+- 页面的链接，获取优先级：`frontmatter.permalink` > `页面文件的物理路由`，物理路由需要去掉排序前缀；如果 `frontmatter.permalink` 是相对地址，则需要根据上级栏目的链接进行拼接
+- 页面的分类，获取优先级：`frontmatter.category` > `上级栏目的名称`
 
 ## 7. 栏目设计与内容模型
 
@@ -138,46 +136,37 @@ nextpilot-official-website/
 
 - 栏目定位与页面类型
 - 目录结构与分组方式
-- 标题来源与展示规则
-- 排序与筛选规则
+- 页面布局与展示规则
 - 关键约束与待办状态
 
 ### 7.1 关于我们 / 解决方案
 
-- 定位：`about` 与 `solution` 都属于静态页面栏目，分别用于品牌介绍与解决方案概览。
+- 栏目定位：`about` 与 `solution` 都属于静态页面栏目，分别用于品牌介绍与解决方案概览。
 - 目录规则：均采用扁平结构：`<栏目>/<xx-page.md>`，每个页面对应一个单独文档，不做深层嵌套。
-- 标题规则：`about` 侧边栏条目优先取 `frontmatter.title`，其次取文件名去掉排序前缀；`solution` 列表页标题优先取 `frontmatter.title`，否则回退到文件名去掉排序前缀。
-- 排序规则：统一以 `frontmatter.order` 为主，再按文件名排序前缀排序。
-- 约束：`about` 使用自动 sidebar；`solution` 列表页使用 `layout: solution`（`.vitepress/theme/SolutionLayout.vue`），布局自动读取同名数据加载器 `.vitepress/theme/SolutionLayout.data.mts` 渲染方案卡片网格，不显示侧边栏。
+- 约束条件：`about` 使用自动 sidebar；`solution` 列表页使用 `layout: solution`（`.vitepress/theme/SolutionLayout.vue`），布局自动读取同名数据加载器 `.vitepress/theme/SolutionLayout.data.mts` 渲染方案卡片网格，不显示侧边栏。
 
 ### 7.2 产品中心
 
-- 定位：`product` 是产品展示栏目，采用列表页 + 详情页结构。
-- 目录规则：产品目录结构为 `product/<xx-category>/<yy-product.md>`，`xx` 与 `yy` 为两位整数排序前缀；分类目录为 `aircraft`、`autopilot`、`datalink`、`navigator`、`peripheral`。
-- 标题规则：分类标识（slug，用于筛选）优先取 `frontmatter.category`，否则用目录名去掉排序前缀；分类显示名优先取 `index.md` 的 `frontmatter.title`，否则目录名去掉排序前缀；产品名优先取 `frontmatter.title`，其次一级标题，再退回文件名去掉排序前缀。
-- 排序规则：分类排序优先取 `index.md` 的 `frontmatter.order`，再比较目录名前缀；产品排序优先取 `frontmatter.order`，再比较文件名前缀。
-- 过滤规则：列表页必须过滤 `index.md` 和 `draft: true`，并支持按分类筛选与全文搜索；分类筛选不能使用 `tags`。
-- 约束：卡片展示依赖 `title / cover / summary / price / tags` 等 frontmatter，未填写字段不显示；路由优先使用 `frontmatter.permalink`，否则回退文件路径。
-- 布局：产品详情页使用 `layout: product` 自定义布局（`.vitepress/theme/ProductLayout.vue`），左侧图库 + 右侧摘要（标题/简介/价格/CTA），下方渲染详细正文；正文不写首行 `# 标题`（标题由 `frontmatter.title` 在布局中渲染）。
-- 列表页布局：产品列表页（`product/index.md`）使用 `layout: catalog`（`.vitepress/theme/CatalogLayout.vue`），布局自动读取同名数据加载器 `.vitepress/theme/CatalogLayout.data.mts` 并按当前目录分类过滤后渲染产品卡片网格（搜索 + 分类筛选 + 卡片网格内联在布局中），无需在 md 里写 `<script setup>`；`product/<category>/index.md` 若同样声明 `layout: catalog`，则自动只展示该分类。加载器以 `frontmatter.layout === 'product'` 识别产品详情页，不绑定栏目目录。
+- 栏目定位：`product` 是产品展示栏目，采用列表页 + 详情页结构。
+- 目录规则：`product/xx-subcolumn/yy-markdown.md`，其中产品子栏目 `subcolumn` 包括 `aircraft`、`autopilot`、`datalink`、`navigator`、`peripheral`。
+- 过滤规则：必须过滤 `index.md` 和 `draft: true`，并支持按分类筛选与全文搜索，分类筛选不能使用 `tags`。
+- 约束条件：卡片展示依赖 `frontmatter` 中 `title / cover / summary / price / tags` 等，未填写字段不显示。
+- 列表布局：产品列表页（`product/index.md`）使用 `layout: catalog`（`.vitepress/theme/CatalogLayout.vue`），布局自动读取同名数据加载器 `.vitepress/theme/CatalogLayout.data.mts` 并按当前栏目过滤后渲染产品卡片网格（搜索 + 分类筛选 + 卡片网格内联在布局中）；`product/<subcolumn>/index.md` 若同样声明 `layout: catalog`，则自动只展示子栏目中的产品。加载器以 `frontmatter.layout === 'product'` 识别产品详情页，不绑定文件夹。
+- 详情布局：产品详情页使用 `layout: product` 自定义布局（`.vitepress/theme/ProductLayout.vue`），左侧图库 + 右侧摘要（标题 / 简介 / 价格 / CTA），下方渲染详细正文；正文不写首行 `# 标题`（标题由 `frontmatter.title` 在布局中渲染）。
 - 正文 tabs：正文中每个二级标题（`##`）会自动折叠为一个 tab（由 `.vitepress/markdown/plugin-heading-tab.mts` 插件在构建期生成，对声明 `layout: product` 的页面生效）；少于两个二级标题时不生成 tab。
 
 ### 7.3 用户手册 / 开发指南 / 社区支持
 
-- 定位：`manual`、`develop`、`community` 属于 `docs` 类型，主要展示文档内容和知识库。
-- 目录规则：通常使用 `manual/<xx-group>/<yy-docs.md>`、`develop/<...>` 的层级结构，`index.md` 仅用作分组首页。
-- 标题规则：分组标题优先取 `index.md` 的 `frontmatter.title`，其次取目录名去掉排序前缀；条目标题优先取 `frontmatter.title`，其次一级标题，再退回文件名去掉排序前缀。
-- 排序规则：分组排序优先取 `index.md` 的 `frontmatter.order`，其次目录名前缀；条目排序优先取 `frontmatter.order`，其次文件名前缀。
-- 约束：侧边栏仅展示实际文档条目，不显示 `index.md`；左侧自动生成 sidebar，右侧显示 TOC；路由优先使用 `frontmatter.permalink`，否则回退到文件路径。
+- 栏目定位：顶级 `manual`（产品导向）与顶级 `opensource`（其下含 `community` / `develop` / `guide` 子栏目）都属于 `docs` 类型，主要展示文档内容和知识库。
+- 目录规则：`manual/<xx-subcolumn>/<yy-markdown.md>`，`index.md` 仅用作子栏目首页，并提供子栏目所需的 `frontmatter`。
+- 约束条件：侧边栏仅展示实际文档条目，不显示 `index.md`；左侧自动生成 sidebar，右侧显示 TOC。
 
 ### 7.4 新闻资讯 / 博客
 
-- 定位：`news` 与 `blog` 属于 `post` 类型，用于发布文章与更新信息。
-- 目录规则：目录结构类似 `news/<xx-category>/<yyyymmdd-post.md>` 和 `blog/<xx-category>/<yyyymmdd-post.md>`，`index.md` 仅用于分类标题和排序，不作为文章页面。
-- 标题规则：分类标识（slug，用于筛选）优先取 `frontmatter.category`，否则用目录名去掉排序前缀；分类显示名优先取 `index.md` 的 `frontmatter.title`，否则目录名去掉排序前缀；文章标题优先使用 `frontmatter.title`，其次一级标题，再退回文件名去掉排序前缀。
-- 排序规则：分类排序优先取 `index.md` 的 `frontmatter.order`，其次目录名前缀；文章排序优先用 `frontmatter.order`，其次文件名前缀；时间型栏目按 `yyyymmdd` 倒序排列。
+- 栏目定位：`news` 与 `blog` 属于 `post` 类型，用于发布文章与更新信息。
+- 目录规则：`news/<xx-subcolumn>/<yyyymmdd-markdown.md>`，`index.md` 仅用作子栏目首页，并提供子栏目所需的 `frontmatter`。
 - 展示规则：文章列表页可提取 `title / cover / summary / tags / date / author` 等字段；列表页必须过滤 `index.md` 和 `draft: true`。
-- 约束：`news` 当前仍为待建栏目，不接入 nav，也不实现列表页；`blog` 为正式栏目，支持分类和 tags 过滤。
+- 约束条件：`news` 当前仍为待建栏目，不接入 nav，也不实现列表页；`blog` 为正式栏目，支持分类和 tags 过滤。
 
 ### 7.5 其他栏目
 
@@ -224,15 +213,21 @@ helpUrl: /manual/xxx
 
 必须遵守：
 
-- `Frontmatter` 并非必须项，但推荐显式填写
-- `permalink` 必须以 `/` 开头且不带 `.html`，例如 `/manual/foo`
+- `title` SEO / 浏览器标题
+- `description` SEO / 浏览器描述
+- `permalink` 如果是相对地址，则需要根据上级栏目的链接进行拼接
 - `draft: true` 在开发环境允许预览，但构建和列表页必须排除草稿，未填写 `draft` 时按正式内容处理
+- `category` 分类，主要用于分类筛选
 - `tags` 不用于产品分类筛选
 - `date` 仅用于显示，不参与排序
-- `gallery`（图片数组）用于产品详情页多图图库，优先于单张 `cover`；`shopUrl`（外部购买链接）可选，未填写则不显示「立即购买」按钮
-- `helpUrl`（帮助文档链接）可选，用于产品列表卡片的「帮助」按钮，未填写时回退到 `/manual/`
-- `shortTitle`（展示短标题）可选，用于卡片/侧边栏/面包屑/详情 H1，未填写时回退到 `title`
+- `author` 作者，用于文章/博客的列表展示（可选）
+- `shortTitle`（展示短标题）可选，用于卡片、侧边栏、面包屑、详情 H1 等展示场景，未填写时回退到 `title`
 - `summary`（列表卡片/详情页摘要）未填写时回退到 `description`
+- `cover` 列表卡片的封面图片
+- `gallery`（图片数组）用于产品详情页多图图库，优先于单张 `cover`；
+- `price` 价格，用于产品列表卡片与详情页（可选）
+- `shopUrl`（外部购买链接）可选，未填写使用默认链接 `https://shop103678810.taobao.com`
+- `helpUrl`（帮助文档链接）可选，用于产品列表卡片的「帮助」按钮，未填写时回退到 `/manual/`
 
 ## 9. 写作规范
 
@@ -247,7 +242,7 @@ helpUrl: /manual/xxx
 
 ## 10. 链接规范
 
-- 页面内链接尽量使用相对路径，省略 `.md` 和 `.html` 扩展名
+- 页面内链接统一使用**物理路径（含排序前缀）**，且尽量用相对路径：文件链接带 `.md`（如 `../03-quickstart/01-preparation.md`），目录/栏目链接用尾斜杠（如 `../../../download/`，不带 `index.md`）
 - 站内链接建议保证可解析，不要出现死链或错链
 
 ## 11. 国际化
@@ -270,8 +265,9 @@ helpUrl: /manual/xxx
 - 通用 tab 组：`::: tabs` 容器内每个 `@tab 标题` 行折叠为一个 tab（由 `.vitepress/markdown/plugin-markdown-tab.mts` 的 block rule 生成，任意页面可用），语法为 `::: tabs` / `@tab 标题` / 内容 / `:::`；也可在 `::: tabs` 后指定自定义分隔符（如 `::: tabs ===`、`::: tabs ##`）
 - 卡片容器：`::: xxx-card` 按类型渲染不同卡片（由 `.vitepress/markdown/plugin-markdown-card.mts` 生成），内容为 YAML 代码块包裹的卡片列表；当前支持图文卡片 `::: image-card`（cover / link / name / desc / author / avatar）、链接卡片 `::: link-card`（link / name / desc）、产品卡片 `::: product-card`（cover / link / name / summary / price / category / shopUrl / helpUrl，样式同产品列表卡片）
 - 若开启 `cleanUrls`，会导致静态托管环境下出现 404，故必须保持 `cleanUrls` 关闭；非首页页面仍产出 `xxx.html`
-- 通过 VitePress 的 `rewrites`（函数形式 `(id: string) => string`）去除 URL 中的排序前缀：`buildRewrites()` 接收相对 `srcDir` 的源路径（含 `.md`），返回去前缀的目标路径（含 `.md`），VitePress 自动转 `.html`（如 `guide/03-quickstart/01-preparation.md` → `/guide/quickstart/preparation.html`）
-- `rewrites` 只改页面真实 URL，不自动改写 markdown 内链与 frontmatter 裸 URL：`docsSidebar()` 生成的链接、正文内链、frontmatter 的 `link:` 都必须手动写成去前缀后的干净路径，否则会死链
+- 通过 VitePress 的 `rewrites` 实现真实路由：`/manual/foo` → `manual/foo.md`（去前导 `/`、补 `.md`），否则会生成无扩展名文件
+- 路由解析统一经 `rewrites.mts`：`resolvePageUrl()` 产出含 `.md` 的最终路径（供 `rewrites` 与正文内链），`resolvePageRoute()` 产出无扩展名的干净路由（供侧边栏），二者都支持绝对/相对 `permalink`
+- 侧边栏与面包屑按物理路径划分栏目：侧边栏用 `docsSidebars()`（内部 `sectionRoutes()` 收集被 permalink 逃逸出栏目根的子栏目路由，仍映射回所属栏目侧边栏）；面包屑用 `Breadcrumb.data.mts` 按物理目录层级构建，二者都不受 permalink 的 URL 影响
 
 ### 12.2 内容处理原则
 
