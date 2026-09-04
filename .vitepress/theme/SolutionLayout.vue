@@ -56,7 +56,7 @@ const grid = computed(() => {
 <style scoped>
 .solution-layout {
   margin: 0 auto;
-  padding: 24px 24px 96px;
+  padding: 24px 24px 32px;
 }
 .solution-layout :deep(.vp-doc) {
   max-width: none;
@@ -65,13 +65,13 @@ const grid = computed(() => {
 /* 与 VPDoc 页面保持一致的上/下/左右留白 */
 @media (min-width: 768px) {
   .solution-layout {
-    padding: 24px 32px 128px;
+    padding: 24px 32px 32px;
   }
 }
 
 @media (min-width: 960px) {
   .solution-layout {
-    padding: 24px 64px 128px;
+    padding: 24px 64px 32px;
   }
 }
 

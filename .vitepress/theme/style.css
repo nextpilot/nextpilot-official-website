@@ -12,6 +12,11 @@
   padding-top: 24px !important;
 }
 
+/* 首页默认在内容与页脚之间预留较大间距，收紧首页底部留白 */
+.VPHome {
+  margin-bottom: 32px !important;
+}
+
 /* 通用 `::: tabs` 容器（plugin-markdown-tab 插件生成） */
 .markdown-tab {
   margin: 16px 0;

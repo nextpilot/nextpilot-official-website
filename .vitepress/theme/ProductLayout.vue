@@ -87,19 +87,19 @@ onBeforeUnmount(() => document.removeEventListener('click', onTabClick))
 <style scoped>
 .product-layout {
   margin: 0 auto;
-  padding: 24px 24px 96px;
+  padding: 24px 24px 32px;
 }
 
 /* 与 VPDoc 页面保持一致的上/下/左右留白（桌面端 VPDoc 为 .VPDoc 32px + .content 32px 双层 padding） */
 @media (min-width: 768px) {
   .product-layout {
-    padding: 24px 32px 128px;
+    padding: 24px 32px 32px;
   }
 }
 
 @media (min-width: 960px) {
   .product-layout {
-    padding: 24px 64px 128px;
+    padding: 24px 64px 32px;
   }
 }
 
