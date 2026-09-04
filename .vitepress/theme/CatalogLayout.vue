@@ -41,30 +41,30 @@ const t = computed(() =>
       },
 )
 
-// 从当前路径提取分类：/product/<cat>/ → <cat>，/product/ → 空（全部）
-const category = computed(() => {
+// 从当前路径提取所属子栏目（栏目分组键）：/product/<子栏目>/ → <子栏目>，/product/ → 空（全部）
+const column = computed(() => {
   const rel = (page.value.relativePath || '').replace(/\\/g, '/')
   const m = rel.match(/^product\/([^/]+)\/index\.md$/)
-  if (m) return m[1]
+  if (m) return m[1].replace(/^\d+-/, '') // 去排序前缀（如 `01-autopilot` → `autopilot`）
   // 回退到路由解析（处理 cleanUrls/语言前缀等差异）
   let p = route.path.replace(/\.html$/, '')
   if (p !== '/') p = p.replace(/\/+$/, '')
   const segs = p.split('/').filter(Boolean)
   if (segs[0] === 'en') segs.shift()
-  return segs.length > 1 && segs[0] === 'product' ? segs[1] : ''
+  return segs.length > 1 && segs[0] === 'product' ? segs[1].replace(/^\d+-/, '') : ''
 })
 
-// 当前分类下的产品（无分类则全部）
+// 当前栏目下的产品（按栏目分组；无栏目则全部）
 const products = computed(() => {
-  if (!category.value) return allProducts
-  return allProducts.filter((p: any) => p.category === category.value)
+  if (!column.value) return allProducts
+  return allProducts.filter((p: any) => p.column === column.value)
 })
 
 // 分类列表：去重，按 categoryOrder 排序
 const categories = computed(() => {
   const map = new Map<string, { slug: string; name: string }>()
   for (const p of products.value) {
-    if (!map.has(p.category)) map.set(p.category, { slug: p.category, name: p.categoryName })
+    if (!map.has(p.categorySlug)) map.set(p.categorySlug, { slug: p.categorySlug, name: p.categoryName })
   }
   return Array.from(map.values())
 })
@@ -73,12 +73,13 @@ const categories = computed(() => {
 const filtered = computed(() => {
   let list = products.value
   if (activeCategory.value) {
-    list = list.filter((p: any) => p.category === activeCategory.value)
+    list = list.filter((p: any) => p.categorySlug === activeCategory.value)
   }
   const q = query.value.trim().toLowerCase()
   if (q) {
     list = list.filter((p: any) => {
-      const haystack = `${p.title} ${p.shortTitle} ${p.summary} ${p.categoryName} ${p.tags.join(' ')} ${p.searchText}`.toLowerCase()
+      const tagText = p.tags.map((t: any) => t.name).join(' ')
+      const haystack = `${p.displayTitle} ${p.summary} ${p.categoryName} ${tagText} ${p.searchText}`.toLowerCase()
       return haystack.includes(q)
     })
   }
@@ -110,15 +111,15 @@ const filtered = computed(() => {
     <div class="product-grid">
       <div v-for="p in filtered" :key="p.url" class="product-card">
         <a :href="p.url" class="card-main">
-          <img v-if="p.cover" :src="p.cover" :alt="p.title" class="card-cover" />
+          <img v-if="p.cover" :src="p.cover" :alt="p.displayTitle" class="card-cover" />
           <div class="card-body">
             <div class="card-title-row">
-              <h3 class="card-title">{{ p.shortTitle || p.title }}</h3>
+              <h3 class="card-title">{{ p.displayTitle }}</h3>
               <span class="card-cat">{{ p.categoryName }}</span>
             </div>
             <p v-if="p.summary" class="card-summary">{{ p.summary }}</p>
             <div v-if="p.tags.length" class="card-tags">
-              <span v-for="t in p.tags" :key="t" class="tag">{{ t }}</span>
+              <span v-for="t in p.tags" :key="t.slug" class="tag">{{ t.name }}</span>
             </div>
           </div>
         </a>

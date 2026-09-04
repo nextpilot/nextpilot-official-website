@@ -1,6 +1,5 @@
-import { readFileSync } from 'node:fs'
 import { join, posix } from 'node:path'
-import { resolvePageRoute, stripSegmentPrefix } from '../../config/rewrites.mts'
+import { getDisplayTitleFromFile, getFinalUrl, titleFromName } from '../../config/page.mts'
 
 const slash = (p: string) => p.replace(/\\/g, '/')
 const srcDirAbs = slash(process.cwd()).replace(/\/$/, '') + '/source'
@@ -8,37 +7,6 @@ const srcDirAbs = slash(process.cwd()).replace(/\/$/, '') + '/source'
 interface Crumb {
   text: string
   link?: string
-}
-
-/** 解析 md 原始内容的 frontmatter，返回标量字段映射 */
-function parseFrontmatter(raw: string): Record<string, string> {
-  const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)
-  if (!m) return {}
-  const result: Record<string, string> = {}
-  for (const line of m[1].split(/\r?\n/)) {
-    const kv = line.match(/^([A-Za-z_][\w-]*):\s*(.*)$/)
-    if (!kv) continue
-    let val = kv[2].trim()
-    if (val.length >= 2 && ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'")))) {
-      val = val.slice(1, -1)
-    }
-    result[kv[1]] = val
-  }
-  return result
-}
-
-/** 标题：shortTitle > title > 一级标题 */
-function resolveTitle(fm: Record<string, string>, raw: string): string {
-  if (fm.shortTitle) return fm.shortTitle
-  if (fm.title) return fm.title
-  const body = raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '')
-  const h1 = body.match(/^#\s+(.+)$/m)
-  return h1 ? h1[1].trim() : ''
-}
-
-/** 段名兜底：去排序前缀、去 .md，转大写（如 np-fcc-h05 → NP-FCC-H05） */
-function nameFromSegment(seg: string): string {
-  return stripSegmentPrefix(seg.replace(/\.md$/, '')).toUpperCase()
 }
 
 /**
@@ -57,9 +25,8 @@ export default {
       const rel = rels[i]
       if (rel === 'index.md' || !rel.endsWith('/index.md')) continue
       const dir = posix.dirname(rel)
-      const raw = readFileSync(files[i], 'utf-8')
-      dirName[dir] = resolveTitle(parseFrontmatter(raw), raw) || nameFromSegment(posix.basename(dir))
-      dirLink[dir] = '/' + resolvePageRoute(rel)
+      dirName[dir] = getDisplayTitleFromFile(files[i], titleFromName(posix.basename(dir)))
+      dirLink[dir] = '/' + getFinalUrl(rel)
     }
 
     // 每个页面 -> 完整物理面包屑
@@ -75,7 +42,7 @@ export default {
       const ancestorParts = isIndex ? dirParts.slice(0, -1) : dirParts
       for (let s = 0; s < ancestorParts.length; s++) {
         const dir = ancestorParts.slice(0, s + 1).join('/')
-        const text = dirName[dir] || nameFromSegment(ancestorParts[s])
+        const text = dirName[dir] || titleFromName(ancestorParts[s])
         const link = dirLink[dir]
         trail.push(link ? { text, link } : { text })
       }
@@ -84,16 +51,14 @@ export default {
       let current: string
       if (isIndex) {
         const dir = dirParts.join('/')
-        current = dirName[dir] || nameFromSegment(dirParts[dirParts.length - 1] || '')
+        current = dirName[dir] || titleFromName(dirParts[dirParts.length - 1] || '')
       } else {
-        const raw = readFileSync(files[i], 'utf-8')
-        const fm = parseFrontmatter(raw)
-        current = resolveTitle(fm, raw) || nameFromSegment(posix.basename(rel))
+        current = getDisplayTitleFromFile(files[i], titleFromName(posix.basename(rel, '.md')))
       }
       trail.push({ text: current })
 
       // 键：干净路由（去尾斜杠，根为 /）
-      const route = '/' + resolvePageRoute(rel)
+      const route = '/' + getFinalUrl(rel)
       const key = route === '/' ? '/' : route.replace(/\/$/, '')
       trails[key] = trail
     }

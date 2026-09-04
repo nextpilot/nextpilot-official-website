@@ -52,7 +52,7 @@ pnpm docs:preview  # 对应 package.json 中的 vitepress preview
 nextpilot-official-website/
 ├── .vitepress/                     # VitePress 站点配置与主题扩展
 │   ├── config.mts                 # 站点主配置：nav / sidebar / locales / rewrites
-│   ├── config/                    # 配置辅助模块（sidebar / headconfig / rewrites）
+│   ├── config/                    # 配置辅助模块（sidebar / head / page）
 │   ├── markdown/                  # markdown-it 插件
 │   ├── theme/                    # 自定义主题、组件与全局样式
 │   └── ...                       # 其余 VitePress 相关文件
@@ -116,8 +116,12 @@ nextpilot-official-website/
 以下的名称、排序和路由主要用于侧边栏、面包屑导航等。
 
 > **核心原则：`permalink` 只决定 URL（链接），不改变栏目/分类归属；侧边栏、面包屑等导航一律按物理路径（源文件目录）划分栏目。**
+>
+> **link ≠ slug**：栏目/页面才有 `link`（URL 路径），分类/标签才有 `slug`（从名称 slugify 的标识），两者是不同实体的不同字段，不互相替代。
 
 ### 6.1 栏目
+
+栏目只有两个身份字段：**name（名称）** 与 **link（链接）**，另加排序。栏目用于页面组织、不做筛选，因此**无需 slug**，直接用 link 访问。
 
 - 栏目的名称，获取优先级：`index.md.frontmatter.shortTitle` > `index.md.frontmatter.title` > `index.md.一级标题` > `文件夹名（除去排序前缀）`
 - 栏目的排序，获取优先级：`index.md.frontmatter.order` > `栏目文件夹的排序前缀`，且按照从小到大排序
@@ -125,10 +129,16 @@ nextpilot-official-website/
 
 ### 6.2 页面
 
+页面有 **name（名称）** 与 **link（链接）** 两个身份字段，另加排序、所属栏目、分类与标签。
+
 - 页面的名称，获取优先级：`frontmatter.shortTitle` > `frontmatter.title` > `一级标题` > `页面文件名（除去排序前缀）`，优先级从高到低。
 - 页面的排序，获取优先级：`frontmatter.order` > `页面文件的排序前缀`，`xx` 按照从小到大排序，`yyyymmdd` 是页面创建日期，按照倒序排列（倒序当前未实现，待办）
 - 页面的链接，获取优先级：`frontmatter.permalink` > `页面文件的物理路由`，物理路由需要去掉排序前缀；如果 `frontmatter.permalink` 是相对地址，则需要根据上级栏目的链接进行拼接
-- 页面的分类，获取优先级：`frontmatter.category` > `上级栏目的名称`
+- 页面的栏目（所属栏目）：由页面所在的物理目录决定，页面只属于一个栏目；列表展示时按栏目分组。栏目无 slug，直接用 link 访问
+- 页面的分类（`category`，独立属性，仅用于筛选、不决定栏目归属；不同栏目下的页面可拥有同一个分类），借鉴 Hexo：**名称是唯一真相源，slug 由名称 slugify 推导**，不手写 slug：
+  - 分类名（name）：`frontmatter.category` > 子栏目名（`子栏目 index.md` 的 `shortTitle` > `title` > 一级标题 > 目录名去前缀）> `uncategorized`
+  - 分类 slug：`slugify(分类名)`，可经全局 `categoryMap` 覆盖（改 slug 不改名）
+- 页面的标签（`tags`，不参与分类筛选）：标签名 `frontmatter.tags`；标签 slug `slugify(标签名)`，可经全局 `tagMap` 覆盖
 
 ## 7. 栏目设计与内容模型
 
@@ -194,7 +204,7 @@ permalink: /product/fcs-v1
 # --------------------------------
 # 文章短标题、分类、标签、作者和日期
 shortTitle: 短标题
-category: autopilot
+category: 飞控
 tags: [飞控, 仿真]
 author: 作者名
 date: 2026-08-28
@@ -217,8 +227,8 @@ helpUrl: /manual/xxx
 - `description` SEO / 浏览器描述
 - `permalink` 如果是相对地址，则需要根据上级栏目的链接进行拼接
 - `draft: true` 在开发环境允许预览，但构建和列表页必须排除草稿，未填写 `draft` 时按正式内容处理
-- `category` 分类，主要用于分类筛选
-- `tags` 不用于产品分类筛选
+- `category` 分类名（可选），用于分类筛选；未填写时默认取所属子栏目名，无栏目则兜底 `uncategorized`。分类 slug 由名称 slugify 推导，不手写
+- `tags` 标签，不用于产品分类筛选
 - `date` 仅用于显示，不参与排序
 - `author` 作者，用于文章/博客的列表展示（可选）
 - `shortTitle`（展示短标题）可选，用于卡片、侧边栏、面包屑、详情 H1 等展示场景，未填写时回退到 `title`
@@ -266,7 +276,7 @@ helpUrl: /manual/xxx
 - 卡片容器：`::: xxx-card` 按类型渲染不同卡片（由 `.vitepress/markdown/plugin-markdown-card.mts` 生成），内容为 YAML 代码块包裹的卡片列表；当前支持图文卡片 `::: image-card`（cover / link / name / desc / author / avatar）、链接卡片 `::: link-card`（link / name / desc）、产品卡片 `::: product-card`（cover / link / name / summary / price / category / shopUrl / helpUrl，样式同产品列表卡片）
 - 若开启 `cleanUrls`，会导致静态托管环境下出现 404，故必须保持 `cleanUrls` 关闭；非首页页面仍产出 `xxx.html`
 - 通过 VitePress 的 `rewrites` 实现真实路由：`/manual/foo` → `manual/foo.md`（去前导 `/`、补 `.md`），否则会生成无扩展名文件
-- 路由解析统一经 `rewrites.mts`：`resolvePageUrl()` 产出含 `.md` 的最终路径（供 `rewrites` 与正文内链），`resolvePageRoute()` 产出无扩展名的干净路由（供侧边栏），二者都支持绝对/相对 `permalink`
+- 页面元数据统一经 `.vitepress/config/page.mts`：`getUrl()` 取 link（无扩展名）、`resolvePageUrl()` 取含 `.md` 的最终路径（供 `rewrites` 与正文内链），二者都支持绝对/相对 `permalink`；`getDisplayTitle()` 取显示标题，`getCategoryName()` / `getCategorySlug()` / `getTagSlug()` 取分类/标签的 name / slug（经全局 `categoryMap` / `tagMap`）
 - 侧边栏与面包屑按物理路径划分栏目：侧边栏用 `docsSidebars()`（内部 `sectionRoutes()` 收集被 permalink 逃逸出栏目根的子栏目路由，仍映射回所属栏目侧边栏）；面包屑用 `Breadcrumb.data.mts` 按物理目录层级构建，二者都不受 permalink 的 URL 影响
 
 ### 12.2 内容处理原则

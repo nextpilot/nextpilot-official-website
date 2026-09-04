@@ -32,6 +32,9 @@ importers:
       prettier:
         specifier: ^3.9.6
         version: 3.9.6
+      transliteration:
+        specifier: ^2.6.1
+        version: 2.6.1
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -1562,6 +1565,11 @@ packages:
 
   tr46@0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
+
+  transliteration@2.6.1:
+    resolution: {integrity: sha512-hJ9BhrQAOnNTbpOr1MxsNjZISkn7ppvF5TKUeFmTE1mG4ZPD/XVxF0L0LUoIUCWmQyxH0gJpVtfYLAWf298U9w==}
+    engines: {node: '>=20.0.0'}
+    hasBin: true
 
   trim-lines@3.0.1:
     resolution: {integrity: sha512-kRj8B+YHZCc9kQYdWfJB2/oUl9rA99qbowYYBtr4ui4mZyAQ2JpvVBd/6U2YloATfqBhBTSMhTpgBHtU0Mf3Rg==}
@@ -3392,6 +3400,8 @@ snapshots:
       is-number: 7.0.0
 
   tr46@0.0.3: {}
+
+  transliteration@2.6.1: {}
 
   trim-lines@3.0.1: {}
 

@@ -1,52 +1,14 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import type { DefaultTheme } from 'vitepress'
-import { resolvePageRoute, stripSegmentPrefix } from './rewrites.mts'
+import { getDisplayTitleFromFile, getFinalUrl, parseFrontmatter, titleFromName } from './page.mts'
 
 type SidebarItem = DefaultTheme.SidebarItem
-
-/** 解析 md 原始内容的 frontmatter，返回标量字段映射（无 frontmatter 时返回空对象） */
-function parseFrontmatter(raw: string): Record<string, string> {
-  const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)
-  if (!match) return {}
-  const result: Record<string, string> = {}
-  for (const line of match[1].split(/\r?\n/)) {
-    const m = line.match(/^([A-Za-z_][\w-]*):\s*(.*)$/)
-    if (!m) continue
-    let val = m[2].trim()
-    if (val.length >= 2 && ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'")))) {
-      val = val.slice(1, -1)
-    }
-    result[m[1]] = val
-  }
-  return result
-}
 
 /** 读取 md 文件的 frontmatter */
 function readFrontmatter(filePath: string): Record<string, string> {
   if (!existsSync(filePath)) return {}
   return parseFrontmatter(readFileSync(filePath, 'utf-8'))
-}
-
-/** 解析展示标题：frontmatter.shortTitle > title > 一级标题（# ...） */
-function resolveTitle(fm: { title?: string; shortTitle?: string } | undefined, content: string): string {
-  if (fm?.shortTitle) return fm.shortTitle
-  if (fm?.title) return fm.title
-  const body = content.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '')
-  const m = body.match(/^#\s+(.+)$/m)
-  return m ? m[1].trim() : ''
-}
-
-/** 读取展示标题：frontmatter.shortTitle > title > 一级标题，缺失返回空串（由调用方回退文件名/目录名） */
-function readTitle(filePath: string): string {
-  if (!existsSync(filePath)) return ''
-  const raw = readFileSync(filePath, 'utf-8')
-  return resolveTitle(parseFrontmatter(raw), raw)
-}
-
-/** 文件名/目录名作为兜底标题：去排序前缀并转大写（如 np-fcc-h05 → NP-FCC-H05） */
-function titleFromName(name: string): string {
-  return stripSegmentPrefix(name).toUpperCase()
 }
 
 /** 提取排序前缀数字，无前缀返回 Infinity（排最后） */
@@ -126,20 +88,20 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
         prefix: sortPrefixOf(name),
         path: name,
         item: {
-          text: readTitle(full) || titleFromName(basename(name, '.md')),
-          link: `/${resolvePageRoute(`${section}/${relDir}/${name}`)}`,
+          text: getDisplayTitleFromFile(full, titleFromName(basename(name, '.md'))),
+          link: `/${getFinalUrl(`${section}/${relDir}/${name}`)}`,
         },
       })
     }
   }
 
   const group: SidebarItem = {
-    text: readTitle(join(dirPath, 'index.md')) || titleFromName(basename(dirPath)),
+    text: getDisplayTitleFromFile(join(dirPath, 'index.md'), titleFromName(basename(dirPath))),
     items: sortEntries(children),
     // 顶层分组展开，嵌套子分组默认折叠
     collapsed: depth > 0,
   }
-  if (hasIndex) group.link = `/${resolvePageRoute(`${section}/${relDir}/index.md`)}`
+  if (hasIndex) group.link = `/${getFinalUrl(`${section}/${relDir}/index.md`)}`
   return group
 }
 
@@ -176,8 +138,8 @@ export function docsSidebar(srcDir: string, section: string): SidebarItem[] {
         prefix: sortPrefixOf(name),
         path: name,
         item: {
-          text: readTitle(full) || titleFromName(basename(name, '.md')),
-          link: `/${resolvePageRoute(`${section}/${name}`)}`,
+          text: getDisplayTitleFromFile(full, titleFromName(basename(name, '.md'))),
+          link: `/${getFinalUrl(`${section}/${name}`)}`,
         },
       })
     }
@@ -209,7 +171,7 @@ export function sectionRoutes(srcDir: string, section: string): string[] {
   const base = join(process.cwd(), srcDir, section)
   if (!existsSync(base)) return []
 
-  const columnRoute = '/' + resolvePageRoute(`${section}/index.md`)
+  const columnRoute = '/' + getFinalUrl(`${section}/index.md`)
   const prefixes = [columnRoute]
 
   const walk = (dirPath: string, relDir: string) => {
@@ -217,7 +179,7 @@ export function sectionRoutes(srcDir: string, section: string): string[] {
       const full = join(dirPath, name)
       if (!statSync(full).isDirectory() || !hasAnyMd(full)) continue
       const childRel = relDir ? `${relDir}/${name}` : name
-      const route = '/' + resolvePageRoute(`${section}/${childRel}/index.md`)
+      const route = '/' + getFinalUrl(`${section}/${childRel}/index.md`)
       // 仍在栏目根路由下的子目录已被栏目根覆盖，只额外注册逃逸出去的路由
       if (!route.startsWith(columnRoute)) prefixes.push(route)
       walk(full, childRel)

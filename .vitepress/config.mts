@@ -5,8 +5,8 @@ import { headingTab } from './markdown/plugin-heading-tab.mts';
 import { markdownTab } from './markdown/plugin-markdown-tab.mts';
 import { markdownCard } from './markdown/plugin-markdown-card.mts';
 import { rewriteLink } from './markdown/plugin-rewrite-link.mts';
-import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/headconfig.mts';
-import { buildRewrites } from './config/rewrites.mts';
+import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/head.mts';
+import { buildRewrites } from './config/page.mts';
 
 // 内容源目录（相对项目根），作为 srcDir 配置项并传给 docsSidebar
 const srcDir = 'source';
@@ -31,7 +31,7 @@ export default defineConfig({
     ...redirectHead,
     ...baiduAnalyticsHead,
   ],
-  // 按页注入 canonical（见 config/headconfig.mts，与 sitemap 共用 SITE_URL）
+  // 按页注入 canonical（见 config/head.mts，与 sitemap 共用 SITE_URL）
   transformHead: canonicalHead,
   // 内容源目录与构建输出目录
   srcDir,
@@ -58,7 +58,7 @@ export default defineConfig({
   // 下载页脚本链接指向 .bat 文件，VitePress 无法识别该扩展名为静态资源，故忽略死链检查
   ignoreDeadLinks: ['/assets/scripts/start-qemu.bat', '/assets/scripts/extract-sd.bat'],
 
-  // 去掉 URL 中的排序前缀（见 config/rewrites.mts）
+  // 去掉 URL 中的排序前缀（见 config/page.mts）
   rewrites: buildRewrites,
 
   // 数学公式支持（LaTeX，通过 markdown-it-mathjax3）

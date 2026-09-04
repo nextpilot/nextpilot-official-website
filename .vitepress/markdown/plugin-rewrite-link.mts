@@ -1,5 +1,5 @@
 import { posix } from 'node:path'
-import { resolvePageUrl } from '../config/rewrites.mts'
+import { getFileUrl } from '../config/page.mts'
 
 // 内容源目录的绝对路径（POSIX 风格），用于把内链目标解析为相对 srcDir 的源路径
 const slash = (p: string) => p.replace(/\\/g, '/')
@@ -70,5 +70,5 @@ function rewriteHref(href: string, currentDir: string): string {
     : posix.relative(srcDirAbs, posix.normalize(posix.join(currentDir, target)))
 
   // 解析最终 URL（permalink > 去前缀），保留 .md 交给 VitePress normalizeHref 转 .html / 目录
-  return '/' + resolvePageUrl(srcPath) + suffix
+  return '/' + getFileUrl(srcPath) + suffix
 }
