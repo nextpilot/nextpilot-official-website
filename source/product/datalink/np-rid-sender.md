@@ -11,8 +11,9 @@ cover: /assets/images/product/datalink/np-rid-sender-gh-board.png
 gallery:
   - /assets/images/product/datalink/np-rid-sender-gh-board.png
   - /assets/images/product/datalink/np-rid-sender-gh-appearance.png
-shopUrl: https://shop103678810.taobao.com/category.htm?spm=pc_detail.30350276.shop_block.dshopinfo.52f17dd6b1ptE2
+shopUrl: https://item.taobao.com/item.htm?id=1074097497449&mi_id=0000KHD5urOB5ulWhlh0CZLkO54UwXlaqMXVS7sOhyvD7lY
 helpUrl: /manual/datalink/np-rid-sender
+price: 120
 ---
 
 ## 产品说明
@@ -291,7 +292,7 @@ param set GB_OP_CATEGORY 1
 
 设置完成后，请重启 RID 设备。
 
-### RID模拟功能 
+### RID模拟功能
 
 在没有连接无人机飞控设备的条件下，如果需要进行测试，可使用该产品模拟一个 RID。配置步骤如下：
 

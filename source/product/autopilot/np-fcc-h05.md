@@ -12,7 +12,9 @@ gallery:
   - /assets/images/product/autopilot/fcc-top-view1.png
   - /assets/images/product/autopilot/fcc-top-view2.png
   - /assets/images/product/autopilot/fcc-front-view.png
+shopUrl: https://item.taobao.com/item.htm?id=1078259392427&mi_id=0000kVvYjeoXOjmKVeSKVECULjU0BgsEFFfI0utrg7SCuqo
 helpUrl: /manual/autopilot/np-fcc-h05
+price: 56999
 ---
 
 ## 产品详情
@@ -243,9 +245,8 @@ NP-FCC-H05 是 NextPilot 团队研发的高性能、工业级、一体化导航�
 `NP-FCC-H05` 系列飞控采用两块 `STM32H7` 的主控芯片，分别运行飞行控制程序和惯性导航程序，故我们提供了两个固件（飞控固件、导航固件），需要分别通过 `FCS-USB` 下载飞控固件、通过 `AHRS-USB` 下载导航固件。
 
 ::: warning
-
 > 由于两个主控芯片相同，很容易搞混，下载前一定要注意，根据固件类型选择对应的 USB 烧写！！！两个 USB 连接方式请参考产品说明。
-> :::
+:::
 
 ### 飞控固件
 

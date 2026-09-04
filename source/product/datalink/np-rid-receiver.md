@@ -8,8 +8,9 @@ description: >-
   可通过串口输出 MAVLink 或 GB46750 协议数据至监管软件系统。
 summary: 广播式无人机运行识别接收器，满足GB 46750-2025，支持WiFi/蓝牙广播接收，串口输出MAVLink/GB46750协议
 cover: /assets/images/product/datalink/NP-RID-Receiver-S3-PinWX.png
-shopUrl: https://shop103678810.taobao.com/category.htm?spm=pc_detail.30350276.shop_block.dshopinfo.52f17dd6b1ptE2
+shopUrl: https://item.taobao.com/item.htm?id=1080770176626&mi_id=0000I6qNljnOrxWQA_s_anzovO7YazA6_WVTqM4mrHshyjM
 helpUrl: /manual/datalink/np-rid-receiver
+price: 199
 ---
 
 ## 产品详情
