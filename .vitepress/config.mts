@@ -14,8 +14,8 @@ const srcDir = 'source';
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   // 站点基本信息：标题 / SEO 描述 / 默认语言
-  title: 'NextPilot 一款面向教育、研究与工业等领域的国产先进自动驾驶仪',
-  description: 'NextPilot 国产开源先进自动驾驶仪（飞控系统），基于 RT-Thread 实时操作系统、核心算法移植自 PX4，支持多旋翼、固定翼、垂起复合翼，面向教育、科研与工业应用',
+  title: 'NextPilot 让飞控更开放，让开发更高效，让设计更专注',
+  description: 'NextPilot 致力于为大家提供一套简易、高效、可靠和开放的无人系统方案和产品，能够便捷的应用于教育、科研和工业等领域，让工程师专注于自己的擅长领域进行高效的开发。其中 NextPilot Flight Control 是一款基于 RT-Thread 实时操作系统、核心算法移植自 PX4 的国产先进自动驾驶仪，支持多旋翼、固定翼、垂起复合翼，目前在高等院校、科研院所、工业部门等拥有较为广泛的应用。',
   lang: 'zh-CN',
   // 全局 <head>：favicon + SEO meta（keywords / author）+ 客户端跳转脚本
   head: [
