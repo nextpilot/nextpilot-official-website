@@ -96,6 +96,18 @@
   font-size: 16px;
   font-weight: 600;
 }
+.repo-scope {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 6px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--vp-c-text-2);
+  vertical-align: 2px;
+}
 .repo-card p {
   margin: 0;
   font-size: 14px;
