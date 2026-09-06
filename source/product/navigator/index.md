@@ -1,4 +1,5 @@
 ---
+layout: catalog
 order: 4
 title: 导航传感
 description: >-

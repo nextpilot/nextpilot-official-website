@@ -1,4 +1,5 @@
 ---
+layout: catalog
 order: 3
 title: 通信链路
 description: >-
