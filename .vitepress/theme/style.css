@@ -1,3 +1,10 @@
+/* 桌面端一级下拉菜单按钮可点击跳转栏目首页（跳转逻辑见 Layout.vue 的 onNavGroupClick） */
+@media (min-width: 768px) {
+  .VPNavBarMenuGroup .button {
+    cursor: pointer;
+  }
+}
+
 /* 内容铺满可用宽度，与首页一致（覆盖 VitePress 各层默认 max-width） */
 .VPDoc .container,
 .VPDoc .content,

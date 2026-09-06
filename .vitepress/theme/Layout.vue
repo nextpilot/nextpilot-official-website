@@ -1,10 +1,29 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted } from 'vue'
-import { onContentUpdated } from 'vitepress'
+import { onContentUpdated, useData, useRouter } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import Breadcrumb from './components/Breadcrumb.vue'
 
 const { Layout } = DefaultTheme
+const { theme } = useData()
+const router = useRouter()
+
+// 一级下拉菜单（.VPNavBarMenuGroup，仅桌面端）的按钮点击：跳转到栏目首页。
+// VitePress 下拉组顶级项不能带 link（带了会渲染成普通链接），栏目首页链接由
+// navbar.mts 放在自定义字段 sectionLink 中；移动端为手风琴展开，不走此逻辑。
+function onNavGroupClick(e: MouseEvent) {
+  const target = e.target as HTMLElement
+  const groupEl = target.closest('.VPNavBarMenuGroup') as HTMLElement | null
+  if (!groupEl || !groupEl.querySelector('.button')?.contains(target)) return
+  const menuEl = groupEl.closest('.VPNavBarMenu') as HTMLElement | null
+  if (!menuEl) return
+  const index = Array.from(menuEl.querySelectorAll('.VPNavBarMenuGroup')).indexOf(groupEl)
+  const groups = (theme.value.nav ?? []).filter((item) => 'items' in item) as Array<{
+    sectionLink?: string
+  }>
+  const link = groups[index]?.sectionLink
+  if (link) router.go(link)
+}
 
 // 通用 `::: tabs` 容器切换：事件委托，处理 markdown 渲染出的 `.markdown-tab-btn`
 function onTabsGroupClick(e: MouseEvent) {
@@ -48,8 +67,14 @@ function syncTabsOutline() {
   })
 }
 
-onMounted(() => document.addEventListener('click', onTabsGroupClick))
-onBeforeUnmount(() => document.removeEventListener('click', onTabsGroupClick))
+onMounted(() => {
+  document.addEventListener('click', onTabsGroupClick)
+  document.addEventListener('click', onNavGroupClick)
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('click', onTabsGroupClick)
+  document.removeEventListener('click', onNavGroupClick)
+})
 
 // 内容更新后（含初次渲染）同步 outline，双重 nextTick 保证 outline 已构建
 onContentUpdated(() => {
