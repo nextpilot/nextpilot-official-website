@@ -11,6 +11,7 @@
     "transliteration": "^2.6.1",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.68.0",
+    "vite": "^8.2.2",
     "vitepress": "2.0.0-alpha.19",
     "vitest": "^4.1.11",
     "vue": "^3.5.42",
@@ -19,14 +20,14 @@
   "scripts": {
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview",
-    "format": "prettier --write .",
+    "docs:preview": "vitepress build && vitepress preview",
+    "format:write": "prettier --write .",
     "format:check": "prettier --check .",
+    "lint:code": "eslint .",
     "lint:md": "markdownlint-cli2",
-    "lint": "eslint .",
-    "typecheck": "vue-tsc --noEmit",
-    "test": "vitest run",
+    "type:check": "vue-tsc --noEmit",
+    "test:run": "vitest run",
     "test:watch": "vitest",
-    "check": "pnpm format:check && pnpm lint:md && pnpm lint && pnpm typecheck && pnpm test && pnpm docs:build"
+    "check": "pnpm format:check && pnpm lint:md && pnpm lint:code && pnpm type:check && pnpm test:run && pnpm docs:build"
   }
 }
