@@ -24,6 +24,17 @@
   margin-bottom: 32px !important;
 }
 
+/* 表格占满内容区宽度；列宽仍按内容自适应（保持默认 table-layout:auto，不用 fixed，
+   避免列宽按表头均摊而把窄列压坏）。长链接/长单词在单元格内换行，避免撑破容器。 */
+.vp-doc table {
+  display: table;
+  width: 100%;
+}
+.vp-doc table th,
+.vp-doc table td {
+  overflow-wrap: break-word;
+}
+
 /* 通用 `::: tabs` 容器（plugin-markdown-tab 插件生成） */
 .markdown-tab {
   margin: 16px 0;
