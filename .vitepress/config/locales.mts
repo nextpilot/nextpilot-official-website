@@ -1,4 +1,4 @@
-import type { UserConfig } from 'vitepress'
+import type { DefaultTheme, UserConfig } from 'vitepress'
 import { docsNavbar } from './navbar.mts'
 import { docsSidebars } from './sidebar.mts'
 
@@ -60,8 +60,10 @@ export function buildLocales(srcDir: string): NonNullable<UserConfig['locales']>
   // 其它语言站点的目录名（locales 中非 root 的键，如 en），中文导航扫描时自动跳过
   const localeDirs = Object.keys(locales).filter((key) => key !== 'root')
 
-  // 中文导航与侧边栏：由 source 目录自动扫描生成，新增顶级/二级栏目无需修改配置
-  const rootThemeConfig = locales.root.themeConfig!
+  // 中文导航与侧边栏：由 source 目录自动扫描生成，新增顶级/二级栏目无需修改配置。
+  // locales.root.themeConfig 经 satisfies 推断为较宽松的类型（nav/sidebar 为后续动态填充），
+  // 这里断言为 DefaultTheme.Config 以访问这两个字段。
+  const rootThemeConfig = locales.root.themeConfig as DefaultTheme.Config
   rootThemeConfig.nav = [{ text: '首页', link: '/' }, ...docsNavbar(srcDir, localeDirs)]
   rootThemeConfig.sidebar = docsSidebars(srcDir, sidebarSections)
 
