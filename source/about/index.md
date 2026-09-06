@@ -1,5 +1,6 @@
 ---
-layout: about
+# layout: about
+order: 1
 title: 关于我们
 description: NextPilot 智能无人系统开放平台，专注于飞控、导航、通信与机载智能应用。
 ---

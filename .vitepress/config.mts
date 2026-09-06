@@ -1,6 +1,7 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'vitepress';
-import { docsSidebars } from './config/sidebar.mts';
+import { buildLocales } from './config/locales.mts';
+import { hotRestartPlugin } from './config/hot-restart.mts';
 import { headingTab } from './markdown/plugin-heading-tab.mts';
 import { markdownTab } from './markdown/plugin-markdown-tab.mts';
 import { markdownCard } from './markdown/plugin-markdown-card.mts';
@@ -8,7 +9,7 @@ import { rewriteLink } from './markdown/plugin-rewrite-link.mts';
 import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/head.mts';
 import { buildRewrites } from './config/page.mts';
 
-// 内容源目录（相对项目根），作为 srcDir 配置项并传给 docsSidebar
+// 内容源目录（相对项目根），作为 srcDir 配置项并传给导航/侧边栏/热更新插件
 const srcDir = 'source';
 
 // https://vitepress.dev/reference/site-config
@@ -39,6 +40,10 @@ export default defineConfig({
   // VitePress 2.0 的 publicDir 默认相对 srcDir（source/），这里指回仓库根目录的 public/
   vite: {
     publicDir: '../public',
+    plugins: [
+      // 仅 dev：新增/删除栏目目录或 index.md 时自动重启，让导航结构热更新（见 config/hot-restart.mts）
+      hotRestartPlugin(srcDir),
+    ],
     resolve: {
       alias: {
         '@root': resolve(process.cwd()),
@@ -105,60 +110,6 @@ export default defineConfig({
     },
   },
 
-  // 多语言：root = 简体中文（默认），en = English
-  locales: {
-    root: {
-      label: '简体中文',
-      lang: 'zh-CN',
-      themeConfig: {
-        outline: { label: '本页目录', level: [2, 4] },
-        docFooter: { prev: '上一页', next: '下一页' },
-        editLink: { text: '编辑此页' },
-        lastUpdated: { text: '最后更新于' },
-        returnToTopLabel: '回到顶部',
-        sidebarMenuLabel: '菜单',
-        darkModeSwitchLabel: '外观',
-        lightModeSwitchTitle: '切换到浅色主题',
-        darkModeSwitchTitle: '切换到深色主题',
-        langMenuLabel: '切换语言',
-        skipToContentLabel: '跳转到内容',
-        notFound: {
-          title: '页面未找到',
-          quote: '抱歉，您访问的页面不存在或已被移除。',
-          linkLabel: '返回首页',
-          linkText: '回到首页',
-        },
-        footer: {
-          message: '本文档采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> 国际协议，开放共享、转载、修改、商用，但须保留署名来源',
-          copyright: `Copyright © ${new Date().getFullYear()} NextPilot Development Team`,
-        },
-        nav: [
-          { text: '首页', link: '/' },
-          { text: '关于我们', link: '/about/' },
-          // { text: '新闻资讯', link: '/news/' },
-          { text: '解决方案', link: '/solution/' },
-          { text: '产品中心', link: '/product/' },
-          { text: '用户文档', link: '/manual/' },
-          { text: '开源项目', link: '/opensource/' },
-          { text: '资料下载', link: '/download/' },
-          { text: '技术博客', link: '/blog/' },
-        ],
-        sidebar: docsSidebars(srcDir, ['about', 'manual', 'opensource']),
-      },
-    },
-    en: {
-      label: 'English',
-      lang: 'en-US',
-      themeConfig: {
-        editLink: { text: 'Edit this page' },
-        footer: {
-          message:
-            'This documentation is licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>. You are free to share, adapt, and use it commercially, provided you give appropriate credit.',
-          copyright: `Copyright © ${new Date().getFullYear()} NextPilot Development Team`,
-        },
-        nav: [{ text: 'Home', link: '/en/' }],
-        // sidebar: { '/en/docs/': docsSidebar('en') },
-      },
-    },
-  },
+  // 多语言：root = 简体中文（默认），en = English（定义见 config/locales.mts）
+  locales: buildLocales(srcDir),
 });

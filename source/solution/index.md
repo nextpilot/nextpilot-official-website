@@ -1,5 +1,6 @@
 ---
 layout: solution
+order: 2
 ---
 
 # 解决方案

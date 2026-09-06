@@ -1,5 +1,6 @@
 ---
 layout: home
+order: 5
 title: 开源项目
 description: NextPilot 开源项目集合，涵盖飞控系统、地面控制站、仿真工程与开发工具链。
 

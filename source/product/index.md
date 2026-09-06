@@ -1,5 +1,6 @@
 ---
 layout: catalog
+order: 3
 title: 产品中心
 description: >-
   NextPilot 无人系统核心组件产品中心，涵盖无人机平台、飞行控制、通信链路、导航传感与其它外设，
