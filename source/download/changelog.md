@@ -1,5 +1,5 @@
 ---
-title: 发布记录
+title: 更新记录
 description: NextPilot 飞控固件、导航固件与地面站软件的版本发布记录与下载说明。
 ---
 
