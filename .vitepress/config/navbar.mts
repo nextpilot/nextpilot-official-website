@@ -79,9 +79,7 @@ function childItems(sectionPath: string, section: string): NavItem[] {
     }
   }
 
-  return entries
-    .sort((a, b) => a.order - b.order || a.prefix - b.prefix || a.name.localeCompare(b.name))
-    .map((entry) => entry.item)
+  return entries.sort((a, b) => a.order - b.order || a.prefix - b.prefix || a.name.localeCompare(b.name)).map((entry) => entry.item)
 }
 
 /** 构建单个顶级栏目导航项：标题/链接取 index.md（shortTitle > title > 一级标题 > 目录名） */
@@ -125,12 +123,7 @@ export function docsNavbar(srcDir: string, localeDirs: string[] = []): DefaultTh
       const indexPath = join(sourcePath, name, 'index.md')
       return existsSync(indexPath) && !isDraft(indexPath)
     })
-    .sort(
-      (a, b) =>
-        orderOf(join(sourcePath, a, 'index.md')) - orderOf(join(sourcePath, b, 'index.md')) ||
-        sortPrefixOf(a) - sortPrefixOf(b) ||
-        a.localeCompare(b),
-    )
+    .sort((a, b) => orderOf(join(sourcePath, a, 'index.md')) - orderOf(join(sourcePath, b, 'index.md')) || sortPrefixOf(a) - sortPrefixOf(b) || a.localeCompare(b))
     .map((section) => sectionItem(srcDir, section))
     .filter((item): item is NavItem => item !== undefined)
 }

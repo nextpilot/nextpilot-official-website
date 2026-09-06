@@ -36,8 +36,7 @@ export function buildLocales(srcDir: string): NonNullable<UserConfig['locales']>
           linkText: '回到首页',
         },
         footer: {
-          message:
-            '本文档采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> 国际协议，开放共享、转载、修改、商用，但须保留署名来源',
+          message: '本文档采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> 国际协议，开放共享、转载、修改、商用，但须保留署名来源',
           copyright: `Copyright © ${new Date().getFullYear()} NextPilot Development Team`,
         },
       },

@@ -8,13 +8,13 @@ description: NextPilot 各组件所采用的许可证说明，主要代码采用
 
 本页列出 NextPilot 各组件所采用的许可证。
 
-| 序号 | 项目                                                                                     | 许可证                                                       |
-| ---- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| 1    | [nextpilot-flight-control](https://github.com/nextpilot/nextpilot-flight-control)         | [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause) |
-| 2    | [nextpilot-simulink-project](https://github.com/nextpilot/nextpilot-simulink-project)     | [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause) |
-| 3    | [nextpilot-ground-control](https://github.com/nextpilot/nextpilot-ground-control)         | [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause) |
-| 4    | [nextpilot-windows-toolchain](https://github.com/nextpilot/nextpilot-windows-toolchain)   | [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause) |
-| 5    | [nextpilot-official-website](https://nextpilot.org)                                       | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)    |
+| 序号 | 项目                                                                                    | 许可证                                                       |
+| ---- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| 1    | [nextpilot-flight-control](https://github.com/nextpilot/nextpilot-flight-control)       | [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause) |
+| 2    | [nextpilot-simulink-project](https://github.com/nextpilot/nextpilot-simulink-project)   | [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause) |
+| 3    | [nextpilot-ground-control](https://github.com/nextpilot/nextpilot-ground-control)       | [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause) |
+| 4    | [nextpilot-windows-toolchain](https://github.com/nextpilot/nextpilot-windows-toolchain) | [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause) |
+| 5    | [nextpilot-official-website](https://nextpilot.org)                                     | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)    |
 
 ::: info
 本站部分图片、Logo 与引用内容来自第三方，版权归原作者所有，并遵循各自的原始许可，使用前请查阅相应来源的许可条款。

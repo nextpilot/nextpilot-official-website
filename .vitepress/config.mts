@@ -1,22 +1,23 @@
-import { resolve } from 'node:path';
-import { defineConfig } from 'vitepress';
-import { buildLocales } from './config/locales.mts';
-import { hotRestartPlugin } from './config/hot-restart.mts';
-import { headingTab } from './markdown/plugin-heading-tab.mts';
-import { markdownTab } from './markdown/plugin-markdown-tab.mts';
-import { markdownCard } from './markdown/plugin-markdown-card.mts';
-import { rewriteLink } from './markdown/plugin-rewrite-link.mts';
-import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/head.mts';
-import { buildRewrites } from './config/page.mts';
+import { resolve } from 'node:path'
+import { defineConfig } from 'vitepress'
+import { buildLocales } from './config/locales.mts'
+import { hotRestartPlugin } from './config/hot-restart.mts'
+import { headingTab } from './markdown/plugin-heading-tab.mts'
+import { markdownTab } from './markdown/plugin-markdown-tab.mts'
+import { markdownCard } from './markdown/plugin-markdown-card.mts'
+import { rewriteLink } from './markdown/plugin-rewrite-link.mts'
+import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/head.mts'
+import { buildRewrites } from './config/page.mts'
 
 // 内容源目录（相对项目根），作为 srcDir 配置项并传给导航/侧边栏/热更新插件
-const srcDir = 'source';
+const srcDir = 'source'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   // 站点基本信息：标题 / SEO 描述 / 默认语言
   title: 'NextPilot 让飞控更开放，让开发更高效，让设计更专注',
-  description: 'NextPilot 致力于为大家提供一套简易、高效、可靠和开放的无人系统方案和产品，能够便捷的应用于教育、科研和工业等领域，让工程师专注于自己的擅长领域进行高效的开发。其中 NextPilot Flight Control 是一款基于 RT-Thread 实时操作系统、核心算法移植自 PX4 的国产先进自动驾驶仪，支持多旋翼、固定翼、垂起复合翼，目前在高等院校、科研院所、工业部门等拥有较为广泛的应用。',
+  description:
+    'NextPilot 致力于为大家提供一套简易、高效、可靠和开放的无人系统方案和产品，能够便捷的应用于教育、科研和工业等领域，让工程师专注于自己的擅长领域进行高效的开发。其中 NextPilot Flight Control 是一款基于 RT-Thread 实时操作系统、核心算法移植自 PX4 的国产先进自动驾驶仪，支持多旋翼、固定翼、垂起复合翼，目前在高等院校、科研院所、工业部门等拥有较为广泛的应用。',
   lang: 'zh-CN',
   // 全局 <head>：favicon + SEO meta（keywords / author）+ 客户端跳转脚本
   head: [
@@ -73,13 +74,13 @@ export default defineConfig({
     lineNumbers: true,
     config: (md) => {
       // 正文二级标题折叠为 tab（仅对 layout: product 页面生效）
-      headingTab(md);
+      headingTab(md)
       // 通用 `::: tabs` 容器：`@tab 标题` 折叠为 tab
-      markdownTab(md);
+      markdownTab(md)
       // 卡片容器：`::: card [标题]`
-      markdownCard(md);
+      markdownCard(md)
       // 站内 .md 链接：物理路径（含排序前缀）自动改写为最终 URL
-      rewriteLink(md);
+      rewriteLink(md)
     },
   },
 
@@ -112,4 +113,4 @@ export default defineConfig({
 
   // 多语言：root = 简体中文（默认），en = English（定义见 config/locales.mts）
   locales: buildLocales(srcDir),
-});
+})

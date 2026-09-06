@@ -20,8 +20,8 @@
 
 对于几种典型安装，对应的旋转角度、安装位置配置如下表所示：
 
-| 安装示例                                        | 旋转角度                     | 安装位置                                                          |
-| ----------------------------------------------- | ---------------------------- | ----------------------------------------------------------------- |
+| 安装示例                                                                              | 旋转角度                     | 安装位置                                                          |
+| ------------------------------------------------------------------------------------- | ---------------------------- | ----------------------------------------------------------------- |
 | <img src="/assets/images/manual/fcs-rotation-none.jpg" alt="img" loading="lazy" />    | 无旋转 ROTATION_NONE         | EKF2_IMU_POS_X=0.3<br />EKF2_IMU_POS_Y=0<br />EKF2_IMU_POS_Z=0    |
 | <img src="/assets/images/manual/fcs-rotation-yaw-90.jpg" alt="img" loading="lazy" />  | 顺时针转 90°ROTATION_YAW_90  | EKF2_IMU_POS_X=0<br />EKF2_IMU_POS_Y=0.3<br />EKF2_IMU_POS_Z=0    |
 | <img src="/assets/images/manual/fcs-rotation-yaw-270.jpg" alt="img" loading="lazy" /> | 逆时针转 90°ROTATION_YAW_270 | EKF2_IMU_POS_X=0.2<br />EKF2_IMU_POS_Y=-0.3<br />EKF2_IMU_POS_Z=0 |
@@ -36,8 +36,8 @@
 
 对于几种典型安装，对应的旋转角度、安装位置配置如下表所示：
 
-| 安装示例                                       | 旋转角度           | 安装位置                                                            |
-| ---------------------------------------------- | ------------------ | ------------------------------------------------------------------- |
+| 安装示例                                                                             | 旋转角度           | 安装位置                                                            |
+| ------------------------------------------------------------------------------------ | ------------------ | ------------------------------------------------------------------- |
 | <img src="/assets/images/manual/gps-antenna-yaw-0.jpg" alt="img" loading="lazy" />   | GPS_YAW_OFFSET=0   | EKF2_GPS_POS_X=-0.3<br />EKF2_GPS_POS_Y=0.0<br />EKF2_GPS_POS_Z=0.0 |
 | <img src="/assets/images/manual/gps-antenna-yaw-270.jpg" alt="img" loading="lazy" /> | GPS_YAW_OFFSET=270 | EKF2_GPS_POS_X=0.0<br />EKF2_GPS_POS_Y=0.3<br />EKF2_GPS_POS_Z=0.0  |
 | <img src="/assets/images/manual/gps-antenna-yaw-90.jpg" alt="img" loading="lazy" />  | GPS_YAW_OFFSET=90  | EKF2_GPS_POS_X=0.0<br />EKF2_GPS_POS_Y=-0.3<br />EKF2_GPS_POS_Z=0.0 |

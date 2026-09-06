@@ -21,11 +21,7 @@ const panelStyle = ref<Record<string, string>>({})
 
 /** 把导航项收敛为纯字符串链接的条目（过滤函数形式的 link） */
 function toRibbonItems(items: DefaultTheme.NavItem[]): RibbonItem[] {
-  return items.flatMap((item) =>
-    'link' in item && typeof item.link === 'string'
-      ? [{ text: item.text, link: item.link }]
-      : [],
-  )
+  return items.flatMap((item) => ('link' in item && typeof item.link === 'string' ? [{ text: item.text, link: item.link }] : []))
 }
 
 /**
@@ -41,9 +37,7 @@ const groups = computed<RibbonGroup[]>(() =>
 )
 
 /** 当前展开的栏目（悬停时才有，非常驻） */
-const displayed = computed<RibbonGroup | null>(
-  () => (openIndex.value === null ? null : (groups.value[openIndex.value] ?? null)),
-)
+const displayed = computed<RibbonGroup | null>(() => (openIndex.value === null ? null : (groups.value[openIndex.value] ?? null)))
 
 function isItemActive(link: string): boolean {
   return route.path === link || route.path.startsWith(link)
@@ -121,21 +115,9 @@ watch(() => route.path, closePanel)
 </script>
 
 <template>
-  <div
-    v-if="displayed"
-    ref="panelEl"
-    class="navbar-ribbon"
-    :style="panelStyle"
-    :aria-label="`${displayed.text}二级导航`"
-  >
+  <div v-if="displayed" ref="panelEl" class="navbar-ribbon" :style="panelStyle" :aria-label="`${displayed.text}二级导航`">
     <div class="navbar-ribbon__card">
-      <a
-        v-for="item in displayed.items"
-        :key="item.link"
-        class="navbar-ribbon__item"
-        :class="{ active: isItemActive(item.link) }"
-        :href="item.link"
-      >
+      <a v-for="item in displayed.items" :key="item.link" class="navbar-ribbon__item" :class="{ active: isItemActive(item.link) }" :href="item.link">
         {{ item.text }}
       </a>
     </div>

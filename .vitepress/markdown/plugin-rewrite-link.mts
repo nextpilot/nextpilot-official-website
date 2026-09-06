@@ -65,9 +65,7 @@ function rewriteHref(href: string, currentDir: string): string {
   if (!target.endsWith('.md')) target += '.md'
 
   // 解析为相对 srcDir 的源路径（绝对路径去前导 /，相对路径相对当前文件目录）
-  const srcPath = target.startsWith('/')
-    ? target.slice(1)
-    : posix.relative(srcDirAbs, posix.normalize(posix.join(currentDir, target)))
+  const srcPath = target.startsWith('/') ? target.slice(1) : posix.relative(srcDirAbs, posix.normalize(posix.join(currentDir, target)))
 
   // 解析最终 URL（permalink > 去前缀），保留 .md 交给 VitePress normalizeHref 转 .html / 目录
   return '/' + getFileUrl(srcPath) + suffix

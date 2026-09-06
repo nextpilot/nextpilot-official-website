@@ -127,18 +127,14 @@ export function markdownCard(md: any): void {
   md.renderer.rules.markdown_card = (tokens: any[], idx: number) => {
     const { type, count, cards }: { type: string; count: string; cards: Card[] } = tokens[idx].meta
 
-    const cols = /^\d+$/.test(count)
-      ? `repeat(${Math.min(Math.max(Number(count), 1), 4)}, 1fr)`
-      : 'repeat(auto-fill, minmax(240px, 1fr))'
+    const cols = /^\d+$/.test(count) ? `repeat(${Math.min(Math.max(Number(count), 1), 4)}, 1fr)` : 'repeat(auto-fill, minmax(240px, 1fr))'
     const gridStyle = `grid-template-columns: ${cols}; gap: 20px;`
 
     const items = cards
       .map((c) => {
         if (type === 'image') {
           const footer =
-            c.author || c.avatar
-              ? `<div class="image-card-footer">${c.avatar ? `<img class="image-card-avatar" src="${escapeHtml(c.avatar)}" alt="" />` : ''}${c.author ? `<span class="image-card-author">${escapeHtml(c.author)}</span>` : ''}</div>`
-              : ''
+            c.author || c.avatar ? `<div class="image-card-footer">${c.avatar ? `<img class="image-card-avatar" src="${escapeHtml(c.avatar)}" alt="" />` : ''}${c.author ? `<span class="image-card-author">${escapeHtml(c.author)}</span>` : ''}</div>` : ''
           return `<a class="image-card" href="${escapeHtml(c.link)}" target="_blank" rel="noopener noreferrer"><img class="image-card-image" src="${escapeHtml(c.cover || '')}" alt="${escapeHtml(c.name)}" /><div class="image-card-body">${c.name ? `<div class="image-card-name">${escapeHtml(c.name)}</div>` : ''}${c.desc ? `<div class="image-card-desc">${escapeHtml(c.desc)}</div>` : ''}${footer}</div></a>`
         }
         if (type === 'product') {
