@@ -31,13 +31,13 @@ jobs:
         run: pnpm lint:md
 
       - name: Lint code
-        run: pnpm lint
+        run: pnpm lint:code
 
       - name: Type check
-        run: pnpm typecheck
+        run: pnpm type:check
 
       - name: Unit tests
-        run: pnpm test
+        run: pnpm test:run
 
       - name: Build site
         run: pnpm docs:build
