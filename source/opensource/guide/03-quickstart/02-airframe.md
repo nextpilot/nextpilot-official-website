@@ -1,26 +1,5 @@
 # 机架说明
 
-<style>
-/* 覆盖 Material 主题的 display:inline-block，表格占满页面宽度 */
-table {
-  display: table !important;
-  width: 100% !important;
-  table-layout: fixed;
-}
-table th:nth-child(1),
-table td:nth-child(1) {
-  width: 40%;
-}
-table th:nth-child(2),
-table td:nth-child(2) {
-  width: 30%;
-}
-table th:nth-child(3),
-table td:nth-child(3) {
-  width: 30%;
-}
-</style>
-
 无人机执行器一般包括舵机、电调电机、发动机等，驱动信号一般为 PWM。飞控提供了共计 16路 PWM 输出通道，根据不同机型，需要对应连接。
 
 关于不同机型具体对应的机架在[机架设置](../04-config/01-basic-setup.md#机架设置)章节。

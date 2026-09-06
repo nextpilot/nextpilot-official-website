@@ -24,21 +24,6 @@
   margin-bottom: 32px !important;
 }
 
-/* 表格：默认 display:block 会使 thead/tbody 列宽分别计算而错位，
-   恢复正常表格布局并占满容器；table-layout:fixed 让列宽按表头均分、
-   不被长链接/空列左右；长链接/长文本自动换行，避免列被撑破扭曲 */
-.vp-doc table {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-  margin: 20px 0;
-}
-.vp-doc th,
-.vp-doc td {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
 /* 通用 `::: tabs` 容器（plugin-markdown-tab 插件生成） */
 .markdown-tab {
   margin: 16px 0;
