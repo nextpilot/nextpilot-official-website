@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import type { DefaultTheme } from 'vitepress'
-import { getDisplayTitleFromFile, getFinalUrl, parseFrontmatter, titleFromName } from './page.mts'
+import { getDisplayTitleFromFile, getFinalUrl, isIndexLinkable, parseFrontmatter, titleFromName } from './page.mts'
 
 type NavItem = DefaultTheme.NavItem
 
@@ -46,6 +46,7 @@ interface ChildEntry {
 /**
  * 构建二级菜单条目：顶级栏目的直接子目录（子栏目）与直接 md 页面都算二级条目，
  * 统一按 frontmatter.order > 排序前缀（xx-）> 名称排序；排除 index.md 与草稿。
+ * 子栏目首页 index.md 的 frontmatter.linkable 为 false 时，导航中直接跳过、不生成该条目。
  */
 function childItems(sectionPath: string, section: string): NavItem[] {
   const entries: ChildEntry[] = []
@@ -56,6 +57,8 @@ function childItems(sectionPath: string, section: string): NavItem[] {
     if (statSync(fullPath).isDirectory()) {
       const indexPath = join(fullPath, 'index.md')
       if (!hasMarkdown(fullPath) || isDraft(indexPath)) continue
+      // 子栏目首页 linkable 为 false：导航中不生成该条目
+      if (!isIndexLinkable(readFrontmatter(indexPath))) continue
       entries.push({
         order: orderOf(indexPath),
         prefix: sortPrefixOf(name),
@@ -89,19 +92,25 @@ function sectionItem(srcDir: string, section: string): NavItem | undefined {
   if (!existsSync(sectionPath) || !existsSync(indexPath) || isDraft(indexPath)) return undefined
 
   const sectionTitle = getDisplayTitleFromFile(indexPath, titleFromName(section))
-  const sectionLink = `/${getFinalUrl(`${section}/index.md`)}`
+  // index.md 的 frontmatter.linkable 为 false 时不生成栏目首页链接（标题仍展示、不可点击）
+  const sectionLink = isIndexLinkable(readFrontmatter(indexPath)) ? `/${getFinalUrl(`${section}/index.md`)}` : undefined
   const children = childItems(sectionPath, section)
 
-  // 无二级栏目：顶级项直接作为链接
-  if (children.length === 0) return { text: sectionTitle, link: sectionLink }
+  // 无二级条目：可链接时顶级项直接作为链接；栏目自身 linkable 为 false（无 sectionLink）
+  // 且二级条目又都被跳过时，没有可生成的有效条目（VitePress 顶级项需带 link 或 items），直接跳过
+  if (children.length === 0) {
+    if (!sectionLink) return undefined
+    return { text: sectionTitle, link: sectionLink } as NavItem
+  }
 
   // 含二级栏目：VitePress 要求下拉组顶级项不带 link（否则渲染为普通链接），
   // 下拉只列二级栏目，栏目首页（index.md）不放入下拉；
-  // sectionLink 为自定义字段，携带栏目首页链接，供主题点击一级菜单时跳转（见 theme/Layout.vue）
+  // sectionLink 为自定义字段，携带栏目首页链接，供主题点击一级菜单时跳转（见 theme/Layout.vue）；
+  // frontmatter.linkable 为 false 时不带 sectionLink，点击一级菜单仅展开下拉、不跳转
   return {
     text: sectionTitle,
     items: children,
-    sectionLink,
+    ...(sectionLink ? { sectionLink } : {}),
   } as NavItem
 }
 

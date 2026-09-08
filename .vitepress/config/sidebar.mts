@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import type { DefaultTheme } from 'vitepress'
-import { getDisplayTitleFromFile, getFinalUrl, parseFrontmatter, titleFromName } from './page.mts'
+import { getDisplayTitleFromFile, getFinalUrl, isIndexLinkable, parseFrontmatter, titleFromName } from './page.mts'
 
 type SidebarItem = DefaultTheme.SidebarItem
 
@@ -40,26 +40,15 @@ function sortEntries(entries: Entry[]): SidebarItem[] {
   return entries.sort((a, b) => a.order - b.order || a.prefix - b.prefix || a.path.localeCompare(b.path)).map((e) => e.item)
 }
 
-/** 判断目录树内是否包含至少一个 md 条目（排除 index.md），用于跳过 imgs 等纯资源目录 */
-function hasDocs(dirPath: string): boolean {
-  for (const name of readdirSync(dirPath)) {
-    const full = join(dirPath, name)
-    const st = statSync(full)
-    if (st.isDirectory()) {
-      if (hasDocs(full)) return true
-    } else if (name.endsWith('.md') && name !== 'index.md') {
-      return true
-    }
-  }
-  return false
-}
-
 /**
  * 构建一个分组（子目录）及其下的条目，递归处理更深层子目录。
  * relDir 为该目录相对栏目根目录的路径（如 autopilot/00-基本概念），用于拼接链接。
  */
 function buildGroup(section: string, relDir: string, dirPath: string, depth: number): SidebarItem {
-  const hasIndex = existsSync(join(dirPath, 'index.md'))
+  const indexPath = join(dirPath, 'index.md')
+  const hasIndex = existsSync(indexPath)
+  // index.md 的 frontmatter.linkable 为 false 时分组头不生成链接（标题仍展示、不可点击）
+  const indexFm = hasIndex ? readFrontmatter(indexPath) : {}
 
   const children: Entry[] = []
   for (const name of readdirSync(dirPath)) {
@@ -67,8 +56,9 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
     const st = statSync(full)
 
     if (st.isDirectory()) {
-      // 跳过不含任何 md 条目的目录（如 imgs 图片目录）
-      if (!hasDocs(full)) continue
+      // 跳过不含任何 md（含 index.md）的纯资源目录（如 imgs）；
+      // 仅有 index.md 的下级栏目（栏目落地页）也保留——见下方无子条目时的退化处理
+      if (!hasAnyMd(full)) continue
       const childFm = readFrontmatter(join(full, 'index.md'))
       // 草稿分组不进入侧边栏
       if (isDraft(childFm)) continue
@@ -95,13 +85,21 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
     }
   }
 
+  const text = getDisplayTitleFromFile(indexPath, titleFromName(basename(dirPath)))
+  const items = sortEntries(children)
+  // 栏目首页链接：linkable 为 false 时无链接（标题仅作分组标签，不可点击）
+  const indexLink = hasIndex && isIndexLinkable(indexFm) ? `/${getFinalUrl(`${section}/${relDir}/index.md`)}` : undefined
+
+  // 下级栏目暂无任何子页面：首页可链接时退化为单个链接条目（栏目本身即落地页，如仅有 index.md 的新栏目）
+  if (items.length === 0 && indexLink) return { text, link: indexLink }
+
   const group: SidebarItem = {
-    text: getDisplayTitleFromFile(join(dirPath, 'index.md'), titleFromName(basename(dirPath))),
-    items: sortEntries(children),
+    text,
+    items,
     // 顶层分组展开，嵌套子分组默认折叠
     collapsed: depth > 0,
   }
-  if (hasIndex) group.link = `/${getFinalUrl(`${section}/${relDir}/index.md`)}`
+  if (indexLink) group.link = indexLink
   return group
 }
 

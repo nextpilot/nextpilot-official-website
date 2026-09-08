@@ -148,6 +148,16 @@ export function getDisplayTitleFromFile(filePath: string, fallbackName = ''): st
   return getDisplayTitle(parseFrontmatter(raw), raw, fallbackName)
 }
 
+/**
+ * 栏目/子栏目首页（index.md）是否「可链接」：即在导航、侧边栏、面包屑中自动生成可点击链接。
+ * frontmatter.linkable 显式写为 `false` 时不可链接（不生成链接，标题仍展示、仅不可点击）；
+ * 缺省或写为 `true` 时默认可链接（生成链接）。
+ * 注意：仅控制自动导航链接，页面本身仍会构建，仍可通过 URL 或正文内链访问；URL 由 permalink 决定。
+ */
+export function isIndexLinkable(fm: Record<string, string> | undefined | null): boolean {
+  return fm?.linkable !== 'false'
+}
+
 // ==================== 分类 / 标签 ====================
 
 /** 兜底分类名（页面未写 `frontmatter.category` 且无栏目时使用），借鉴 Hexo 的 default_category */

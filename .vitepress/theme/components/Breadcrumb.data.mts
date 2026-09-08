@@ -1,5 +1,6 @@
+import { readFileSync } from 'node:fs'
 import { join, posix } from 'node:path'
-import { getDisplayTitleFromFile, getFinalUrl, titleFromName } from '../../config/page.mts'
+import { getDisplayTitle, getDisplayTitleFromFile, getFinalUrl, isIndexLinkable, parseFrontmatter, titleFromName } from '../../config/page.mts'
 
 const slash = (p: string) => p.replace(/\\/g, '/')
 const srcDirAbs = slash(process.cwd()).replace(/\/$/, '') + '/source'
@@ -25,8 +26,11 @@ export default {
       const rel = rels[i]
       if (rel === 'index.md' || !rel.endsWith('/index.md')) continue
       const dir = posix.dirname(rel)
-      dirName[dir] = getDisplayTitleFromFile(files[i], titleFromName(posix.basename(dir)))
-      dirLink[dir] = '/' + getFinalUrl(rel)
+      const raw = readFileSync(files[i], 'utf-8')
+      const fm = parseFrontmatter(raw)
+      dirName[dir] = getDisplayTitle(fm, raw, titleFromName(posix.basename(dir)))
+      // index.md 的 frontmatter.linkable 为 false 时该级面包屑不生成链接（标题仍展示、不可点击）
+      if (isIndexLinkable(fm)) dirLink[dir] = '/' + getFinalUrl(rel)
     }
 
     // 每个页面 -> 完整物理面包屑

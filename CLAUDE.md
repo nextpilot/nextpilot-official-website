@@ -126,6 +126,7 @@ nextpilot-official-website/
 - 栏目的名称，获取优先级：`index.md.frontmatter.shortTitle` > `index.md.frontmatter.title` > `index.md.一级标题` > `文件夹名（除去排序前缀）`
 - 栏目的排序，获取优先级：`index.md.frontmatter.order` > `栏目文件夹的排序前缀`，且按照从小到大排序
 - 栏目的链接，获取 `index.md.frontmatter.permalink` > `栏目文件夹路由（去除排序前缀）`；如果 `index.md.frontmatter.permalink` 是相对地址，则需要根据上级栏目的链接进行拼接。`index.md` 自身文件名恒为 `index`（落在 `<栏目路由>/index.html`），其 `permalink` 只决定栏目路由
+- 栏目的链接开关：`index.md.frontmatter.linkable` 写为 `false` 时，该栏目/子栏目首页不作为可点击入口——顶部导航直接跳过不生成该条目（侧边栏分组头、面包屑仍展示标题但不可点击），缺省默认可链接；这只影响自动导航，不改变栏目路由与页面本身（详见第 8 节 frontmatter 约定）
 
 ### 6.2 页面
 
@@ -168,8 +169,8 @@ nextpilot-official-website/
 ### 7.3 用户手册 / 开发指南 / 社区支持
 
 - 栏目定位：顶级 `manual`（产品导向）与顶级 `opensource`（其下含 `community` / `develop` / `guide` 子栏目）都属于 `docs` 类型，主要展示文档内容和知识库。
-- 目录规则：`manual/<xx-subcolumn>/<yy-markdown.md>`，`index.md` 仅用作子栏目首页，并提供子栏目所需的 `frontmatter`。
-- 约束条件：侧边栏仅展示实际文档条目，不显示 `index.md`；左侧自动生成 sidebar，右侧显示 TOC。
+- 目录规则：`manual/<xx-subcolumn>/<...>/<yy-markdown.md>`，子栏目下可再嵌套下级栏目（层级建议不超过 5 级）；`index.md` 用作各级栏目首页，并提供该栏目所需的 `frontmatter`。
+- 约束条件：侧边栏按物理目录**递归**生成分组（`docsSidebar()`），左侧自动生成 sidebar，右侧显示 TOC。各级 `index.md` 不单独列为文档条目，而是作为所在分组的标题：`linkable` 不为 false 时分组头可点击指向栏目首页，为 false 时仅作分组标签。下级栏目若暂时只有 `index.md`（尚无文档页），仍会进入侧边栏——可链接时退化为单个链接条目，不可链接时为仅标题的空分组；不含任何 `.md` 的纯资源目录（如 `imgs/`）跳过。
 
 ### 7.4 新闻资讯 / 博客
 
@@ -196,6 +197,8 @@ layout: doc
 order: 10
 # 草稿版本
 draft: false
+# 栏目首页（index.md）是否可链接：在导航/侧边栏/面包屑中生成可点击链接，false 为不可链接（默认可链接）
+linkable: true
 # --------------------------------
 # 主要用于SEO
 title: 标题
@@ -227,6 +230,11 @@ helpUrl: /manual/xxx
 - `description` SEO / 浏览器描述
 - `permalink` 如果是相对地址，则需要根据上级栏目的链接进行拼接
 - `draft: true` 在开发环境允许预览，但构建和列表页必须排除草稿，未填写 `draft` 时按正式内容处理
+- `linkable`（仅栏目/子栏目首页 `index.md` 生效，可选）控制该首页是否作为可点击链接入口；缺省或 `true` 默认可链接。写 `false` 时（适用于仅作分组占位、无落地内容的栏目首页）各导航面表现不同：
+  - 顶部导航：该子栏目**不生成下拉条目**（直接跳过）；若某顶级栏目自身 `linkable: false` 且二级条目又都被跳过，则整个栏目不生成
+  - 侧边栏：分组标题仍展示但不可点击（无 `link`，仍可折叠展开子条目）
+  - 面包屑：该级面包屑仍展示文字但不可点击
+  - 页面本身仍会构建，URL 由 `permalink` 决定，直接访问与正文内链不受影响
 - `category` 分类名（可选），用于分类筛选；未填写时默认取所属子栏目名，无栏目则兜底 `uncategorized`。分类 slug 由名称 slugify 推导，不手写
 - `tags` 标签，不用于产品分类筛选
 - `date` 仅用于显示，不参与排序
@@ -280,6 +288,8 @@ helpUrl: /manual/xxx
 - 通过 VitePress 的 `rewrites` 实现真实路由：`/manual/foo` → `manual/foo.md`（去前导 `/`、补 `.md`），否则会生成无扩展名文件
 - 页面元数据统一经 `.vitepress/config/page.mts`：`getUrl()` 取 link（无扩展名）、`resolvePageUrl()` 取含 `.md` 的最终路径（供 `rewrites` 与正文内链），二者都支持绝对/相对 `permalink`；`getDisplayTitle()` 取显示标题，`getCategoryName()` / `getCategorySlug()` / `getTagSlug()` 取分类/标签的 name / slug（经全局 `categoryMap` / `tagMap`）
 - 侧边栏与面包屑按物理路径划分栏目：侧边栏用 `docsSidebars()`（内部 `sectionRoutes()` 收集被 permalink 逃逸出栏目根的子栏目路由，仍映射回所属栏目侧边栏）；面包屑用 `Breadcrumb.data.mts` 按物理目录层级构建，二者都不受 permalink 的 URL 影响
+
+- 自定义容器（`::: tip` / `info` / `warning` / `danger` / `details`）默认标题为英文（TIP / INFO / …）；中文标题在 `config/locales.mts` 的 `locales.root.markdown.container` 本地化（`tipLabel: '提示'` 等），英文（en）不覆盖、沿用默认。**注意 VitePress 2.0.0-alpha.19 的渲染器单例问题**：本地搜索插件（`vitepress:local-search`）会用未合并 `locales` 的原始 `markdown` 选项最先创建 markdown 渲染器（`createMarkdownRenderer` 内 `if (md) return md` 缓存），导致 `locales.<index>.markdown` 在正式构建时被忽略；故 `config.mts` 把各语言 `markdown` 同步到顶层 `markdown.locales`（`markdownLocales`）作为 workaround，升级修复后可移除
 
 ### 12.2 内容处理原则
 
