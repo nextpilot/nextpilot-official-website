@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 1
 title: 联系我们
 description: 联系 NextPilot 团队：商务合作、技术咨询、定制需求邮件沟通，或加入开源社区、扫码进群获取技术支持。
 ---

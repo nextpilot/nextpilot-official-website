@@ -1,5 +1,5 @@
 ---
-order: 1
+order: 3
 title: 发展历程
 description: NextPilot 飞控团队十年发展历程，从 2014 年组建到 2024 年开源发布。
 ---
