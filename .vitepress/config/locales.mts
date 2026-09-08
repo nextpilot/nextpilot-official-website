@@ -17,6 +17,17 @@ export function buildLocales(srcDir: string): NonNullable<UserConfig['locales']>
     root: {
       label: '简体中文',
       lang: 'zh-CN',
+      // 自定义容器（::: tip / warning / danger / info / details）标题本地化为中文；
+      // 仅作用于中文（root）站点，英文站点沿用默认英文标题（TIP / WARNING / …）
+      markdown: {
+        container: {
+          tipLabel: '提示',
+          warningLabel: '警告',
+          dangerLabel: '危险',
+          infoLabel: '信息',
+          detailsLabel: '详细信息',
+        },
+      },
       themeConfig: {
         outline: { label: '本页目录', level: [2, 4] },
         docFooter: { prev: '上一页', next: '下一页' },

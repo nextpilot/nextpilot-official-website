@@ -12,6 +12,19 @@ import { buildRewrites } from './config/page.mts'
 // 内容源目录（相对项目根），作为 srcDir 配置项并传给导航/侧边栏/热更新插件
 const srcDir = 'source'
 
+// 多语言配置（root 简体中文 / en English）：导航、侧边栏、themeConfig 与 markdown 本地化
+const locales = buildLocales(srcDir)
+
+// 各语言构建期 markdown 本地化（自定义容器标题等），同步到 markdown.locales。
+// 兼容 VitePress 2.0.0-alpha.19：本地搜索插件（vitepress:local-search）会用「未合并 locales」的原始
+// markdown 选项最先创建 markdown 渲染器，而 createMarkdownRenderer 是模块级单例（if (md) return md），
+// 导致 locales.<index>.markdown 里的容器标题在正式构建时被忽略、回退英文默认标题；显式写进 markdown.locales
+// 可让这个单例渲染器也按语言取标题。英文（en）未覆盖容器标题，沿用默认英文。
+const markdownLocales = Object.entries(locales).reduce<Record<string, NonNullable<(typeof locales)[string]['markdown']>>>((acc, [key, locale]) => {
+  if (locale.markdown) acc[key] = locale.markdown
+  return acc
+}, {})
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   // 站点基本信息：标题 / SEO 描述 / 默认语言
@@ -72,6 +85,8 @@ export default defineConfig({
     math: true,
     // 代码块显示行号
     lineNumbers: true,
+    // 各语言容器标题等本地化（兼容 VitePress 2.0.0-alpha.19 渲染器单例，见文件顶部注释）
+    locales: markdownLocales,
     config: (md) => {
       // 正文二级标题折叠为 tab（仅对 layout: product 页面生效）
       headingTab(md)
@@ -112,5 +127,5 @@ export default defineConfig({
   },
 
   // 多语言：root = 简体中文（默认），en = English（定义见 config/locales.mts）
-  locales: buildLocales(srcDir),
+  locales,
 })
