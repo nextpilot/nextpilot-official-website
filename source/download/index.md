@@ -7,9 +7,9 @@ title: 资源下载
 
 NextPilot 导航飞控目前只支持 NP-FCC-H05 系列飞控，该飞控采用两块 STM32H7 的主控芯片，分别运行飞行控制程序和惯性导航程序，故我们提供了两个固件（飞控固件、导航固件），需要分别通过 FCS-USB 下载飞控固件、通过 AHRS-USB 下载导航固件。
 
-> 注意：
->
-> 由于两个主控芯片相同，很容易搞混，下载前一定要注意，根据固件类型选择对应的 USB 烧写！！！两个 USB 连接方式请参考产品说明。
+::: tip
+由于两个主控芯片相同，很容易搞混，下载前一定要注意，根据固件类型选择对应的 USB 烧写！！！两个 USB 连接方式请参考产品说明。
+:::
 
 ## 飞控固件
 
@@ -25,7 +25,7 @@ NextPilot 导航飞控目前只支持 NP-FCC-H05 系列飞控，该飞控采用�
 
 以下为最新版本固件（通过 AHRS-USB 口烧录），历史固件请查看[发布记录](./changelog.md)。
 
-[ins-v4-default.bin](/assets/files/ins-v4-default.bin)
+- 导航固件：[ins-v4-default.bin](/assets/files/ins-v4-default.bin)
 
 ## 地面站软件
 
