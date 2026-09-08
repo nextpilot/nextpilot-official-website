@@ -20,32 +20,34 @@ helpUrl: /manual/navigator/np-rtk-base
 
 NP-RTK-UM982R 是 NextPilot 团队研发一款地面差分基准站，支持市面上大部分卫星板卡，可之间安装 GNSS 蘑菇头天线。通信接口采用航空连接件，稳定可靠。
 
+### 主要功能
+
 地面差分基准站主要功能有：
 
-1. 支持单点定位、RTK、动动 RTk；
-1. 可输出位置、速度、航向、差分修正数据。
-
-<!-- <img src="/assets/images/product/navigator/base-station-product.png" alt="基准站" loading="lazy" /> -->
-
-## 技术参数
+- 支持单点定位、RTK、动动 RTk；
+- 可输出位置、速度、航向、差分修正数据。
 
 ### 主要性能
 
 地面差分基准站性能指标说明如下：
 
-1. 供电电压：直流 9~36V；
-2. 功耗：＜10W；
-3. 天线接头：TNC-KF-1.5；
-4. 连接器插头：FGG-2B-319-CLL；
-5. 工作温度：-40℃~75℃；
-6. 贮存温度：-45℃~80℃；
-7. 高低温工作、振动、冲击、电磁兼容符合 GJB 要求。
+- 供电电压：直流 9~36V；
+- 功耗：＜10W；
+- 天线接头：TNC-KF-1.5；
+- 连接器插头：FGG-2B-319-CLL；
+- 工作温度：-40℃~75℃；
+- 贮存温度：-45℃~80℃；
+- 高低温工作、振动、冲击、电磁兼容符合 GJB 要求。
 
 ### 重量尺寸
 
 - 尺寸：140mm×130mm×52mm（长×宽×高）；
 - 重量：620g；
 - 安装孔直径 5mm，间距 146mm*136mm。
+
+<!-- <img src="/assets/images/product/navigator/base-station-product.png" alt="基准站" loading="lazy" /> -->
+
+## 技术参数
 
 ### 电气接口
 
