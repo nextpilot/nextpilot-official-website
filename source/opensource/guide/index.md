@@ -1,10 +1,10 @@
 ---
 order: 1
-title: 用户手册
+title: 使用教程
 description: NextPilot 飞控系统用户手册，基于国产 RT-Thread 操作系统，支持多旋翼、固定翼和垂起无人机。
 ---
 
-# NextPilot 用户手册
+# NextPilot 使用教程
 
 NextPilot 一款功能丰富、高度扩展、稳定可靠的先进自动驾驶仪，**基于国产 RT-Thread 操作系统，并支持全国产化硬件定制**。它支持多旋翼、固定翼和垂起无人机，**支持 Simulink 基于模型设计**，可便捷地应用于教育、研究和工业等领域。
 
