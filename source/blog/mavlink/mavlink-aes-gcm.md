@@ -97,8 +97,6 @@ pymavlink 的 C 代码生成器在 `generator/` 下，固定头（`mavlink_types
 
 要动的就两处：
 
-要动的就两处：
-
 **① 拷贝 3 个文件到 `generator/C/include_v2.0/`**（覆盖同名文件）：
 
 ```
