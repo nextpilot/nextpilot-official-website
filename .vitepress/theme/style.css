@@ -19,6 +19,41 @@
   padding-top: 24px !important;
 }
 
+/* 带侧边栏的文档页默认被 VitePress 隐藏全局页脚（VPFooter 组件 scoped 规则
+   `.VPFooter.has-sidebar { display:none }`）。注意该页脚由主题 Layout 渲染在 .VPDoc
+   之外（VPContent 的同级节点），故不能用 .VPDoc 作祖先选择器。这里恢复显示，让手册 /
+   开源文档等所有页面统一展示 CC BY 许可与版权页脚，并让其横跨整个视口宽度。
+   左侧边栏是 position:fixed 的全高不透明面板（z-index 高于页脚），会盖住页脚左段；
+   桌面端（>=960，固定侧栏布局）把页脚层级提到侧栏之上，页脚在文档底部整条横贯屏幕。
+   移动端侧栏为抽屉（层级更高），不提升页脚，保证抽屉打开时仍盖在页脚之上。 */
+.VPFooter.has-sidebar {
+  display: block !important;
+}
+@media (min-width: 960px) {
+  .VPFooter.has-sidebar {
+    position: relative;
+    z-index: calc(var(--vp-z-index-sidebar) + 1);
+  }
+}
+
+/* 修复右侧 outline 在目录较长、滚动到页底时被页脚（.VPFooter）遮挡的问题。
+   VitePress 2 alpha 的右侧栏是 `position: fixed; height: 100vh` 的独立滚动容器，
+   页脚又是不透明背景（z-index:10），目录条目较多时其底部会滑到页脚文字下方。
+   改为 sticky：在正文区间内吸附、随文档流定位，页脚正常将其顶开。
+   仅在右侧栏可见的桌面端（>=1280px）生效；同时停用原 fixed 方案配套的底部渐隐遮罩。 */
+@media (min-width: 1280px) {
+  .VPDoc.has-aside .aside-container {
+    position: sticky;
+    top: calc(var(--vp-nav-height) + 16px);
+    height: auto;
+    max-height: calc(100vh - var(--vp-nav-height) - 32px);
+    padding-top: 0;
+  }
+  .VPDoc.has-aside .aside-curtain {
+    display: none;
+  }
+}
+
 /* 首页默认在内容与页脚之间预留较大间距，收紧首页底部留白 */
 .VPHome {
   margin-bottom: 32px !important;
