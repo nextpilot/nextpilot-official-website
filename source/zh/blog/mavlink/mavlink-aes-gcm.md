@@ -35,14 +35,14 @@ git clone https://gitee.com/nextpilot/nextpilot-sercue-mavlink.git
 
 本次改动基于下面这套版本：
 
-| 组件 | 版本 | 说明 |
-| --- | --- | --- |
-| 飞控固件 | PX4-Autopilot v1.17.0 | 改动在 `src/modules/mavlink/` |
-| 地面站 | QGroundControl v4.4.5 | 改动在 `src/comm/` |
-| 代码生成器 | pymavlink | 随 PX4 子模块，改的是 `mavgen_c.py` |
-| MAVLink 协议 | v2.0 | 加密只对 v2 生效，v1 不支持 |
-| Qt（编译 QGC） | 5.15.2 | - |
-| 系统（编译 PX4） | Ubuntu 22.04 | PX4 官方工具链 |
+| 组件             | 版本                  | 说明                                |
+| ---------------- | --------------------- | ----------------------------------- |
+| 飞控固件         | PX4-Autopilot v1.17.0 | 改动在 `src/modules/mavlink/`       |
+| 地面站           | QGroundControl v4.4.5 | 改动在 `src/comm/`                  |
+| 代码生成器       | pymavlink             | 随 PX4 子模块，改的是 `mavgen_c.py` |
+| MAVLink 协议     | v2.0                  | 加密只对 v2 生效，v1 不支持         |
+| Qt（编译 QGC）   | 5.15.2                | -                                   |
+| 系统（编译 PX4） | Ubuntu 22.04          | PX4 官方工具链                      |
 
 ## 2. 加密方式
 
@@ -52,12 +52,12 @@ git clone https://gitee.com/nextpilot/nextpilot-sercue-mavlink.git
 
 市面上能给 MAVLink 用的方案大致这几个：
 
-| 方案 | 机密性 | 完整性 | 帧开销 | 说明 |
-| --- | --- | --- | --- | --- |
-| 原始 CRC | ✗ | CRC-16 只能检错 | 0 | 现状，纯明文 |
-| MAVLink 签名 | ✗ | SHA-256 签名 | 13 字节 | 只防篡改不加密 |
-| **AES-GCM** | ✓ | GMAC 强认证 | 28 字节 | 加密 + 认证一次搞定 |
-| ChaCha20-Poly1305 | ✓ | Poly1305 | 28 字节 | 也不错，但 MCU 上没有硬件加速 |
+| 方案              | 机密性 | 完整性          | 帧开销  | 说明                          |
+| ----------------- | ------ | --------------- | ------- | ----------------------------- |
+| 原始 CRC          | ✗      | CRC-16 只能检错 | 0       | 现状，纯明文                  |
+| MAVLink 签名      | ✗      | SHA-256 签名    | 13 字节 | 只防篡改不加密                |
+| **AES-GCM**       | ✓      | GMAC 强认证     | 28 字节 | 加密 + 认证一次搞定           |
+| ChaCha20-Poly1305 | ✓      | Poly1305        | 28 字节 | 也不错，但 MCU 上没有硬件加速 |
 
 选 AES-GCM 的理由很简单：一次 GCM 操作就把加密和认证都干了，不用额外再签名；STM32、ESP32 这些主流的 MCU 都有 AES 硬件引擎；纯软件实现也不大（一个 S-box + 176 字节轮密钥），嵌入式完全扛得住。
 
@@ -157,14 +157,14 @@ bool mavlink_aes_gcm_decrypt(mavlink_message_t *msg, mavlink_status_t *status);
 
 #### 3.2.2 `mavlink_types.h`
 
-| 改动 | 说明 |
-| --- | --- |
+| 改动                                                  | 说明                      |
+| ----------------------------------------------------- | ------------------------- |
 | `mavlink_message_t` 加 `aes_nonce[12]`、`aes_tag[16]` | 每个包自己的 nonce 和 tag |
-| `mavlink_status_t` 加 `aes_gcm` 指针 | 指向本通道的 GCM 状态 |
-| 加 `MAVLINK_IFLAG_ENCRYPTED (0x02)` | 加密帧标记位 |
-| `MAVLINK_IFLAG_MASK` → `0x03` | SIGNED + ENCRYPTED |
-| `MAVLINK_MAX_PACKET_LEN` 加密时 +28 | 280 → 308 |
-| 加解析状态 `GOT_AES_NONCE`、`GOT_AES_TAG` | CRC 之后读 nonce/tag |
+| `mavlink_status_t` 加 `aes_gcm` 指针                  | 指向本通道的 GCM 状态     |
+| 加 `MAVLINK_IFLAG_ENCRYPTED (0x02)`                   | 加密帧标记位              |
+| `MAVLINK_IFLAG_MASK` → `0x03`                         | SIGNED + ENCRYPTED        |
+| `MAVLINK_MAX_PACKET_LEN` 加密时 +28                   | 280 → 308                 |
+| 加解析状态 `GOT_AES_NONCE`、`GOT_AES_TAG`             | CRC 之后读 nonce/tag      |
 
 #### 3.2.3 `mavlink_helpers.h`
 
@@ -219,7 +219,7 @@ Mavlink::Mavlink() :
 }
 ```
 
-**②  文件末尾加 `init_aes_encryption()` 实现**：
+**② 文件末尾加 `init_aes_encryption()` 实现**：
 
 ```cpp
 #ifdef MAVLINK_USE_AES_ENCRYPTION
