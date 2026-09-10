@@ -36,6 +36,27 @@
   }
 }
 
+/* 全局页脚已在上方强制恢复显示（.VPFooter.has-sidebar），VitePress 默认的内容底部大留白
+   （.content padding-bottom: 128px、.VPDoc padding-bottom: 96~128px）是为「页脚隐藏」预留的，
+   此处统一去掉，并收紧「最后更新于」文档页脚的上间距（默认 64px）。 */
+.VPDoc {
+  padding-bottom: 24px !important;
+}
+.VPDoc .content {
+  padding-bottom: 0 !important;
+}
+.VPDocFooter {
+  margin-top: 32px !important;
+}
+/* 页底翻页隐藏后 edit-info 成为 VPDocFooter 最后一个元素，去掉其为翻页分隔线预留的底部内边距；
+   同时减小全局页脚顶部内边距（默认 32px）。 */
+.VPDocFooter .edit-info:last-child {
+  padding-bottom: 0;
+}
+.VPFooter {
+  padding-top: 20px;
+}
+
 /* 修复右侧 outline 在目录较长、滚动到页底时被页脚（.VPFooter）遮挡的问题。
    VitePress 2 alpha 的右侧栏是 `position: fixed; height: 100vh` 的独立滚动容器，
    页脚又是不透明背景（z-index:10），目录条目较多时其底部会滑到页脚文字下方。
