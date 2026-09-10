@@ -75,31 +75,32 @@ pnpm docs:preview
 │       ├── ProductLayout.vue
 │       ├── components/
 │       └── index.mts
-├── source/                        # 内容源目录，VitePress srcDir
-│   ├── index.md                   # 首页
-│   ├── about/                     # 关于我们
-│   ├── blog/                      # 技术博客
-│   ├── discovery/                 # 展示/占位栏目
-│   ├── download/                  # 资源下载
-│   ├── en/                        # 英文站内容
-│   ├── manual/                    # 用户手册（产品导向）
-│   │   ├── aircraft/              # 无人机平台
-│   │   ├── autopilot/             # 飞行控制
-│   │   ├── datalink/              # 通信链路
-│   │   ├── navigator/             # 导航传感
-│   │   └── peripheral/            # 其它外设
-│   ├── news/                      # 新闻资讯
-│   ├── opensource/                # 开源项目
-│   │   ├── community/             # 社区支持
-│   │   ├── develop/               # 开发指南
-│   │   └── guide/                 # 用户手册（开源文档）
-│   ├── product/                   # 产品中心
-│   │   ├── aircraft/              # 无人机平台
-│   │   ├── autopilot/             # 飞行控制
-│   │   ├── datalink/              # 通信链路
-│   │   ├── navigator/             # 导航传感
-│   │   └── peripheral/            # 其它外设
-│   └── solution/                  # 解决方案
+├── source/                        # 内容源目录，VitePress srcDir（按语言分目录）
+│   ├── zh/                        # 简体中文（root locale；经 rewrites 剥掉 zh/ 段，URL 上不可见）
+│   │   ├── index.md               # 首页（https://nextpilot.org/）
+│   │   ├── about/                 # 关于我们
+│   │   ├── blog/                  # 技术博客
+│   │   ├── discovery/             # 展示/占位栏目
+│   │   ├── download/              # 资源下载
+│   │   ├── manual/                # 用户手册（产品导向）
+│   │   │   ├── aircraft/          # 无人机平台
+│   │   │   ├── autopilot/         # 飞行控制
+│   │   │   ├── datalink/          # 通信链路
+│   │   │   ├── navigator/         # 导航传感
+│   │   │   └── peripheral/        # 其它外设
+│   │   ├── news/                  # 新闻资讯
+│   │   ├── opensource/            # 开源项目
+│   │   │   ├── community/         # 社区支持
+│   │   │   ├── develop/           # 开发指南
+│   │   │   └── guide/             # 用户手册（开源文档）
+│   │   ├── product/               # 产品中心
+│   │   │   ├── aircraft/          # 无人机平台
+│   │   │   ├── autopilot/         # 飞行控制
+│   │   │   ├── datalink/          # 通信链路
+│   │   │   ├── navigator/         # 导航传感
+│   │   │   └── peripheral/        # 其它外设
+│   │   └── solution/              # 解决方案
+│   └── en/                        # English 内容（URL 前缀 /en/，如 https://nextpilot.org/en/）
 ├── public/                        # 静态资源目录
 │   ├── CNAME
 │   ├── favicon.png

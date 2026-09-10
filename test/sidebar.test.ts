@@ -3,13 +3,13 @@ import { docsSidebar } from '../.vitepress/config/sidebar.mts'
 
 describe('docsSidebar', () => {
   it('为 about 栏目生成非空侧边栏', () => {
-    const items = docsSidebar('source', 'about')
+    const items = docsSidebar('source/zh', 'about')
     expect(Array.isArray(items)).toBe(true)
     expect(items.length).toBeGreaterThan(0)
   })
 
   it('每个条目都有 text 和 link', () => {
-    for (const item of docsSidebar('source', 'about')) {
+    for (const item of docsSidebar('source/zh', 'about')) {
       expect(item.text).toBeTruthy()
       expect(item.link).toBeTruthy()
     }

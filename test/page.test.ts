@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { isIndexLinkable } from '../.vitepress/config/page.mts'
+import { getFileUrl, getFinalUrl, isIndexLinkable } from '../.vitepress/config/page.mts'
 
 describe('isIndexLinkable', () => {
   it('缺省 frontmatter 默认可链接（生成链接）', () => {
@@ -15,5 +15,31 @@ describe('isIndexLinkable', () => {
 
   it("linkable 写为 'true' 时仍可链接", () => {
     expect(isIndexLinkable({ linkable: 'true' })).toBe(true)
+  })
+})
+
+describe('多语言目录（source/zh、source/en）路由归一', () => {
+  it('zh 根 index：URL 为空、文件路径为 index.md（首页仍在 /）', () => {
+    expect(getFinalUrl('zh/index.md')).toBe('')
+    expect(getFileUrl('zh/index.md')).toBe('index.md')
+  })
+
+  it('裸路径（navbar/sidebar 扫描 source/zh 后的入参）按 zh 处理', () => {
+    expect(getFileUrl('about/index.md')).toBe('about/index.md')
+    expect(getFinalUrl('about/index.md')).toBe('about/')
+  })
+
+  it('zh 页面剥掉语言段并去除 NN- 排序前缀', () => {
+    expect(getFileUrl('zh/opensource/guide/03-quickstart/01-preparation.md')).toBe('opensource/guide/quickstart/preparation.md')
+  })
+
+  it('en 根 index：URL 为 en/、文件路径为 en/index.md（英文站在 /en/）', () => {
+    expect(getFinalUrl('en/index.md')).toBe('en/')
+    expect(getFileUrl('en/index.md')).toBe('en/index.md')
+  })
+
+  it('en 普通页与目录 index 保留 en/ 前缀', () => {
+    expect(getFileUrl('en/foo.md')).toBe('en/foo.md')
+    expect(getFileUrl('en/guide/index.md')).toBe('en/guide/index.md')
   })
 })

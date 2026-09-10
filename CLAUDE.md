@@ -46,7 +46,7 @@ pnpm docs:preview  # 对应 package.json 中的 vitepress preview
 
 ## 4. 仓库结构
 
-采用 VitePress 默认布局，`srcDir` 指向 `source/`，`outDir` 指向 `build/`。
+采用 VitePress 默认布局，`srcDir` 指向 `source/`，`outDir` 指向 `build/`。内容源按语言分目录：root 语言（简体中文）物理位于 `source/zh/`，经函数式 `rewrites` 剥掉 `zh/` 段后对外 URL 仍是站点根；英文位于 `source/en/`，URL 前缀为 `/en/`（语言仅按最终 URL 判定）。
 
 ```text
 nextpilot-official-website/
@@ -56,31 +56,32 @@ nextpilot-official-website/
 │   ├── markdown/                  # markdown-it 插件
 │   ├── theme/                    # 自定义主题、组件与全局样式
 │   └── ...                       # 其余 VitePress 相关文件
-├── source/                        # 内容源目录，Markdown 页面都放在这里
-│   ├── index.md                  # 首页
-│   ├── about/                    # 关于我们栏目
-│   ├── solution/                 # 解决方案栏目
-│   ├── product/                  # 产品中心
-│   │   ├── aircraft/             # 无人机平台
-│   │   ├── autopilot/            # 飞行控制
-│   │   ├── datalink/             # 通信链路
-│   │   ├── navigator/            # 导航传感
-│   │   └── peripheral/           # 其它外设
-│   ├── manual/                   # 用户手册（产品导向）
-│   │   ├── aircraft/             # 无人机平台
-│   │   ├── autopilot/            # 飞行控制
-│   │   ├── datalink/             # 通信链路
-│   │   ├── navigator/            # 导航传感
-│   │   └── peripheral/           # 其它外设
-│   ├── opensource/               # 开源项目
-│   │   ├── community/            # 社区支持
-│   │   ├── develop/              # 开发指南
-│   │   └── guide/                # 用户手册（开源文档）
-│   ├── discovery/                # 发现/展示栏目（占位待建）
-│   ├── news/                     # 新闻资讯
-│   ├── download/                 # 资源下载
-│   ├── blog/                     # 博客
-│   └── en/                       # 英文站内容目录
+├── source/                        # 内容源目录（VitePress srcDir），按语言分目录
+│   ├── zh/                        # 简体中文（root locale）：经 rewrites 剥掉 zh/ 段，URL 上不可见
+│   │   ├── index.md               # 首页（https://nextpilot.org/）
+│   │   ├── about/                 # 关于我们栏目
+│   │   ├── solution/              # 解决方案栏目
+│   │   ├── product/               # 产品中心
+│   │   │   ├── aircraft/          # 无人机平台
+│   │   │   ├── autopilot/         # 飞行控制
+│   │   │   ├── datalink/          # 通信链路
+│   │   │   ├── navigator/         # 导航传感
+│   │   │   └── peripheral/        # 其它外设
+│   │   ├── manual/                # 用户手册（产品导向）
+│   │   │   ├── aircraft/          # 无人机平台
+│   │   │   ├── autopilot/         # 飞行控制
+│   │   │   ├── datalink/          # 通信链路
+│   │   │   ├── navigator/         # 导航传感
+│   │   │   └── peripheral/        # 其它外设
+│   │   ├── opensource/            # 开源项目
+│   │   │   ├── community/         # 社区支持
+│   │   │   ├── develop/           # 开发指南
+│   │   │   └── guide/             # 用户手册（开源文档）
+│   │   ├── discovery/             # 发现/展示栏目（占位待建）
+│   │   ├── news/                  # 新闻资讯
+│   │   ├── download/              # 资源下载
+│   │   └── blog/                  # 博客
+│   └── en/                        # English 内容目录（URL 前缀 /en/）
 ├── public/                        # 静态资源目录，打包后直接输出
 │   ├── assets/                   # 静态资源（images/ files/ scripts/）
 │   ├── CNAME                     # 域名配置文件
@@ -265,6 +266,7 @@ helpUrl: /manual/xxx
 
 ## 11. 国际化
 
+- 内容源按语言分目录：中文（root locale）在 `source/zh/`，英文在 `source/en/`；语言仅按最终 URL 判定——`source/zh/` 经函数式 `rewrites` 剥掉 `zh/` 段后服务于站点根（`nextpilot.org/...`），`source/en/` 保持 `/en/` 前缀（`nextpilot.org/en/...`）。新增中文栏目/页面一律放在 `source/zh/` 下，路径与命名约定不变
 - 新增中文页面时，不要在英文侧创建空文件占位
 - 英文页面缺失时，语言切换应回到中文对应页，若中文页也不存在则回到首页
 
@@ -276,18 +278,18 @@ helpUrl: /manual/xxx
 
 - 优先复用默认主题并做扩展，不要从零重写主题
 - `createContentLoader` 必须在构建期生成数据，不要在客户端扫描目录
-- `glob` 模式不要携带前导斜杠，例如：`product/**/*.md`，不能写成 `/product/**/*.md`
+- `glob` 模式不要携带前导斜杠，例如：`zh/product/**/*.md`，不能写成 `/zh/product/**/*.md`（glob 相对 srcDir `source/` 按物理路径匹配，中文内容需带 `zh/` 前缀；loader 产出的 `item.url` 经 rewrites 处理、不含 `zh/`）
 - 自定义 Vue 组件放在 `.vitepress/theme/components/` 并通过 `enhanceApp` 全局注册
 - `docsSidebar()`、`buildRewrites()` 等辅助函数应放在 `.vitepress/` 的独立模块中，`config.mts` 只负责 import
-- 顶部导航由 `docsNavbar()`（`config/navbar.mts`）扫描 `source/` 自动生成：不写死栏目名单，顶级栏目按 `index.md` 的 `order` > 目录排序前缀 > 名称排序，草稿栏目（`draft: true`，如 news / discovery）自动排除，非 root 的语言目录（如 `en`）由 `config.mts` 从 locales 配置派生后跳过。VitePress 要求下拉组顶级项**不带** `link`（带了会渲染成普通链接），故含二级条目的栏目输出为 `{ text, items, sectionLink }`，`items` 为二级菜单：栏目的直接子目录（子栏目）与直接 md 页面（不含 index.md）都算二级条目，混合后统一按 `frontmatter.order` > 排序前缀 > 名称排序；栏目首页链接放在自定义字段 `sectionLink` 中，由 `theme/Layout.vue` 的 `onNavGroupClick` 接管桌面端一级菜单按钮的点击跳转（VitePress 下拉组按钮默认只展开、不导航）；二级菜单使用 VitePress 自带下拉（桌面端悬停展开、移动端汉堡菜单内手风琴展开）。`theme/components/NavbarRibbon.vue` 是已禁用的定制浮层方案，未在 `Layout.vue` 中挂载，需要时可再启用
+- 顶部导航由 `docsNavbar()`（`config/navbar.mts`）扫描 root 语言内容目录 `source/zh/` 自动生成：不写死栏目名单，顶级栏目按 `index.md` 的 `order` > 目录排序前缀 > 名称排序，草稿栏目（`draft: true`，如 news / discovery）自动排除；`docsNavbar(contentDir)` / `docsSidebars(contentDir, sections)` 的首参是语言内容目录（中文传 `source/zh`），生成的链接为不含语言段的裸路由，语言段由 `page.mts` 统一归一。VitePress 要求下拉组顶级项**不带** `link`（带了会渲染成普通链接），故含二级条目的栏目输出为 `{ text, items, sectionLink }`，`items` 为二级菜单：栏目的直接子目录（子栏目）与直接 md 页面（不含 index.md）都算二级条目，混合后统一按 `frontmatter.order` > 排序前缀 > 名称排序；栏目首页链接放在自定义字段 `sectionLink` 中，由 `theme/Layout.vue` 的 `onNavGroupClick` 接管桌面端一级菜单按钮的点击跳转（VitePress 下拉组按钮默认只展开、不导航）；二级菜单使用 VitePress 自带下拉（桌面端悬停展开、移动端汉堡菜单内手风琴展开）。`theme/components/NavbarRibbon.vue` 是已禁用的定制浮层方案，未在 `Layout.vue` 中挂载，需要时可再启用
 - 导航/侧边栏在 dev server 启动时生成一次，目录结构或 frontmatter 变化不会自动反映到 `themeConfig.nav` / `sidebar`；`config/hot-restart.mts` 的 `hotRestartPlugin()`（仅 dev）监听 `source/` 下这类变更并触发 VitePress 自动重启，实现热更新：新增/删除任意目录或 `.md`（含文件、文件夹改名，chokidar 报 unlink+add）、修改任意 md 的 frontmatter（title / shortTitle / permalink / order / draft 等）或一级标题都会重启；只改正文（frontmatter 与一级标题不变）走原生 HMR，不重启
 - TypeScript 代码文件统一用 `.mts` 扩展名（ESM），普通模块文件名用 kebab-case；`createContentLoader` 数据文件与所用布局同名同目录（如 `CatalogLayout.data.mts`，`.data.` 是 VitePress 识别加载器的必需后缀）；markdown-it 插件放在 `.vitepress/markdown/` 下
 - 通用 tab 组：`::: tabs` 容器内每个 `@tab 标题` 行折叠为一个 tab（由 `.vitepress/markdown/plugin-markdown-tab.mts` 的 block rule 生成，任意页面可用），语法为 `::: tabs` / `@tab 标题` / 内容 / `:::`；也可在 `::: tabs` 后指定自定义分隔符（如 `::: tabs ===`、`::: tabs ##`）
 - 卡片容器：`::: xxx-card` 按类型渲染不同卡片（由 `.vitepress/markdown/plugin-markdown-card.mts` 生成），内容为 YAML 代码块包裹的卡片列表；当前支持图文卡片 `::: image-card`（cover / link / name / desc / author / avatar）、链接卡片 `::: link-card`（link / name / desc）、产品卡片 `::: product-card`（cover / link / name / summary / price / category / shopUrl / helpUrl，样式同产品列表卡片）
 - 若开启 `cleanUrls`，会导致静态托管环境下出现 404，故必须保持 `cleanUrls` 关闭；非首页页面仍产出 `xxx.html`
-- 通过 VitePress 的 `rewrites` 实现真实路由：`/manual/foo` → `manual/foo.md`（去前导 `/`、补 `.md`），否则会生成无扩展名文件
-- 页面元数据统一经 `.vitepress/config/page.mts`：`getUrl()` 取 link（无扩展名）、`resolvePageUrl()` 取含 `.md` 的最终路径（供 `rewrites` 与正文内链），二者都支持绝对/相对 `permalink`；`getDisplayTitle()` 取显示标题，`getCategoryName()` / `getCategorySlug()` / `getTagSlug()` 取分类/标签的 name / slug（经全局 `categoryMap` / `tagMap`）
-- 侧边栏与面包屑按物理路径划分栏目：侧边栏用 `docsSidebars()`（内部 `sectionRoutes()` 收集被 permalink 逃逸出栏目根的子栏目路由，仍映射回所属栏目侧边栏）；面包屑用 `Breadcrumb.data.mts` 按物理目录层级构建，二者都不受 permalink 的 URL 影响
+- 通过 VitePress 的函数式 `rewrites`（`buildRewrites()`，入口在 `config/page.mts`）实现真实路由：先按首段拆分语言目录（`zh/` 剥离、`en/` 保留），再去 `NN-` 排序前缀、应用 permalink，并把目录链接补成 `index.md`；如 `zh/manual/foo.md` → `manual/foo.md`、`en/index.md` → `en/index.md`（恒等映射不入 rewrite map）。语言仅由重写后的最终 URL 判定，故 `source/zh/` 内容仍归属 root locale
+- 页面元数据统一经 `.vitepress/config/page.mts`：`getFinalUrl()` 取最终 link（无扩展名；zh 不带语言段、en 补 `en/`）、`getFileUrl()` 取含 `.md` 的最终路径（供 `rewrites` 与正文内链），入参既可是带语言段的物理路径（`zh/manual/foo.md`）也可是裸路径（`manual/foo.md`，按 zh 处理），二者都支持绝对/相对 `permalink`；`getDisplayTitle()` 取显示标题，`getCategoryName()` / `getCategorySlug()` / `getTagSlug()` 取分类/标签的 name / slug（经全局 `categoryMap` / `tagMap`）
+- 侧边栏与面包屑按物理路径划分栏目：侧边栏用 `docsSidebars()` 扫描 `source/zh`（内部 `sectionRoutes()` 收集被 permalink 逃逸出栏目根的子目录路由，仍映射回所属栏目侧边栏）；面包屑用 `Breadcrumb.data.mts` 只扫描 `source/zh` 并按物理目录层级构建，二者都不受 permalink 的 URL 影响
 
 - 自定义容器（`::: tip` / `info` / `warning` / `danger` / `details`）默认标题为英文（TIP / INFO / …）；中文标题在 `config/locales.mts` 的 `locales.root.markdown.container` 本地化（`tipLabel: '提示'` 等），英文（en）不覆盖、沿用默认。**注意 VitePress 2.0.0-alpha.19 的渲染器单例问题**：本地搜索插件（`vitepress:local-search`）会用未合并 `locales` 的原始 `markdown` 选项最先创建 markdown 渲染器（`createMarkdownRenderer` 内 `if (md) return md` 缓存），导致 `locales.<index>.markdown` 在正式构建时被忽略；故 `config.mts` 把各语言 `markdown` 同步到顶层 `markdown.locales`（`markdownLocales`）作为 workaround，升级修复后可移除
 
