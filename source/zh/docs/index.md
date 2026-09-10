@@ -3,6 +3,13 @@ title: 文档中心
 description: NextPilot 文档中心，涵盖产品用户手册、飞控使用教程、开发指南与社区支持。
 order: 4
 sidebar: false
+# 页底上一页/下一页：本页关闭了侧边栏，VitePress 无法从侧边栏推导，需显式指定（按顶级栏目顺序）
+prev:
+  text: 产品中心
+  link: /product/
+next:
+  text: 资源下载
+  link: /download/
 ---
 
 # 文档中心
