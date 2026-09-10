@@ -5,8 +5,10 @@
 编译好的网页托管在本仓库的 [gh-pages](https://github.com/nextpilot/nextpilot-flight-control/tree/gh-pages) 分支，可通过以下链接访问：
 
 - 官方网站：<https://nextpilot.org>
-- 用户手册：<https://nextpilot.org/opensource/guide>
-- 开发指南：<https://nextpilot.org/opensource/develop>
+- 文档中心：<https://nextpilot.org/docs/>
+- 产品手册：<https://nextpilot.org/docs/manual/>
+- 使用教程：<https://nextpilot.org/docs/guide/>
+- 开发指南：<https://nextpilot.org/docs/develop>
 
 ## 技 术 栈
 
@@ -81,18 +83,18 @@ pnpm docs:preview
 │   │   ├── about/                 # 关于我们
 │   │   ├── blog/                  # 技术博客
 │   │   ├── discovery/             # 展示/占位栏目
+│   │   ├── docs/                  # 文档中心（URL 前缀 /docs/）
+│   │   │   ├── 01-manual/         # 产品手册（/docs/manual/）
+│   │   │   │   ├── aircraft/      # 无人机平台
+│   │   │   │   ├── autopilot/     # 飞行控制
+│   │   │   │   ├── datalink/      # 通信链路
+│   │   │   │   ├── navigator/     # 导航传感
+│   │   │   │   └── peripheral/    # 其它外设
+│   │   │   ├── 02-guide/          # 使用教程（/docs/guide/）
+│   │   │   ├── 03-develop/        # 开发指南（/docs/develop/）
+│   │   │   └── 04-community/      # 社区支持（/docs/community/）
 │   │   ├── download/              # 资源下载
-│   │   ├── manual/                # 用户手册（产品导向）
-│   │   │   ├── aircraft/          # 无人机平台
-│   │   │   ├── autopilot/         # 飞行控制
-│   │   │   ├── datalink/          # 通信链路
-│   │   │   ├── navigator/         # 导航传感
-│   │   │   └── peripheral/        # 其它外设
 │   │   ├── news/                  # 新闻资讯
-│   │   ├── opensource/            # 开源项目
-│   │   │   ├── community/         # 社区支持
-│   │   │   ├── develop/           # 开发指南
-│   │   │   └── guide/             # 用户手册（开源文档）
 │   │   ├── product/               # 产品中心
 │   │   │   ├── aircraft/          # 无人机平台
 │   │   │   ├── autopilot/         # 飞行控制

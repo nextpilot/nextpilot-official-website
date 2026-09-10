@@ -5,13 +5,13 @@ import { useData, useRoute } from 'vitepress'
 import { data as allProducts } from './CatalogLayout.data.mts'
 import Breadcrumb from './components/Breadcrumb.vue'
 
-const { page, lang } = useData()
+const { lang } = useData()
 const route = useRoute()
 
 // 未填写 shopUrl 时的兜底购买链接（与产品详情页 ProductLayout 保持一致）
 const DEFAULT_SHOP_URL = 'https://shop103678810.taobao.com'
 // 未填写 helpUrl 时的兜底帮助链接（与产品详情页 ProductLayout 保持一致）
-const DEFAULT_HELP_URL = '/manual/'
+const DEFAULT_HELP_URL = '/docs/manual/'
 
 const query = ref('')
 const activeCategory = ref('')
@@ -41,24 +41,19 @@ const t = computed(() =>
       },
 )
 
-// 从当前路径提取所属子栏目（栏目分组键）：/product/<子栏目>/ → <子栏目>，/product/ → 空（全部）
-const column = computed(() => {
-  const rel = (page.value.relativePath || '').replace(/\\/g, '/')
-  const m = rel.match(/^product\/([^/]+)\/index\.md$/)
-  if (m) return m[1].replace(/^\d+-/, '') // 去排序前缀（如 `01-autopilot` → `autopilot`）
-  // 回退到路由解析（处理 cleanUrls/语言前缀等差异）
+// 当前列表页自身的 URL 前缀（与物理目录无关）：/product/autopilot/ → 仅列其 URL 子树下的产品，
+// /product/ → 列出全部产品。任何位置的 `layout: catalog` 页面都按同一规则收集子树内容。
+const basePrefix = computed(() => {
   let p = route.path.replace(/\.html$/, '')
   if (p !== '/') p = p.replace(/\/+$/, '')
   const segs = p.split('/').filter(Boolean)
-  if (segs[0] === 'en') segs.shift()
-  return segs.length > 1 && segs[0] === 'product' ? segs[1].replace(/^\d+-/, '') : ''
+  if (segs[0] === 'en') segs.shift() // 英文页剥掉语言段（加载器只收中文内容）
+  p = segs.length ? '/' + segs.join('/') + '/' : '/'
+  return p
 })
 
-// 当前栏目下的产品（按栏目分组；无栏目则全部）
-const products = computed(() => {
-  if (!column.value) return allProducts
-  return allProducts.filter((p: any) => p.column === column.value)
-})
+// 当前列表页子树下的产品（URL 前缀匹配）
+const products = computed(() => allProducts.filter((p: any) => p.url.startsWith(basePrefix.value)))
 
 // 分类列表：去重，按 categoryOrder 排序
 const categories = computed(() => {

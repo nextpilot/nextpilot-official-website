@@ -1,69 +1,65 @@
 ---
-layout: home
-order: 5
-title: 开源项目
-description: NextPilot 开源项目集合，涵盖飞控系统、地面控制站、仿真工程与开发工具链。
-
-hero:
-  name: 开源项目
-  tagline: 涵盖飞控系统、地面站、仿真与工具链的开源项目集合
-  actions:
-    - theme: brand
-      text: 飞行仿真
-      link: /opensource/guide/simulation/sitl
-    - theme: brand
-      text: 用户手册
-      link: /opensource/guide/
-    - theme: brand
-      text: 开发指南
-      link: /opensource/develop/
-    - theme: brand
-      text: 社区支持
-      link: /opensource/community/
-
-features:
-  - title: 飞行仿真
-    details: 不需要硬件，NextPilot-Ground-Control 地面控制站集成了虚拟飞行仿真功能。在地面控制站中创建一个虚拟飞机链接，即可立即开始飞行。
-    link: /opensource/guide/simulation/sitl
-    linkText: 查看文档
-  - title: 用户手册
-    details: NextPilot 飞控系统的用户手册，涵盖装机、配置、飞行操作与数据分析。
-    link: /opensource/guide/
-    linkText: 查看文档
-  - title: 开发指南
-    details: 飞控开发与二次开发指南，了解代码结构、贡献流程与开发环境搭建。
-    link: /opensource/develop/
-    linkText: 查看文档
-  - title: 社区支持
-    details: 获取技术支持、参与社区讨论与代码贡献。
-    link: /opensource/community/
-    linkText: 查看文档
+title: 文档中心
+description: NextPilot 文档中心，涵盖产品用户手册、飞控使用教程、开发指南与社区支持。
+order: 4
+sidebar: false
 ---
+
+# 文档中心
+
+NextPilot 文档按用途分为四个子栏目：装机、配置和日常使用请查阅[产品手册](/docs/manual/)与[使用教程](/docs/guide/)，源码构建、二次开发和社区协作请参考[开发指南](/docs/develop/)。
+
+::: link-card 2
+
+```yml
+- link: /docs/manual/
+  name: 产品手册
+  icon: 📘
+  desc: 硬件产品的随箱手册，按型号讲解整机平台、飞控、通信链路与导航外设的接线安装、参数配置、固件烧写和地面站操作。
+  links: 整机平台|/docs/manual/aircraft/，飞行控制|/docs/manual/autopilot/，通信链路|/docs/manual/datalink/，导航传感|/docs/manual/navigator/
+- link: /docs/guide/
+  name: 使用教程
+  icon: 🚀
+  desc: 从装机到首飞的完整路径：机架选择、传感器校准、链路连接、任务规划，以及 SITL / HITL 仿真训练与日志、参数等进阶操作。
+  links: 快速上手|/docs/guide/quickstart/，飞控配置|/docs/guide/config/，飞行仿真|/docs/guide/simulation/sitl，进阶功能|/docs/guide/advanced/
+- link: /docs/develop/
+  name: 开发指南
+  icon: 💻
+  desc: 面向源码构建与二次开发：开发环境搭建、固件构建烧写、代码结构，以及 uORB / PARAM / AIRFRAME 扩展架构与模块开发。
+  links: 飞控源码|https://github.com/nextpilot/nextpilot-flight-control，Windows 工具链|https://github.com/nextpilot/nextpilot-windows-toolchain
+- link: /docs/community/
+  name: 社区支持
+  icon: 💬
+  desc: 使用答疑与故障排查的第一站：扫码加群交流、提交 Issue，了解代码与文档的贡献流程、行为准则和许可协议。
+  links: 技术支持|/docs/community/support，贡献指南|/docs/community/contribute，行为准则|/docs/community/code-of-conduct
+```
+
+:::
 
 ## NextPilot 开源项目
 
-NextPilot 的开源项目围绕飞控核心、地面控制、模型设计和开发环境展开。NextPilot 文档分为两类：面向装机、配置和日常使用的[用户手册](/opensource/guide/)，以及面向源码构建、二次开发和社区协作的[开发指南](/opensource/develop/)。
+NextPilot 的开源项目围绕飞控核心、地面控制、模型设计和开发环境展开。
 
 <div class="repo-grid">
   <article class="repo-card">
     <h3>NextPilot Flight Control <span class="repo-scope">通用飞控</span></h3>
     <p>基于 RT-Thread 实时操作系统、核心算法移植自 PX4 的自动驾驶仪，支持多旋翼、固定翼和垂起复合翼。</p>
-    <p><a href="https://nextpilot.org/" target="_blank" rel="noopener noreferrer">项目主页</a> · <a href="https://github.com/nextpilot/nextpilot-flight-control" target="_blank" rel="noopener noreferrer">代码仓库</a> · <a href="/opensource/guide/">用户手册</a> · <a href="/opensource/develop/">开发指南</a></p>
+    <p><a href="https://nextpilot.org/" target="_blank" rel="noopener noreferrer">项目主页</a> · <a href="https://github.com/nextpilot/nextpilot-flight-control" target="_blank" rel="noopener noreferrer">代码仓库</a> · <a href="/docs/manual/">产品手册</a> · <a href="/docs/develop/">开发指南</a></p>
   </article>
   <article class="repo-card">
     <h3>NextPilot Ground Control <span class="repo-scope">地面控制站</span></h3>
     <p>地面控制站，提供飞行监控、航线规划、飞前检查、日志回放和虚拟飞行仿真。</p>
-    <p><a href="https://nextpilot.org/" target="_blank" rel="noopener noreferrer">项目主页</a> · <a href="https://github.com/nextpilot/nextpilot-ground-control" target="_blank" rel="noopener noreferrer">代码仓库</a> · <a href="/opensource/guide/06-simulation/01-sitl">用户手册</a> · <a href="/opensource/develop/">开发指南</a></p>
+    <p><a href="https://nextpilot.org/" target="_blank" rel="noopener noreferrer">项目主页</a> · <a href="https://github.com/nextpilot/nextpilot-ground-control" target="_blank" rel="noopener noreferrer">代码仓库</a> · <a href="/docs/guide/simulation/sitl">仿真文档</a> · <a href="/docs/develop/">开发指南</a></p>
   </article>
   <article class="repo-card">
     <h3>NextPilot Simulink Project <span class="repo-scope">模型设计与仿真</span></h3>
     <p>面向模型设计的 Simulink 工程，用于控制律开发以及 MIL / SIL 仿真验证。</p>
-    <p><a href="https://nextpilot.org/" target="_blank" rel="noopener noreferrer">项目主页</a> · <a href="https://github.com/nextpilot/nextpilot-simulink-project" target="_blank" rel="noopener noreferrer">代码仓库</a> · <a href="/opensource/guide/">用户手册</a> · <a href="/opensource/develop/">开发指南</a></p>
+    <p><a href="https://nextpilot.org/" target="_blank" rel="noopener noreferrer">项目主页</a> · <a href="https://github.com/nextpilot/nextpilot-simulink-project" target="_blank" rel="noopener noreferrer">代码仓库</a> · <a href="/docs/guide/">使用教程</a> · <a href="/docs/develop/">开发指南</a></p>
   </article>
   <article class="repo-card">
     <h3>NextPilot Windows Toolchain <span class="repo-scope">开发工具链</span></h3>
     <p>Windows 开发工具链，用于在 Windows 环境下构建 NextPilot 飞控工程。</p>
-    <p><a href="https://nextpilot.org/" target="_blank" rel="noopener noreferrer">项目主页</a> · <a href="https://github.com/nextpilot/nextpilot-windows-toolchain" target="_blank" rel="noopener noreferrer">代码仓库</a> · <a href="/opensource/guide/">用户手册</a> · <a href="/opensource/develop/">开发指南</a></p>
+    <p><a href="https://nextpilot.org/" target="_blank" rel="noopener noreferrer">项目主页</a> · <a href="https://github.com/nextpilot/nextpilot-windows-toolchain" target="_blank" rel="noopener noreferrer">代码仓库</a> · <a href="/docs/develop/">开发指南</a></p>
   </article>
 </div>
 
@@ -116,4 +112,4 @@ NextPilot 的开源项目围绕飞控核心、地面控制、模型设计和开�
 
 ## 参与开源
 
-欢迎通过代码、文档、问题反馈和经验分享参与 NextPilot 社区。提交代码前请先阅读[贡献指南](/opensource/community/contribute)，了解许可协议和协作流程。
+欢迎通过代码、文档、问题反馈和经验分享参与 NextPilot 社区。提交代码前请先阅读[贡献指南](/docs/community/contribute)，了解许可协议和协作流程。

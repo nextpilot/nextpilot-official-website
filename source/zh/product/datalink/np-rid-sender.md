@@ -12,7 +12,7 @@ gallery:
   - /assets/images/product/datalink/np-rid-sender-gh-board.png
   - /assets/images/product/datalink/np-rid-sender-gh-appearance.png
 shopUrl: https://item.taobao.com/item.htm?id=1074097497449&mi_id=0000KHD5urOB5ulWhlh0CZLkO54UwXlaqMXVS7sOhyvD7lY
-helpUrl: /manual/datalink/np-rid-sender
+helpUrl: /docs/manual/datalink/np-rid-sender
 price: 120
 ---
 

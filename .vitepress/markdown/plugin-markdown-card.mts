@@ -3,7 +3,8 @@
  * 卡片内容用 ```yml 代码块包裹，每张卡片一个 ```yml 块（flat `key: value`），或一个块内 `- key: value` 列表。
  *
  * 图文卡片 image-card 字段：cover / link / name / desc / author / avatar；
- * 链接卡片 link-card 字段：link / name / desc；
+ * 链接卡片 link-card 字段：link / name / desc / icon（emoji 或 / 开头的站内图片路径）/
+ * links（卡片底部直达链接，写法 `名称|URL`，多个以 ；;，, 分隔）；
  * 产品卡片 product-card 字段：cover / link / name / desc / price / category / shopUrl / helpUrl。
  */
 
@@ -12,6 +13,8 @@ interface Card {
   link: string
   name: string
   desc?: string
+  icon?: string
+  links?: { name: string; link: string }[]
   summary?: string
   price?: string
   category?: string
@@ -23,6 +26,31 @@ interface Card {
 
 function escapeHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+}
+
+// 外链（http(s):// 或协议相对 //）新标签打开；站内链接当前窗口跳转
+function externalAttr(url: string): string {
+  return /^(?:https?:)?\/\//.test(url) ? ' target="_blank" rel="noopener noreferrer"' : ''
+}
+
+// icon 为站内图片路径（/ 开头）或远程图片 URL 时渲染 <img>，否则按 emoji/字符原样渲染
+function isImageUrl(url: string): boolean {
+  return /^(?:https?:)?\/\//.test(url) || url.startsWith('/')
+}
+
+// 解析卡片底部直达链接：`名称|URL` 多项，以 ；;，, 分隔
+function parseLinks(raw?: string): { name: string; link: string }[] {
+  if (!raw) return []
+  return raw
+    .split(/[;；,，]\s*/)
+    .map((item) => {
+      const idx = item.indexOf('|')
+      if (idx < 0) return null
+      const name = item.slice(0, idx).trim()
+      const link = item.slice(idx + 1).trim()
+      return name && link ? { name, link } : null
+    })
+    .filter((x): x is { name: string; link: string } => x !== null)
 }
 
 // 解析 `key: value`，按第一个冒号切分
@@ -65,6 +93,8 @@ function parseCards(content: string): Card[] {
     link: c.link || '',
     name: c.name || '',
     desc: c.desc,
+    icon: c.icon,
+    links: parseLinks(c.links),
     summary: c.summary,
     price: c.price,
     category: c.category,
@@ -127,15 +157,17 @@ export function markdownCard(md: any): void {
   md.renderer.rules.markdown_card = (tokens: any[], idx: number) => {
     const { type, count, cards }: { type: string; count: string; cards: Card[] } = tokens[idx].meta
 
-    const cols = /^\d+$/.test(count) ? `repeat(${Math.min(Math.max(Number(count), 1), 4)}, 1fr)` : 'repeat(auto-fill, minmax(240px, 1fr))'
-    const gridStyle = `grid-template-columns: ${cols}; gap: 20px;`
+    // 数字列数输出 cols-N 类（响应式降级见 style.css）；缺省 auto-fill 时走内联样式
+    const colsMatch = count.match(/^\d+$/)
+    const colsClass = colsMatch ? ` cols-${Math.min(Math.max(Number(colsMatch[0]), 1), 4)}` : ''
+    const gridStyle = colsMatch ? 'gap: 20px;' : 'grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px;'
 
     const items = cards
       .map((c) => {
         if (type === 'image') {
           const footer =
             c.author || c.avatar ? `<div class="image-card-footer">${c.avatar ? `<img class="image-card-avatar" src="${escapeHtml(c.avatar)}" alt="" />` : ''}${c.author ? `<span class="image-card-author">${escapeHtml(c.author)}</span>` : ''}</div>` : ''
-          return `<a class="image-card" href="${escapeHtml(c.link)}" target="_blank" rel="noopener noreferrer"><img class="image-card-image" src="${escapeHtml(c.cover || '')}" alt="${escapeHtml(c.name)}" /><div class="image-card-body">${c.name ? `<div class="image-card-name">${escapeHtml(c.name)}</div>` : ''}${c.desc ? `<div class="image-card-desc">${escapeHtml(c.desc)}</div>` : ''}${footer}</div></a>`
+          return `<a class="image-card" href="${escapeHtml(c.link)}"${externalAttr(c.link)}><img class="image-card-image" src="${escapeHtml(c.cover || '')}" alt="${escapeHtml(c.name)}" /><div class="image-card-body">${c.name ? `<div class="image-card-name">${escapeHtml(c.name)}</div>` : ''}${c.desc ? `<div class="image-card-desc">${escapeHtml(c.desc)}</div>` : ''}${footer}</div></a>`
         }
         if (type === 'product') {
           const catHtml = c.category ? `<span class="card-cat">${escapeHtml(c.category)}</span>` : ''
@@ -144,13 +176,18 @@ export function markdownCard(md: any): void {
           const buyBtn = c.shopUrl ? `<a class="card-btn card-btn-buy" href="${escapeHtml(c.shopUrl)}" target="_blank" rel="noopener noreferrer">购买</a>` : ''
           const helpBtn = c.helpUrl ? `<a class="card-btn card-btn-help" href="${escapeHtml(c.helpUrl)}">帮助</a>` : ''
           const actions = buyBtn || helpBtn ? `<div class="card-actions">${buyBtn}${helpBtn}</div>` : ''
-          return `<div class="product-card"><a class="card-main" href="${escapeHtml(c.link)}"><img class="card-cover" src="${escapeHtml(c.cover || '')}" alt="${escapeHtml(c.name)}" /><div class="card-body"><div class="card-title-row"><h3 class="card-title">${escapeHtml(c.name)}</h3>${catHtml}</div>${summaryHtml}</div></a><div class="card-foot">${priceHtml}${actions}</div></div>`
+          return `<div class="product-card"><a class="card-main" href="${escapeHtml(c.link)}"${externalAttr(c.link)}><img class="card-cover" src="${escapeHtml(c.cover || '')}" alt="${escapeHtml(c.name)}" /><div class="card-body"><div class="card-title-row"><h3 class="card-title">${escapeHtml(c.name)}</h3>${catHtml}</div>${summaryHtml}</div></a><div class="card-foot">${priceHtml}${actions}</div></div>`
         }
-        return `<a class="link-card" href="${escapeHtml(c.link)}" target="_blank" rel="noopener noreferrer">${c.name ? `<div class="link-card-name">${escapeHtml(c.name)}</div>` : ''}${c.desc ? `<div class="link-card-desc">${escapeHtml(c.desc)}</div>` : ''}</a>`
+        const iconHtml = c.icon ? `<span class="link-card-icon">${isImageUrl(c.icon) ? `<img src="${escapeHtml(c.icon)}" alt="" />` : escapeHtml(c.icon)}</span>` : ''
+        const headInner = `${iconHtml}${c.name ? `<span class="link-card-name">${escapeHtml(c.name)}</span>` : ''}`
+        // 卡片头本身为主链接（卡片底部还可能有直达子链接，不能 <a> 嵌套 <a>，故根元素用 div）
+        const headHtml = c.link ? `<a class="link-card-head" href="${escapeHtml(c.link)}"${externalAttr(c.link)}>${headInner}</a>` : `<div class="link-card-head">${headInner}</div>`
+        const linksHtml = c.links?.length ? `<div class="link-card-links">${c.links.map((l) => `<a href="${escapeHtml(l.link)}"${externalAttr(l.link)}>${escapeHtml(l.name)}</a>`).join('')}</div>` : ''
+        return `<div class="link-card">${headHtml}${c.desc ? `<div class="link-card-desc">${escapeHtml(c.desc)}</div>` : ''}${linksHtml}</div>`
       })
       .join('')
 
-    const gridClass = type === 'image' ? 'image-card-grid' : type === 'product' ? 'product-card-grid' : 'link-card-grid'
+    const gridClass = (type === 'image' ? 'image-card-grid' : type === 'product' ? 'product-card-grid' : 'link-card-grid') + colsClass
     return `<div class="${gridClass}" style="${gridStyle}">${items}</div>`
   }
 }

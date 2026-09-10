@@ -11,8 +11,8 @@ export const SITE_URL = `https://${SITE_HOST}`
 // 本地开发与预览部署应保持关闭，避免访问时被跳转到线上域名。
 const USE_URL_REDIRECT = process.env.USE_URL_REDIRECT === '1' || process.env.USE_URL_REDIRECT === 'true'
 
-// 源文件路径（相对 srcDir，如 index.md / manual/index.md / manual/foo.md）→ 权威 URL
-// 与 sitemap 一致：目录页尾斜杠（/manual/）、详情页带 .html（/manual/foo.html）
+// 源文件路径（相对 srcDir，如 index.md / docs/01-manual/index.md / docs/manual/foo.md）→ 权威 URL
+// 与 sitemap 一致：目录页尾斜杠（/docs/manual/）、详情页带 .html（/docs/manual/foo.html）
 function canonicalPath(page: string): string | null {
   if (page === '404.md') return null
   if (page === 'index.md') return '/'
@@ -28,7 +28,7 @@ const redirectScript: HeadConfig = [
     var host = location.hostname
     if (host === '${SITE_HOST}') return
     if (host.startsWith('docs.')) {
-      var path = location.pathname === '/' ? '/manual/' : '/manual' + location.pathname
+      var path = location.pathname === '/' ? '/docs/manual/' : '/docs/manual' + location.pathname
       location.replace('${SITE_URL}' + path + location.search)
       return
     }
@@ -37,6 +37,37 @@ const redirectScript: HeadConfig = [
 ]
 
 export const redirectHead: HeadConfig[] = USE_URL_REDIRECT ? [redirectScript] : []
+
+// 旧文档路径客户端兜底跳转（始终注入）：manual 与 opensource 栏目已合并到 /docs，
+// 边缘中间件未覆盖的托管环境（或整页打开旧链接落到 404 页）时由本脚本接管。
+// USE_URL_REDIRECT 开启时非权威域名的归一交给 redirectScript，此处只处理权威域名，避免两边抢跳转。
+const legacyGuard = USE_URL_REDIRECT ? `if (location.hostname !== '${SITE_HOST}') return` : ''
+const legacyDocsScript: HeadConfig = [
+  'script',
+  {},
+  `(function () {
+    ${legacyGuard}
+    var p = location.pathname
+    var target = null
+    if (p === '/manual' || p === '/manual/') {
+      target = '/docs/manual/'
+    } else if (p.indexOf('/manual/') === 0) {
+      target = '/docs/manual/' + p.slice('/manual/'.length)
+    } else if (p === '/opensource' || p === '/opensource/') {
+      target = '/docs/'
+    } else {
+      var subs = ['guide', 'develop', 'community']
+      for (var i = 0; i < subs.length; i++) {
+        var pre = '/opensource/' + subs[i]
+        if (p === pre || p === pre + '/') { target = '/docs/' + subs[i] + '/'; break }
+        if (p.indexOf(pre + '/') === 0) { target = '/docs/' + subs[i] + '/' + p.slice(pre.length + 1); break }
+      }
+    }
+    if (target) location.replace(target + location.search + location.hash)
+  })()`,
+]
+
+export const legacyDocsHead: HeadConfig[] = [legacyDocsScript]
 
 // 百度统计站点 ID（token，来自百度统计后台「代码获取」）
 const BAIDU_TONGJI_ID = 'e420040ee09f65a191badecde7e2629d'

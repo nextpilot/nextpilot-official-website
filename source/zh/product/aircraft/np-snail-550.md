@@ -15,7 +15,7 @@ gallery:
   - /assets/images/product/aircraft/payload-board.png
   - /assets/images/product/aircraft/assembly-px4.png
 shopUrl: https://item.taobao.com/item.htm?id=1062651760115&mi_id=0000yyK0AUqEQBLsWvRh9-lD942SjXrw0W2RmGTZ43QBHyc
-helpUrl: /manual/aircraft/np-snail-550
+helpUrl: /docs/manual/aircraft/np-snail-550
 price: 600
 ---
 

@@ -19,7 +19,7 @@ NextPilot（`nextpilot-flight-control`）是一款国产开源先进自动驾驶
 已完成的核心工作：
 
 - VitePress 基础配置
-- `about` / `manual` / `opensource` 自动侧边栏生成
+- `about` / `docs` 自动侧边栏生成（`docs` 由原 `manual` 与 `opensource` 合并，含 `01-manual` / `02-guide` / `03-develop` / `04-community` 四个子栏目，旧 URL 经 `middleware.js` 301 到 `/docs/...`）
 - 产品列表页（`createContentLoader` + `CatalogLayout` 布局）
 - URL 排序前缀去除：`buildRewrites()`（`rewrites` 已启用，URL 不含 `NN-` 前缀）
 - `permalink` 路由重写（绝对/相对地址，侧边栏与正文内链统一解析）
@@ -67,16 +67,16 @@ nextpilot-official-website/
 │   │   │   ├── datalink/          # 通信链路
 │   │   │   ├── navigator/         # 导航传感
 │   │   │   └── peripheral/        # 其它外设
-│   │   ├── manual/                # 用户手册（产品导向）
-│   │   │   ├── aircraft/          # 无人机平台
-│   │   │   ├── autopilot/         # 飞行控制
-│   │   │   ├── datalink/          # 通信链路
-│   │   │   ├── navigator/         # 导航传感
-│   │   │   └── peripheral/        # 其它外设
-│   │   ├── opensource/            # 开源项目
-│   │   │   ├── community/         # 社区支持
-│   │   │   ├── develop/           # 开发指南
-│   │   │   └── guide/             # 用户手册（开源文档）
+│   │   ├── docs/                  # 文档中心（原 manual 与 opensource 合并，URL 前缀 /docs/）
+│   │   │   ├── 01-manual/         # 产品手册（产品导向，URL /docs/manual/）
+│   │   │   │   ├── aircraft/      # 无人机平台
+│   │   │   │   ├── autopilot/     # 飞行控制
+│   │   │   │   ├── datalink/      # 通信链路
+│   │   │   │   ├── navigator/     # 导航传感
+│   │   │   │   └── peripheral/    # 其它外设
+│   │   │   ├── 02-guide/          # 使用教程（开源飞控文档，URL /docs/guide/）
+│   │   │   ├── 03-develop/        # 开发指南（URL /docs/develop/）
+│   │   │   └── 04-community/      # 社区支持（URL /docs/community/）
 │   │   ├── discovery/             # 发现/展示栏目（占位待建）
 │   │   ├── news/                  # 新闻资讯
 │   │   ├── download/              # 资源下载
@@ -155,7 +155,7 @@ nextpilot-official-website/
 
 - 栏目定位：`about` 与 `solution` 都属于静态页面栏目，分别用于品牌介绍与解决方案概览。
 - 目录规则：均采用扁平结构：`<栏目>/<xx-page.md>`，每个页面对应一个单独文档，不做深层嵌套。
-- 约束条件：`about` 使用自动 sidebar；`solution` 列表页使用 `layout: solution`（`.vitepress/theme/SolutionLayout.vue`），布局自动读取同名数据加载器 `.vitepress/theme/SolutionLayout.data.mts` 渲染方案卡片网格，不显示侧边栏。
+- 约束条件：`about` 使用自动 sidebar；`solution` 列表页使用 `layout: solution`（`.vitepress/theme/SolutionLayout.vue`），布局自动读取同名数据加载器 `.vitepress/theme/SolutionLayout.data.mts` 渲染方案卡片网格，不显示侧边栏。列表布局与目录名无关（见 7.6）：该页自动收集自身 URL 子树下的普通内容页。
 
 ### 7.2 产品中心
 
@@ -163,28 +163,38 @@ nextpilot-official-website/
 - 目录规则：`product/xx-subcolumn/yy-markdown.md`，其中产品子栏目 `subcolumn` 包括 `aircraft`、`autopilot`、`datalink`、`navigator`、`peripheral`。
 - 过滤规则：必须过滤 `index.md` 和 `draft: true`，并支持按分类筛选与全文搜索，分类筛选不能使用 `tags`。
 - 约束条件：卡片展示依赖 `frontmatter` 中 `title / cover / summary / price / tags` 等，未填写字段不显示。
-- 列表布局：产品列表页（`product/index.md`）使用 `layout: catalog`（`.vitepress/theme/CatalogLayout.vue`），布局自动读取同名数据加载器 `.vitepress/theme/CatalogLayout.data.mts` 并按当前栏目过滤后渲染产品卡片网格（搜索 + 分类筛选 + 卡片网格内联在布局中）；`product/<subcolumn>/index.md` 若同样声明 `layout: catalog`，则自动只展示子栏目中的产品。加载器以 `frontmatter.layout === 'product'` 识别产品详情页，不绑定文件夹。
+- 列表布局：产品列表页（`product/index.md`）使用 `layout: catalog`（`.vitepress/theme/CatalogLayout.vue`），布局自动读取同名数据加载器 `.vitepress/theme/CatalogLayout.data.mts` 渲染产品卡片网格（搜索 + 分类筛选 + 卡片网格内联在布局中）；`product/<subcolumn>/index.md` 若同样声明 `layout: catalog`，则只展示其 URL 子树中的产品。加载器 glob `zh/**/*.md`，以 `frontmatter.layout === 'product'` 识别产品详情页，不绑定文件夹；每个产品归属**最近的 catalog 祖先列表页**（URL 前缀最长者，见 7.6）。
 - 详情布局：产品详情页使用 `layout: product` 自定义布局（`.vitepress/theme/ProductLayout.vue`），左侧图库 + 右侧摘要（标题 / 简介 / 价格 / CTA），下方渲染详细正文；正文不写首行 `# 标题`（标题由 `frontmatter.title` 在布局中渲染）。
 - 正文 tabs：正文中每个二级标题（`##`）会自动折叠为一个 tab（由 `.vitepress/markdown/plugin-heading-tab.mts` 插件在构建期生成，对声明 `layout: product` 的页面生效）；少于两个二级标题时不生成 tab。
 
-### 7.3 用户手册 / 开发指南 / 社区支持
+### 7.3 文档中心（docs）
 
-- 栏目定位：顶级 `manual`（产品导向）与顶级 `opensource`（其下含 `community` / `develop` / `guide` 子栏目）都属于 `docs` 类型，主要展示文档内容和知识库。
-- 目录规则：`manual/<xx-subcolumn>/<...>/<yy-markdown.md>`，子栏目下可再嵌套下级栏目（层级建议不超过 5 级）；`index.md` 用作各级栏目首页，并提供该栏目所需的 `frontmatter`。
-- 约束条件：侧边栏按物理目录**递归**生成分组（`docsSidebar()`），左侧自动生成 sidebar，右侧显示 TOC。各级 `index.md` 不单独列为文档条目，而是作为所在分组的标题：`linkable` 不为 false 时分组头可点击指向栏目首页，为 false 时仅作分组标签。下级栏目若暂时只有 `index.md`（尚无文档页），仍会进入侧边栏——可链接时退化为单个链接条目，不可链接时为仅标题的空分组；不含任何 `.md` 的纯资源目录（如 `imgs/`）跳过。
+- 栏目定位：顶级 `docs` 是统一的文档栏目（`docs` 类型），整合原独立的 `manual`（产品导向手册）与 `opensource`（开源项目文档）两个栏目，主要展示文档内容和知识库。
+- 目录规则：`docs/<xx-subcolumn>/<...>/<yy-markdown.md>`，四个子栏目固定为 `01-manual`（产品手册，URL `/docs/manual/`）、`02-guide`（使用教程，URL `/docs/guide/`）、`03-develop`（开发指南，URL `/docs/develop/`）、`04-community`（社区支持，URL `/docs/community/`）；子栏目下可再嵌套下级栏目（层级建议不超过 5 级）；`index.md` 用作各级栏目首页，并提供该栏目所需的 `frontmatter`。
+- 栏目首页：`docs/index.md` 为文档中心落地页（普通 doc 布局 + 四个子栏目 link-card + 开源项目 repo-grid），导航顺序由 `frontmatter.order` 决定。
+- 旧链接：`/manual/*` 301 到 `/docs/manual/*`，`/opensource/guide|develop|community/*` 301 到 `/docs/...`，`/opensource/` 301 到 `/docs/`；跳转同时在 EdgeOne `middleware.js`（边缘 301）与 `config/head.mts` 的 `legacyDocsHead` 客户端脚本（兜底）实现；`docs.nextpilot.org` 子域现落地到 `/docs/manual/`。
+- 约束条件：侧边栏按物理目录**递归**生成分组（`docsSidebar()`，`sidebarSections = ['about', 'docs']`），整个 `docs` 共用一棵侧边栏树，四个子栏目即四个顶层分组；左侧自动生成 sidebar，右侧显示 TOC。各级 `index.md` 不单独列为文档条目，而是作为所在分组的标题：`linkable` 不为 false 时分组头可点击指向栏目首页，为 false 时仅作分组标签。下级栏目若暂时只有 `index.md`（尚无文档页），仍会进入侧边栏——可链接时退化为单个链接条目，不可链接时为仅标题的空分组；不含任何 `.md` 的纯资源目录（如 `imgs/`）跳过。
 
 ### 7.4 新闻资讯 / 博客
 
 - 栏目定位：`news` 与 `blog` 属于 `post` 类型，用于发布文章与更新信息。
 - 目录规则：`news/<xx-subcolumn>/<yyyymmdd-markdown.md>`，`index.md` 仅用作子栏目首页，并提供子栏目所需的 `frontmatter`。
 - 展示规则：文章列表页可提取 `title / cover / summary / tags / date / author` 等字段；列表页必须过滤 `index.md` 和 `draft: true`。
-- 约束条件：`news` 当前仍为待建栏目，不接入 nav，也不实现列表页；`blog` 为正式栏目，支持分类和 tags 过滤。
+- 约束条件：`news` 当前仍为待建栏目，不接入 nav，也不实现列表页；`blog` 为正式栏目，使用 `layout: blog`（`.vitepress/theme/BlogLayout.vue` + `BlogLayout.data.mts`），支持分类和 tags 过滤；文章归属规则与 catalog 相同（最近的 blog 祖先列表页，见 7.6）。
 
 ### 7.5 其他栏目
 
 - `/discovery/`：图片/视频展示栏目，暂作为待建占位页，不接入 nav，不实现展示墙。
 - `/download/`：资料下载栏目，当前已有导航入口，但内容模型尚待确定。
 - 约束：新增内容前应先确认栏目定位，再统一遵循命名、排序、frontmatter 和站内链接规范。
+
+### 7.6 列表布局与目录取耦（catalog / blog / solution）
+
+- 三种列表布局均**不绑定目录名**：数据加载器统一 glob `zh/**/*.md`，先找出所有声明对应 `layout:` 的列表页（catalog 找 `layout: catalog`、blog 找 `layout: blog`、solution 找 `layout: solution`），其 `item.url`（index 页天然以 `/` 结尾）即子树前缀。
+- 内容归属采用**最近祖先列表页**规则：一个内容页（产品页 / 文章 / 方案页）归属于 URL 前缀能覆盖它的、前缀最长的同类型列表页；因此把列表页放到任意目录都会自动收集其 URL 子树下的内容，嵌套列表页各自只展示本子树，根列表页展示全部。permalink 逃逸出物理目录时按最终 URL 判定，归属仍然正确。
+- 列表布局组件（`CatalogLayout.vue` / `BlogLayout.vue`）从当前路由 `route.path` 推导自身前缀（去掉 `.html`、尾斜杠与可选 `en/` 段），对加载器数据做 `startsWith` 过滤。
+- 排除规则：各级 `index.md`、`draft: true`、以及自身就是列表/详情布局的页面（`home / catalog / blog / solution / product`）不作为条目收录。
+- 默认分类名取「所属最近列表页」的显示名（可被页面 `frontmatter.category` 覆盖），与 6.2 节一致。
 
 ## 8. Frontmatter 约定
 
@@ -221,7 +231,7 @@ gallery:
   - /assets/images/blog/xxx-2.png
 price: 100
 shopUrl: https://shop.example.com/xxx
-helpUrl: /manual/xxx
+helpUrl: /docs/manual/xxx
 ---
 ```
 
@@ -246,7 +256,7 @@ helpUrl: /manual/xxx
 - `gallery`（图片数组）用于产品详情页多图图库，优先于单张 `cover`；
 - `price` 价格，用于产品列表卡片与详情页（可选）
 - `shopUrl`（外部购买链接）可选，未填写使用默认链接 `https://shop103678810.taobao.com`
-- `helpUrl`（帮助文档链接）可选，用于产品列表卡片的「帮助」按钮，未填写时回退到 `/manual/`
+- `helpUrl`（帮助文档链接）可选，用于产品列表卡片的「帮助」按钮，未填写时回退到 `/docs/manual/`
 
 ## 9. 写作规范
 
@@ -278,7 +288,7 @@ helpUrl: /manual/xxx
 
 - 优先复用默认主题并做扩展，不要从零重写主题
 - `createContentLoader` 必须在构建期生成数据，不要在客户端扫描目录
-- `glob` 模式不要携带前导斜杠，例如：`zh/product/**/*.md`，不能写成 `/zh/product/**/*.md`（glob 相对 srcDir `source/` 按物理路径匹配，中文内容需带 `zh/` 前缀；loader 产出的 `item.url` 经 rewrites 处理、不含 `zh/`）
+- `glob` 模式不要携带前导斜杠，例如：`zh/product/**/*.md`，不能写成 `/zh/product/**/*.md`（glob 相对 srcDir `source/` 按物理路径匹配，中文内容需带 `zh/` 前缀；loader 产出的 `item.url` 经 rewrites 处理、不含 `zh/`）。三个列表加载器（catalog / blog / solution）统一 glob `zh/**/*.md` 后按列表页 URL 子树归属过滤，不在 glob 中写死栏目名（见 7.6）
 - 自定义 Vue 组件放在 `.vitepress/theme/components/` 并通过 `enhanceApp` 全局注册
 - `docsSidebar()`、`buildRewrites()` 等辅助函数应放在 `.vitepress/` 的独立模块中，`config.mts` 只负责 import
 - 顶部导航由 `docsNavbar()`（`config/navbar.mts`）扫描 root 语言内容目录 `source/zh/` 自动生成：不写死栏目名单，顶级栏目按 `index.md` 的 `order` > 目录排序前缀 > 名称排序，草稿栏目（`draft: true`，如 news / discovery）自动排除；`docsNavbar(contentDir)` / `docsSidebars(contentDir, sections)` 的首参是语言内容目录（中文传 `source/zh`），生成的链接为不含语言段的裸路由，语言段由 `page.mts` 统一归一。VitePress 要求下拉组顶级项**不带** `link`（带了会渲染成普通链接），故含二级条目的栏目输出为 `{ text, items, sectionLink }`，`items` 为二级菜单：栏目的直接子目录（子栏目）与直接 md 页面（不含 index.md）都算二级条目，混合后统一按 `frontmatter.order` > 排序前缀 > 名称排序；栏目首页链接放在自定义字段 `sectionLink` 中，由 `theme/Layout.vue` 的 `onNavGroupClick` 接管桌面端一级菜单按钮的点击跳转（VitePress 下拉组按钮默认只展开、不导航）；二级菜单使用 VitePress 自带下拉（桌面端悬停展开、移动端汉堡菜单内手风琴展开）。`theme/components/NavbarRibbon.vue` 是已禁用的定制浮层方案，未在 `Layout.vue` 中挂载，需要时可再启用
@@ -287,8 +297,8 @@ helpUrl: /manual/xxx
 - 通用 tab 组：`::: tabs` 容器内每个 `@tab 标题` 行折叠为一个 tab（由 `.vitepress/markdown/plugin-markdown-tab.mts` 的 block rule 生成，任意页面可用），语法为 `::: tabs` / `@tab 标题` / 内容 / `:::`；也可在 `::: tabs` 后指定自定义分隔符（如 `::: tabs ===`、`::: tabs ##`）
 - 卡片容器：`::: xxx-card` 按类型渲染不同卡片（由 `.vitepress/markdown/plugin-markdown-card.mts` 生成），内容为 YAML 代码块包裹的卡片列表；当前支持图文卡片 `::: image-card`（cover / link / name / desc / author / avatar）、链接卡片 `::: link-card`（link / name / desc）、产品卡片 `::: product-card`（cover / link / name / summary / price / category / shopUrl / helpUrl，样式同产品列表卡片）
 - 若开启 `cleanUrls`，会导致静态托管环境下出现 404，故必须保持 `cleanUrls` 关闭；非首页页面仍产出 `xxx.html`
-- 通过 VitePress 的函数式 `rewrites`（`buildRewrites()`，入口在 `config/page.mts`）实现真实路由：先按首段拆分语言目录（`zh/` 剥离、`en/` 保留），再去 `NN-` 排序前缀、应用 permalink，并把目录链接补成 `index.md`；如 `zh/manual/foo.md` → `manual/foo.md`、`en/index.md` → `en/index.md`（恒等映射不入 rewrite map）。语言仅由重写后的最终 URL 判定，故 `source/zh/` 内容仍归属 root locale
-- 页面元数据统一经 `.vitepress/config/page.mts`：`getFinalUrl()` 取最终 link（无扩展名；zh 不带语言段、en 补 `en/`）、`getFileUrl()` 取含 `.md` 的最终路径（供 `rewrites` 与正文内链），入参既可是带语言段的物理路径（`zh/manual/foo.md`）也可是裸路径（`manual/foo.md`，按 zh 处理），二者都支持绝对/相对 `permalink`；`getDisplayTitle()` 取显示标题，`getCategoryName()` / `getCategorySlug()` / `getTagSlug()` 取分类/标签的 name / slug（经全局 `categoryMap` / `tagMap`）
+- 通过 VitePress 的函数式 `rewrites`（`buildRewrites()`，入口在 `config/page.mts`）实现真实路由：先按首段拆分语言目录（`zh/` 剥离、`en/` 保留），再去 `NN-` 排序前缀、应用 permalink，并把目录链接补成 `index.md`；如 `zh/docs/01-manual/foo.md` → `docs/manual/foo.md`、`en/index.md` → `en/index.md`（恒等映射不入 rewrite map）。语言仅由重写后的最终 URL 判定，故 `source/zh/` 内容仍归属 root locale
+- 页面元数据统一经 `.vitepress/config/page.mts`：`getFinalUrl()` 取最终 link（无扩展名；zh 不带语言段、en 补 `en/`）、`getFileUrl()` 取含 `.md` 的最终路径（供 `rewrites` 与正文内链），入参既可是带语言段的物理路径（`zh/docs/01-manual/foo.md`）也可是裸路径（`docs/01-manual/foo.md`，按 zh 处理），二者都支持绝对/相对 `permalink`；`getDisplayTitle()` 取显示标题，`getCategoryName()` / `getCategorySlug()` / `getTagSlug()` 取分类/标签的 name / slug（经全局 `categoryMap` / `tagMap`）
 - 侧边栏与面包屑按物理路径划分栏目：侧边栏用 `docsSidebars()` 扫描 `source/zh`（内部 `sectionRoutes()` 收集被 permalink 逃逸出栏目根的子目录路由，仍映射回所属栏目侧边栏）；面包屑用 `Breadcrumb.data.mts` 只扫描 `source/zh` 并按物理目录层级构建，二者都不受 permalink 的 URL 影响
 
 - 自定义容器（`::: tip` / `info` / `warning` / `danger` / `details`）默认标题为英文（TIP / INFO / …）；中文标题在 `config/locales.mts` 的 `locales.root.markdown.container` 本地化（`tipLabel: '提示'` 等），英文（en）不覆盖、沿用默认。**注意 VitePress 2.0.0-alpha.19 的渲染器单例问题**：本地搜索插件（`vitepress:local-search`）会用未合并 `locales` 的原始 `markdown` 选项最先创建 markdown 渲染器（`createMarkdownRenderer` 内 `if (md) return md` 缓存），导致 `locales.<index>.markdown` 在正式构建时被忽略；故 `config.mts` 把各语言 `markdown` 同步到顶层 `markdown.locales`（`markdownLocales`）作为 workaround，升级修复后可移除

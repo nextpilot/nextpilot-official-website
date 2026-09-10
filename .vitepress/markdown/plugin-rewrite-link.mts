@@ -8,7 +8,7 @@ const srcDirAbs = slash(process.cwd()).replace(/\/$/, '') + '/source'
 /**
  * markdown-it core rule：把站内 .md 链接的物理路径（含排序前缀）改写为最终 URL 路径。
  * 作者在正文里写物理路径（如 `../04-config/01-basic-setup.md`），构建期自动转为
- * `/opensource/guide/config/basic-setup.md`；若目标页声明了 permalink，则指向 permalink URL。
+ * `/docs/guide/config/basic-setup.md`；若目标页声明了 permalink，则指向 permalink URL。
  */
 export function rewriteLink(md: any): void {
   // `config(md)` 可能被调用多次，避免重复注册同一 core rule

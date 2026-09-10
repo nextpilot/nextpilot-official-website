@@ -9,7 +9,7 @@ description: >-
 summary: 广播式无人机运行识别接收器，满足GB 46750-2025，支持WiFi/蓝牙广播接收，串口输出MAVLink/GB46750协议
 cover: /assets/images/product/datalink/NP-RID-Receiver-S3-PinWX.png
 shopUrl: https://item.taobao.com/item.htm?id=1080770176626&mi_id=0000I6qNljnOrxWQA_s_anzovO7YazA6_WVTqM4mrHshyjM
-helpUrl: /manual/datalink/np-rid-receiver
+helpUrl: /docs/manual/datalink/np-rid-receiver
 price: 199
 ---
 
@@ -74,7 +74,7 @@ NP-RID-Receiver-S3-PinWX，设备主要包括如下几个接口：
 
 ## 资料下载
 
-通过下面链接最新固件，并参考[用户手册进行OTA升级](../../manual/datalink/np-rid-receiver.md#ota-%E5%8D%87%E7%BA%A7)。
+通过下面链接最新固件，并参考[用户手册进行OTA升级](../../docs/01-manual/datalink/np-rid-receiver.md#ota-%E5%8D%87%E7%BA%A7)。
 
 | 板子                     | 当前固件版本 | 点击下载                                                                                                                                              |
 | ------------------------ | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |

@@ -5,7 +5,7 @@ import { useData, useRoute } from 'vitepress'
 import { data as allPosts } from './BlogLayout.data.mts'
 import Breadcrumb from './components/Breadcrumb.vue'
 
-const { page, lang } = useData()
+const { lang } = useData()
 const route = useRoute()
 
 const query = ref('')
@@ -50,24 +50,18 @@ const t = computed(() =>
       },
 )
 
-// 从当前路径提取所属子栏目（栏目分组键）：/blog/<子栏目>/ → <子栏目>，/blog/ → 空（全部）
-const column = computed(() => {
-  const rel = (page.value.relativePath || '').replace(/\\/g, '/')
-  const m = rel.match(/^blog\/([^/]+)\/index\.md$/)
-  if (m) return m[1].replace(/^\d+-/, '') // 去排序前缀（如 `01-mavlink` → `mavlink`）
-  // 回退到路由解析（处理 cleanUrls/语言前缀等差异）
+// 当前列表页自身的 URL 前缀（与物理目录无关）：/blog/mavlink/ → 仅列其 URL 子树下的文章，
+// /blog/ → 列出全部文章。任何位置的 `layout: blog` 页面都按同一规则收集子树内容。
+const basePrefix = computed(() => {
   let p = route.path.replace(/\.html$/, '')
   if (p !== '/') p = p.replace(/\/+$/, '')
   const segs = p.split('/').filter(Boolean)
-  if (segs[0] === 'en') segs.shift()
-  return segs.length > 1 && segs[0] === 'blog' ? segs[1].replace(/^\d+-/, '') : ''
+  if (segs[0] === 'en') segs.shift() // 英文页剥掉语言段（加载器只收中文内容）
+  return segs.length ? '/' + segs.join('/') + '/' : '/'
 })
 
-// 当前栏目下的文章（按子栏目分组；无子栏目则全部）
-const posts = computed(() => {
-  if (!column.value) return allPosts
-  return allPosts.filter((p: any) => p.column === column.value)
-})
+// 当前列表页子树下的文章（URL 前缀匹配）
+const posts = computed(() => allPosts.filter((p: any) => p.url.startsWith(basePrefix.value)))
 
 // 分类列表：去重，保持出现顺序
 const categories = computed(() => {
@@ -176,9 +170,7 @@ function fmtDate(d: unknown): string {
 
     <div v-if="activeTag" class="blog-tagfilter">
       <span class="tagfilter-label">{{ t.tagFilter }}：</span>
-      <button class="cat-chip active" :title="t.clearTag" @click="activeTag = ''">
-        {{ activeTagName }} <span aria-hidden="true">×</span>
-      </button>
+      <button class="cat-chip active" :title="t.clearTag" @click="activeTag = ''">{{ activeTagName }} <span aria-hidden="true">×</span></button>
     </div>
 
     <p v-if="!filtered.length" class="blog-empty">{{ t.empty }}</p>
@@ -207,9 +199,7 @@ function fmtDate(d: unknown): string {
               <a :href="p.url" class="summary-link">{{ p.summary }}</a>
             </p>
             <div v-if="p.tags.length" class="post-tags">
-              <button v-for="tag in p.tags" :key="tag.slug" type="button" class="tag" :class="{ active: activeTag === tag.slug }" @click="activeTag = tag.slug">
-                # {{ tag.name }}
-              </button>
+              <button v-for="tag in p.tags" :key="tag.slug" type="button" class="tag" :class="{ active: activeTag === tag.slug }" @click="activeTag = tag.slug"># {{ tag.name }}</button>
             </div>
           </div>
         </article>
@@ -217,15 +207,7 @@ function fmtDate(d: unknown): string {
 
       <nav v-if="totalPages > 1" class="blog-pager" :aria-label="t.pager">
         <button type="button" class="pager-btn" :disabled="current <= 1" @click="goTo(current - 1)">{{ t.prev }}</button>
-        <button
-          v-for="(item, i) in pageItems"
-          :key="i"
-          type="button"
-          class="pager-num"
-          :class="{ active: item === current, ellipsis: item === '…' }"
-          :disabled="item === '…'"
-          @click="goTo(Number(item))"
-        >
+        <button v-for="(item, i) in pageItems" :key="i" type="button" class="pager-num" :class="{ active: item === current, ellipsis: item === '…' }" :disabled="item === '…'" @click="goTo(Number(item))">
           {{ item }}
         </button>
         <button type="button" class="pager-btn" :disabled="current >= totalPages" @click="goTo(current + 1)">{{ t.next }}</button>

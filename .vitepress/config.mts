@@ -6,7 +6,7 @@ import { headingTab } from './markdown/plugin-heading-tab.mts'
 import { markdownTab } from './markdown/plugin-markdown-tab.mts'
 import { markdownCard } from './markdown/plugin-markdown-card.mts'
 import { rewriteLink } from './markdown/plugin-rewrite-link.mts'
-import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/head.mts'
+import { redirectHead, legacyDocsHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/head.mts'
 import { buildRewrites } from './config/page.mts'
 
 // 内容源目录（相对项目根），作为 srcDir 配置项；root 语言（中文）内容在其下 zh/ 子目录（见 config/locales.mts）
@@ -43,6 +43,7 @@ export default defineConfig({
       },
     ],
     ['meta', { name: 'author', content: 'NextPilot Development Team' }],
+    ...legacyDocsHead,
     ...redirectHead,
     ...baiduAnalyticsHead,
   ],
@@ -71,7 +72,7 @@ export default defineConfig({
   srcExclude: [
     'README.md',
     // 基本概念章节尚未完成，先排除编译（中文内容物理位于 zh/ 下）
-    'zh/opensource/guide/01-concepts/**',
+    'zh/docs/02-guide/01-concepts/**',
   ],
 
   // 下载页脚本链接指向 .bat 文件，VitePress 无法识别该扩展名为静态资源，故忽略死链检查

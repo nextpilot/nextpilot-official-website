@@ -1,7 +1,6 @@
 ---
-order: 1
 title: 使用教程
-description: NextPilot 飞控系统用户手册，基于国产 RT-Thread 操作系统，支持多旋翼、固定翼和垂起无人机。
+description: NextPilot 飞控系统使用教程，基于国产 RT-Thread 操作系统，支持多旋翼、固定翼和垂起无人机。
 ---
 
 # NextPilot 使用教程

@@ -227,7 +227,7 @@ title: NP-FCC-H05
 
 ### 飞控固件
 
-根据使用场景选择固件，以下为最新版本固件（通过 `FCS-USB` 口烧录），历史固件请查看[发布记录](../../download/changelog.md)。
+根据使用场景选择固件，以下为最新版本固件（通过 `FCS-USB` 口烧录），历史固件请查看[发布记录](../../../download/changelog.md)。
 
 - 真机飞行固件：[fcs-v4-default.bin](/assets/files/fcs-v4-default.bin)
 
@@ -237,7 +237,7 @@ title: NP-FCC-H05
 
 ### 导航固件
 
-以下为最新版本固件（通过 `AHRS-USB` 口烧录），历史固件请查看[发布记录](../../download/changelog.md)。
+以下为最新版本固件（通过 `AHRS-USB` 口烧录），历史固件请查看[发布记录](../../../download/changelog.md)。
 
 - 组合导航固件：[ins-v4-default.bin](/assets/files/ins-v4-default.bin)
 

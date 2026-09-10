@@ -11,7 +11,7 @@ cover: /assets/images/product/navigator/base-station-product.png
 gallery:
   - /assets/images/product/navigator/base-station-product.png
   - /assets/images/product/navigator/base-station-logo.png
-helpUrl: /manual/navigator/np-rtk-base
+helpUrl: /docs/manual/navigator/np-rtk-base
 ---
 
 ## 产品详情

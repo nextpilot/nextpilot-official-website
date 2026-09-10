@@ -30,7 +30,7 @@ describe('多语言目录（source/zh、source/en）路由归一', () => {
   })
 
   it('zh 页面剥掉语言段并去除 NN- 排序前缀', () => {
-    expect(getFileUrl('zh/opensource/guide/03-quickstart/01-preparation.md')).toBe('opensource/guide/quickstart/preparation.md')
+    expect(getFileUrl('zh/docs/02-guide/03-quickstart/01-preparation.md')).toBe('docs/guide/quickstart/preparation.md')
   })
 
   it('en 根 index：URL 为 en/、文件路径为 en/index.md（英文站在 /en/）', () => {

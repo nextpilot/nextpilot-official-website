@@ -3,7 +3,7 @@ import { docsNavbar } from './navbar.mts'
 import { docsSidebars } from './sidebar.mts'
 
 /** 中文（root）站点需要自动侧边栏的栏目 */
-const sidebarSections = ['about', 'manual', 'opensource']
+const sidebarSections = ['about', 'docs']
 
 /**
  * 构建多语言配置：root = 简体中文（默认），en = English。

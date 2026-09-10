@@ -8,7 +8,7 @@ hero:
   actions:
     - theme: brand
       text: 快速上手
-      link: /manual/
+      link: /docs/manual/
     - theme: alt
       text: 查看产品
       link: /product/

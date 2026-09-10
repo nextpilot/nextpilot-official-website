@@ -19,7 +19,7 @@ const summary = computed(() => (frontmatter.value.summary || frontmatter.value.d
 
 const price = computed(() => (frontmatter.value.price ?? null) as number | null)
 const shopUrl = computed(() => (frontmatter.value.shopUrl || 'https://shop103678810.taobao.com') as string)
-const helpUrl = computed(() => (frontmatter.value.helpUrl || '/manual/') as string)
+const helpUrl = computed(() => (frontmatter.value.helpUrl || '/docs/manual/') as string)
 const tags = computed(() => (frontmatter.value.tags || []) as string[])
 
 // 正文 tab 切换：事件委托，处理 markdown 渲染出的 `.heading-tab` 点击

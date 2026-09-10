@@ -13,7 +13,7 @@ gallery:
   - /assets/images/product/autopilot/fcc-top-view2.png
   - /assets/images/product/autopilot/fcc-front-view.png
 shopUrl: https://item.taobao.com/item.htm?id=1078259392427&mi_id=0000kVvYjeoXOjmKVeSKVECULjU0BgsEFFfI0utrg7SCuqo
-helpUrl: /manual/autopilot/np-fcc-h05
+helpUrl: /docs/manual/autopilot/np-fcc-h05
 price: 56999
 ---
 
@@ -272,6 +272,6 @@ FCS 和 INS 芯片的 `bootloader` 是通用的，使用 `Stlink` 或者 `jlink`
 
 ## 常见问题
 
-更多问题请参考 [技术支持](/opensource/community/support.md)。
+更多问题请参考 [技术支持](/docs/04-community/support.md)。
 
 ## 更新记录

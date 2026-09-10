@@ -14,4 +14,15 @@ describe('docsSidebar', () => {
       expect(item.link).toBeTruthy()
     }
   })
+
+  it('docs 栏目合并 manual/opensource 后顶层为四个子栏目分组', () => {
+    const items = docsSidebar('source/zh', 'docs')
+    expect(items.length).toBe(4)
+    expect(items.map((i) => i.text)).toEqual(['产品手册', '使用教程', '开发指南', '社区支持'])
+    // 所有链接都在 /docs/ 下，且不含排序前缀
+    for (const item of items) {
+      expect(item.link || '').toMatch(/^\/docs\/(manual|guide|develop|community)\/$/)
+      expect(item.link || '').not.toMatch(/\d\d-/)
+    }
+  })
 })
