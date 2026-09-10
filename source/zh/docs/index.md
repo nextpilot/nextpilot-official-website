@@ -3,13 +3,9 @@ title: 文档中心
 description: NextPilot 文档中心，涵盖产品用户手册、飞控使用教程、开发指南与社区支持。
 order: 4
 sidebar: false
-# 页底上一页/下一页：本页关闭了侧边栏，VitePress 无法从侧边栏推导，需显式指定（按顶级栏目顺序）
-prev:
-  text: 产品中心
-  link: /product/
-next:
-  text: 资源下载
-  link: /download/
+# 栏目落地页不显示页底上一页/下一页
+prev: false
+next: false
 ---
 
 # 文档中心
@@ -116,7 +112,3 @@ NextPilot 的开源项目围绕飞控核心、地面控制、模型设计和开�
     <p><a href="https://qgroundcontrol.com/" target="_blank" rel="noopener noreferrer">项目主页</a> · <a href="https://github.com/mavlink/qgroundcontrol" target="_blank" rel="noopener noreferrer">代码仓库</a> · <a href="https://docs.qgroundcontrol.com" target="_blank" rel="noopener noreferrer">用户手册</a> · <a href="https://dev.qgroundcontrol.com/" target="_blank" rel="noopener noreferrer">开发指南</a></p>
   </article>
 </div>
-
-## 参与开源
-
-欢迎通过代码、文档、问题反馈和经验分享参与 NextPilot 社区。提交代码前请先阅读[贡献指南](/docs/community/contribute)，了解许可协议和协作流程。
