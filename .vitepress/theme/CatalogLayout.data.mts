@@ -20,7 +20,8 @@ function tagNames(frontmatter: Record<string, any>): string[] {
  * 分类名（真相源）= `frontmatter.category` > 子栏目名 > `uncategorized`；
  * 分类/标签 slug 由名称 slugify 推导（经全局 categoryMap / tagMap 覆盖）。
  */
-export default createContentLoader('**/*.md', {
+// glob 相对 srcDir（source/）为物理路径：只收中文内容 zh/；item.url 经 rewrites 不带 zh/ 段
+export default createContentLoader('zh/**/*.md', {
   includeSrc: true,
   transform(data) {
     // 子栏目目录名 -> 子栏目名/排序（从 product/<子栏目>/index.md 提取）

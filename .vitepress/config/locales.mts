@@ -8,9 +8,9 @@ const sidebarSections = ['about', 'manual', 'opensource']
 /**
  * 构建多语言配置：root = 简体中文（默认），en = English。
  *
- * 中文导航/侧边栏由 docsNavbar() / docsSidebars() 扫描 source 目录自动生成；
- * 非 root 的语言键（如 en）即对应语言内容目录，扫描导航时自动跳过。
- * 新增语言时在此添加一个键即可，无需改动 navbar。
+ * 中文导航/侧边栏由 docsNavbar() / docsSidebars() 扫描 root 语言内容目录 source/zh 自动生成；
+ * 英文内容物理位于 source/en（URL 前缀 /en/）。语言仅按最终 URL 判定，物理目录名 zh 不是 locale 键。
+ * 新增语言时在此添加一个 locale 键并准备对应内容目录，无需改动 navbar。
  */
 export function buildLocales(srcDir: string): NonNullable<UserConfig['locales']> {
   const locales = {
@@ -68,15 +68,15 @@ export function buildLocales(srcDir: string): NonNullable<UserConfig['locales']>
     },
   } satisfies UserConfig['locales']
 
-  // 其它语言站点的目录名（locales 中非 root 的键，如 en），中文导航扫描时自动跳过
-  const localeDirs = Object.keys(locales).filter((key) => key !== 'root')
+  // root 语言（简体中文）的内容目录：source 根下的 zh/（经 rewrites 剥掉 zh/ 段，URL 上不可见）
+  const zhContentDir = `${srcDir}/zh`
 
-  // 中文导航与侧边栏：由 source 目录自动扫描生成，新增顶级/二级栏目无需修改配置。
+  // 中文导航与侧边栏：扫描 source/zh 自动生成，新增顶级/二级栏目无需修改配置。
   // locales.root.themeConfig 经 satisfies 推断为较宽松的类型（nav/sidebar 为后续动态填充），
   // 这里断言为 DefaultTheme.Config 以访问这两个字段。
   const rootThemeConfig = locales.root.themeConfig as DefaultTheme.Config
-  rootThemeConfig.nav = [{ text: '首页', link: '/' }, ...docsNavbar(srcDir, localeDirs)]
-  rootThemeConfig.sidebar = docsSidebars(srcDir, sidebarSections)
+  rootThemeConfig.nav = [{ text: '首页', link: '/' }, ...docsNavbar(zhContentDir)]
+  rootThemeConfig.sidebar = docsSidebars(zhContentDir, sidebarSections)
 
   return locales
 }

@@ -5,6 +5,26 @@ import { slugify as translitSlugify } from 'transliteration'
 // 内容源目录（相对项目根），用于读取 frontmatter 解析 permalink
 const srcDir = 'source'
 
+/** 各语言内容目录名：root locale（简体中文）物理位于 zh/，对 URL 不可见；en/ 保留在 URL 中 */
+const LOCALE_DIRS = ['zh', 'en'] as const
+/** 裸路径（不含语言段）的兜底语言目录：navbar/sidebar 扫描 source/zh 后传入的即裸路径 */
+const DEFAULT_LOCALE_DIR = 'zh'
+
+/**
+ * 把「相对 srcDir 的物理路径」拆成语言段与其余路径：
+ * - 首段恰为 zh/en 时识别为语言目录（VitePress rewrites 入参、Breadcrumb loader、正文相对内链）
+ * - 否则视为裸路径（navbar/sidebar 与正文绝对内链的入参），按 root 语言 zh 处理。
+ * 边界：root 内容中若出现名为 zh/en 的顶级栏目会产生歧义（当前不存在），新增语言时扩展 LOCALE_DIRS。
+ */
+function splitLocaleId(sourcePath: string): { localeDir: string; rest: string } {
+  const slash = sourcePath.indexOf('/')
+  const head = slash === -1 ? sourcePath : sourcePath.slice(0, slash)
+  if ((LOCALE_DIRS as readonly string[]).includes(head)) {
+    return { localeDir: head, rest: slash === -1 ? '' : sourcePath.slice(slash + 1) }
+  }
+  return { localeDir: DEFAULT_LOCALE_DIR, rest: sourcePath }
+}
+
 // ==================== 路径工具 ====================
 
 /** 去掉单个段落的前导数字排序前缀（如 `03-quickstart` → `quickstart`） */
@@ -45,17 +65,20 @@ function normalizePermalink(permalink: string): string {
     .replace(/\/+$/, '')
 }
 
-/** 目录（相对 srcDir、不含尾斜杠）的干净路由：index.md 的 permalink（绝对/相对递归）或去前缀物理路径 */
-function resolveDirRoute(dirPath: string): string {
-  if (!dirPath || dirPath === '.') return ''
-  const permalink = readPermalink(`${dirPath}/index.md`)
+/**
+ * 目录的干净路由：index.md 的 permalink（绝对/相对递归）或去前缀物理路径。
+ * dirRest 为去掉语言段后的目录路径，localeDir 为语言目录名（zh/en），磁盘读取需拼回语言段。
+ */
+function resolveDirRoute(dirRest: string, localeDir: string): string {
+  if (!dirRest || dirRest === '.') return ''
+  const permalink = readPermalink(`${localeDir}/${dirRest}/index.md`)
   if (permalink) {
     const p = normalizePermalink(permalink)
     if (p.startsWith('/')) return p.slice(1)
-    const parent = resolveDirRoute(posix.dirname(dirPath))
+    const parent = resolveDirRoute(posix.dirname(dirRest), localeDir)
     return parent ? posix.join(parent, p) : p
   }
-  return stripPrefixes(dirPath)
+  return stripPrefixes(dirRest)
 }
 
 /** 是否 index.md（含根 index） */
@@ -71,38 +94,54 @@ function dirOf(sourcePath: string): string {
 
 // ==================== url / link ====================
 
+/** 单个语言内的最终 link（干净路由，无扩展名；index.md 结尾为 `/`，语言根 index 为空串，不含语言段） */
+function finalUrlForRest(rest: string, localeDir: string): string {
+  const dir = dirOf(rest)
+
+  if (isIndex(rest)) {
+    const route = resolveDirRoute(dir, localeDir)
+    return route ? `${route}/` : ''
+  }
+
+  const permalink = readPermalink(`${localeDir}/${rest}`)
+  if (permalink) {
+    const p = normalizePermalink(permalink)
+    if (p.startsWith('/')) return p.slice(1)
+    const route = resolveDirRoute(dir, localeDir)
+    return route ? posix.join(route, p) : p
+  }
+
+  const route = resolveDirRoute(dir, localeDir)
+  const file = stripSegmentPrefix(posix.basename(rest, '.md'))
+  return route ? `${route}/${file}` : file
+}
+
+/**
+ * 页面的最终 link（干净路由，无扩展名；index.md 结尾为 `/`，根 index 为空串）。
+ * zh 页面的 URL 不带语言段；en 页面统一补 `en/` 前缀（语言由最终 URL 判定，见 config/locales.mts）。
+ * 入参既可是带语言段的物理路径（zh/manual/foo.md），也可是裸路径（manual/foo.md，按 zh 处理）。
+ */
+export function getFinalUrl(sourcePath: string): string {
+  const { localeDir, rest } = splitLocaleId(sourcePath)
+  const route = finalUrlForRest(rest, localeDir)
+  return localeDir === 'en' ? (route ? `en/${route}` : 'en/') : route
+}
+
 /** 页面文件路径（相对 srcDir、含 .md），供 VitePress rewrites 与正文内链使用。由 getFinalUrl 派生 */
 export function getFileUrl(sourcePath: string): string {
-  if (isIndex(sourcePath)) {
+  const { rest } = splitLocaleId(sourcePath)
+  if (isIndex(rest)) {
     const route = getFinalUrl(sourcePath)
     return route ? `${route}index.md` : 'index.md'
   }
   return getFinalUrl(sourcePath) + '.md'
 }
 
-/** 页面的最终 link（干净路由，无扩展名；index.md 结尾为 `/`，根 index 为空串） */
-export function getFinalUrl(sourcePath: string): string {
-  const dir = dirOf(sourcePath)
-
-  if (isIndex(sourcePath)) {
-    const route = resolveDirRoute(dir)
-    return route ? `${route}/` : ''
-  }
-
-  const permalink = readPermalink(sourcePath)
-  if (permalink) {
-    const p = normalizePermalink(permalink)
-    if (p.startsWith('/')) return p.slice(1)
-    const route = resolveDirRoute(dir)
-    return route ? posix.join(route, p) : p
-  }
-
-  const route = resolveDirRoute(dir)
-  const file = stripSegmentPrefix(posix.basename(sourcePath, '.md'))
-  return route ? `${route}/${file}` : file
-}
-
-/** VitePress `rewrites` 函数形式：源路径（含 .md）→ 重写后文件路径（含 .md） */
+/**
+ * VitePress `rewrites` 函数形式：源路径（含 .md、相对 srcDir）→ 重写后文件路径（含 .md）。
+ * zh 页面剥掉语言段并应用 permalink/去前缀；en 页面恒等（en/foo.md → en/foo.md，
+ * 与入参相同的恒等映射 VitePress 不会登记，直接按物理路径产出 /en/...）。
+ */
 export function buildRewrites(id: string): string {
   return getFileUrl(id)
 }

@@ -86,8 +86,8 @@ function childItems(sectionPath: string, section: string): NavItem[] {
 }
 
 /** 构建单个顶级栏目导航项：标题/链接取 index.md（shortTitle > title > 一级标题 > 目录名） */
-function sectionItem(srcDir: string, section: string): NavItem | undefined {
-  const sectionPath = join(process.cwd(), srcDir, section)
+function sectionItem(contentDir: string, section: string): NavItem | undefined {
+  const sectionPath = join(process.cwd(), contentDir, section)
   const indexPath = join(sectionPath, 'index.md')
   if (!existsSync(sectionPath) || !existsSync(indexPath) || isDraft(indexPath)) return undefined
 
@@ -115,24 +115,23 @@ function sectionItem(srcDir: string, section: string): NavItem | undefined {
 }
 
 /**
- * 根据 source 的顶级栏目与二级子目录自动生成中文站点导航。
+ * 根据 root 语言内容目录（source/zh）的顶级栏目与二级子目录自动生成中文站点导航。
  *
- * - 顶级栏目：source 下含 index.md 且非草稿的目录，排序取 index.md 的 `order` >
+ * - 顶级栏目：内容目录下含 index.md 且非草稿的目录，排序取 index.md 的 `order` >
  *   目录排序前缀（xx-）> 目录名；新增栏目目录并补充 index.md 即自动出现，无需改代码
- * - localeDirs：其它语言站点的目录名（如 `en`），由 config.mts 从 locales 配置派生后传入
+ * - 生成的链接为不含语言段的裸路由（如 /manual/），由 page.mts 统一按 zh 语言归一
  */
-export function docsNavbar(srcDir: string, localeDirs: string[] = []): DefaultTheme.NavItem[] {
-  const sourcePath = join(process.cwd(), srcDir)
-  if (!existsSync(sourcePath)) return []
-  const skipped = new Set(localeDirs)
+export function docsNavbar(contentDir: string): DefaultTheme.NavItem[] {
+  const contentPath = join(process.cwd(), contentDir)
+  if (!existsSync(contentPath)) return []
 
-  return readdirSync(sourcePath)
+  return readdirSync(contentPath)
     .filter((name) => {
-      if (!statSync(join(sourcePath, name)).isDirectory() || skipped.has(name)) return false
-      const indexPath = join(sourcePath, name, 'index.md')
+      if (!statSync(join(contentPath, name)).isDirectory()) return false
+      const indexPath = join(contentPath, name, 'index.md')
       return existsSync(indexPath) && !isDraft(indexPath)
     })
-    .sort((a, b) => orderOf(join(sourcePath, a, 'index.md')) - orderOf(join(sourcePath, b, 'index.md')) || sortPrefixOf(a) - sortPrefixOf(b) || a.localeCompare(b))
-    .map((section) => sectionItem(srcDir, section))
+    .sort((a, b) => orderOf(join(contentPath, a, 'index.md')) - orderOf(join(contentPath, b, 'index.md')) || sortPrefixOf(a) - sortPrefixOf(b) || a.localeCompare(b))
+    .map((section) => sectionItem(contentDir, section))
     .filter((item): item is NavItem => item !== undefined)
 }

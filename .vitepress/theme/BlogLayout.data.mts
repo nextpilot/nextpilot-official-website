@@ -55,7 +55,8 @@ function firstParagraph(src: string): string {
  * 分类/标签 slug 由名称 slugify 推导（经全局 categoryMap / tagMap 覆盖）。
  * 排序：`frontmatter.order` 升序优先，其次按文件名 `yyyymmdd` 日期前缀倒序。
  */
-export default createContentLoader('blog/**/*.md', {
+// glob 相对 srcDir（source/）为物理路径：中文内容在 zh/ 下；item.url 经 rewrites 不带 zh/ 段
+export default createContentLoader('zh/blog/**/*.md', {
   includeSrc: true,
   transform(data) {
     // 子栏目目录名 -> 子栏目名（从 blog/<子栏目>/index.md 提取，缺失时回退目录名）

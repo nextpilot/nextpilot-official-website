@@ -107,9 +107,10 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
  * 生成某栏目（manual / develop / community 等）的侧边栏。
  * 子目录映射为分组（标题取 index.md 的 title，链接指向分组首页），
  * 目录下的 md 映射为条目，均排除 index.md。
+ * contentDir 为 root 语言内容目录（source/zh），栏目根为其下的 section 子目录。
  */
-export function docsSidebar(srcDir: string, section: string): SidebarItem[] {
-  const base = join(process.cwd(), srcDir, section)
+export function docsSidebar(contentDir: string, section: string): SidebarItem[] {
+  const base = join(process.cwd(), contentDir, section)
   if (!existsSync(base)) return []
 
   const entries: Entry[] = []
@@ -165,8 +166,8 @@ function hasAnyMd(dirPath: string): boolean {
  * 例如 `manual/05-测试下` 声明 `permalink: /mytest22`，其页面 URL 在 `/mytest22/` 下，
  * 但物理上仍属于 manual，故要把 `/mytest22/` 也映射到 manual 侧边栏。
  */
-export function sectionRoutes(srcDir: string, section: string): string[] {
-  const base = join(process.cwd(), srcDir, section)
+export function sectionRoutes(contentDir: string, section: string): string[] {
+  const base = join(process.cwd(), contentDir, section)
   if (!existsSync(base)) return []
 
   const columnRoute = '/' + getFinalUrl(`${section}/index.md`)
@@ -188,11 +189,11 @@ export function sectionRoutes(srcDir: string, section: string): string[] {
 }
 
 /** 构建所有栏目的侧边栏映射（路由前缀 -> 侧边栏项），供 config.mts 的 themeConfig.sidebar 使用 */
-export function docsSidebars(srcDir: string, sections: string[]): Record<string, SidebarItem[]> {
+export function docsSidebars(contentDir: string, sections: string[]): Record<string, SidebarItem[]> {
   const result: Record<string, SidebarItem[]> = {}
   for (const section of sections) {
-    const items = docsSidebar(srcDir, section)
-    for (const route of sectionRoutes(srcDir, section)) result[route] = items
+    const items = docsSidebar(contentDir, section)
+    for (const route of sectionRoutes(contentDir, section)) result[route] = items
   }
   return result
 }

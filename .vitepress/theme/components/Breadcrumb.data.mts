@@ -3,7 +3,8 @@ import { join, posix } from 'node:path'
 import { getDisplayTitle, getDisplayTitleFromFile, getFinalUrl, isIndexLinkable, parseFrontmatter, titleFromName } from '../../config/page.mts'
 
 const slash = (p: string) => p.replace(/\\/g, '/')
-const srcDirAbs = slash(process.cwd()).replace(/\/$/, '') + '/source'
+// root 语言（中文）内容根：只收 source/zh，rel 为不含语言段的裸路径；英文页暂不生成面包屑
+const srcDirAbs = slash(process.cwd()).replace(/\/$/, '') + '/source/zh'
 
 interface Crumb {
   text: string
@@ -15,7 +16,7 @@ interface Crumb {
  * 面包屑顺序：顶级栏目 → … → 当前页（末项无链接）。
  */
 export default {
-  watch: join(process.cwd(), 'source', '**/*.md'),
+  watch: join(process.cwd(), 'source', 'zh', '**/*.md'),
   async load(files: string[]) {
     const rels = files.map((f) => slash(f).slice(srcDirAbs.length + 1))
 

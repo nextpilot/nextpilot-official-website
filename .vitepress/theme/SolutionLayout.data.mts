@@ -14,7 +14,8 @@ function titleFromUrl(url: string) {
   return name.replace(/^\d{2,8}-/, '')
 }
 
-export default createContentLoader('solution/*.md', {
+// glob 相对 srcDir（source/）为物理路径：中文内容在 zh/ 下；item.url 经 rewrites 不带 zh/ 段
+export default createContentLoader('zh/solution/*.md', {
   includeSrc: true,
   transform(data) {
     return data

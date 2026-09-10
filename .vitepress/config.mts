@@ -9,7 +9,7 @@ import { rewriteLink } from './markdown/plugin-rewrite-link.mts'
 import { redirectHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/head.mts'
 import { buildRewrites } from './config/page.mts'
 
-// 内容源目录（相对项目根），作为 srcDir 配置项并传给导航/侧边栏/热更新插件
+// 内容源目录（相对项目根），作为 srcDir 配置项；root 语言（中文）内容在其下 zh/ 子目录（见 config/locales.mts）
 const srcDir = 'source'
 
 // 多语言配置（root 简体中文 / en English）：导航、侧边栏、themeConfig 与 markdown 本地化
@@ -67,11 +67,11 @@ export default defineConfig({
   // 开启页脚「最后更新于」时间戳（基于 Git 提交时间）
   lastUpdated: true,
 
-  // 排除根目录的说明文件，避免被当作页面生成
+  // 排除根目录的说明文件，避免被当作页面生成；模式相对 srcDir（source/）匹配物理路径
   srcExclude: [
     'README.md',
-    // 基本概念章节尚未完成，先排除编译
-    'opensource/guide/01-concepts/**',
+    // 基本概念章节尚未完成，先排除编译（中文内容物理位于 zh/ 下）
+    'zh/opensource/guide/01-concepts/**',
   ],
 
   // 下载页脚本链接指向 .bat 文件，VitePress 无法识别该扩展名为静态资源，故忽略死链检查
