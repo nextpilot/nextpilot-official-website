@@ -12,11 +12,11 @@ description: >-
 
 ## 产品简介
 
-NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射器，满足 GB 46750-2025 标准要求，可通过 WiFi 或蓝牙广播无人机运行状态信号，满足对无人机飞行监管需求。目前支持 MAVLink、DroneCAN 协议连接，支持的飞控有 Ardupilot、PX4 等，**如需要支持其他飞控或协议，可定制开发**。
+NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射器，满足 GB 46750-2025 标准要求，可通过 WiFi 及蓝牙广播无人机运行状态信号，满足对无人机飞行监管需求。目前支持 MAVLink、DroneCAN 协议连接，支持的飞控有 Ardupilot、PX4 等，**如需要支持其他飞控或协议，可定制开发**。
 
 购买链接：<https://item.taobao.com/item.htm?id=1074097497449&mi_id=0000KHD5urOB5ulWhlh0CZLkO54UwXlaqMXVS7sOhyvD7lY>
 
-视频教程：请在B站搜索nextpilot RID发射模块。[nextpilot rid发射模块-哔哩哔哩_bilibili](https://search.bilibili.com/all?keyword=nextpilot+rid发射模块&from_source=web_search&spm_id_from=333.1007&search_source=5)
+视频教程：[nextpilot rid发射模块-哔哩哔哩_bilibili](https://search.bilibili.com/all?keyword=nextpilot+rid发射模块&from_source=web_search&spm_id_from=333.1007&search_source=5)
 
 ## 产品功能
 
@@ -56,12 +56,12 @@ NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射�
 
 各硬件外部接口说明如下表：
 
-| 接口  | 引脚线序                   | 备注                                                                                                            |
-| ----- | -------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| USB   | USB，Type-C                | 插入计算机后会发现两路 USB 设备，第一路为 JTAG（程序下载与调试），第二路为串口转 USB（UART0），需要安装串口驱动 |
-| UART1 | RX: GPIO17<br />TX: GPIO18 | **飞控串口**<br />默认波特率 115200<br />接插件为 J6                                                            |
-| UART2 | RX: GPIO44<br />TX: GPIO43 | **调试串口**<br />用于调试、参数配置，通过 USB 的第二路串口访问<br />默认波特率 115200<br />接插件为 J4         |
-| CAN   | RX: GPIO38<br />TX: GPIO47 | 直接连接飞控 CAN 即可                                                                                           |
+| 接口  | 引脚线序                   | 备注                                                         |
+| ----- | -------------------------- | ------------------------------------------------------------ |
+| USB   | USB，Type-C                | 开发人员使用，程序烧写与调试                                 |
+| UART1 | RX: GPIO17<br />TX: GPIO18 | **飞控串口**<br />默认波特率 115200<br />接插件标识为 J6     |
+| UART2 | RX: GPIO44<br />TX: GPIO43 | **调试串口**<br />用于调试、参数配置，搭配USB转TTL模块使用<br />默认波特率 115200<br />接插件标识为 J4 |
+| CAN   | RX: GPIO38<br />TX: GPIO47 | 直接连接飞控 CAN 即可<br />接插件标识为J5                    |
 
 ### NP-RID-Sender-C3-PinMini
 
@@ -69,7 +69,7 @@ NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射�
 
 | 接口  | 引脚线序                   | 备注                                                        |
 | ----- | -------------------------- | ----------------------------------------------------------- |
-| USB   | USB，Type-C                | 程序下载与调试，JTAG                                        |
+| USB   | USB，Type-C                | 开发人员使用，程序烧写与调试                                |
 | UART0 | RX: GPIO20<br />TX: GPIO21 | **调试串口**<br />用于调试、参数配置<br />默认波特率 115200 |
 | UART1 | RX: GPIO2<br />TX: GPIO3   | **飞控串口**<br />默认波特率 115200                         |
 | CAN   | RX: GPIO4<br />TX: GPIO5   | 需要外接 CAN 驱动器才可以使用                               |
@@ -286,12 +286,6 @@ param set GB_OP_CATEGORY 1
 
 设置完成后，请重启 RID 设备。
 
-### 时间同步
-
-连接无人机后，RID模块默认使用无人机系统时间，如果无人机系统时间无效，则可以手动设置。
-
-
-
 ### RID模拟功能
 
 在没有连接无人机飞控设备的条件下，如果需要进行测试，可使用该产品模拟一个 RID。配置步骤如下：
@@ -302,6 +296,31 @@ param set GB_OP_CATEGORY 1
 
 若需要关闭 RID 模拟，只需要输入`param set SIM_ON 0`，然后重启设备即可。
 
+### 时间同步
+
+在以下情况下需要时间同步：
+
+- 连接无人机后（RID模块默认使用无人机系统时间）但无人机系统时间无效；
+- 启用RID模拟功能后，对时间精度有要求；
+
+设置步骤如下：
+
+- 将调试串口连接计算机，打开串口调试助手；
+
+- 设置一个一分钟后的时间，到达时间点后选择发送如下北京时间格式数据：
+
+  ```bash
+  param set GB_UTC8_TIME 2026-09-21T10:30:00
+  ```
+
+  注意由于日期字符串中间不能有空格，故通过字母`T`连接。
+
+  也可以直接设置unix时间
+
+  ```bash
+  param set GB_UTC_TIME 2026-09-20 00:00:00
+  ```
+
 ### WiFi数传功能
 
 RID模块上电后会默认通过局域网段UDP广播形式，将通过串口接收到的飞控数据发送至所有连接其热点的计算机。这样RID模块就相当于一个WiFi数传，将飞控数据完整的透传至地面站。
@@ -309,7 +328,7 @@ RID模块上电后会默认通过局域网段UDP广播形式，将通过串口�
 <img src="/assets/images/product/datalink/rid-sender-WiFi-link-frame.png" alt="WiFi连接" loading="lazy" />
 
 ::: tip
-只有将飞控连接RID数据串口时才具备数据转发功能。
+仅支持透传飞控串口数据，不支持CAN连接透传数据。
 :::
 
 **具体步骤**
@@ -318,15 +337,15 @@ RID模块上电后会默认通过局域网段UDP广播形式，将通过串口�
 2. 在笔记本打开QGC地面站；
 3. 笔记本连接RID模块热点，QGC会自动建立与飞控的通信连接。
 
-通过RID模块的WiFi数传功能，可以实现百米以内的稳定数据通信，成本低、简单方便，非常适合日常调试。
+通过RID模块的WiFi数传功能，可以实现约二百米以内的稳定数据通信，成本低、简单方便，非常适合日常调试。
 
 ## OTA 升级
 
 ### 固件下载
 
-| 板子                     | 当前固件版本 | 点击下载                                                                 |
-| ------------------------ | ------------ | ------------------------------------------------------------------------ |
-| NP-RID-Sender-S3-GH      | V1.1         | [OTA 升级 app 固件](/assets/files/NP-RID-Sender-S3-GH-V1.1_OTA.bin)      |
+| 板子                     | 当前固件版本 | 点击下载                                                     |
+| ------------------------ | ------------ | ------------------------------------------------------------ |
+| NP-RID-Sender-S3-GH      | V1.2         | [OTA 升级 app 固件](/assets/files/NP-RID-Sender-S3-GH-V1.2_OTA.bin) |
 | NP-RID-Sender-C3-PinMini | V1.0         | [OTA 升级 app 固件](/assets/files/NP-RID-Sender-C3-PinMini-V1.0_OTA.bin) |
 
 ### 更新固件
@@ -334,3 +353,11 @@ RID模块上电后会默认通过局域网段UDP广播形式，将通过串口�
 连接 RID 设备热点，打开网页[http://192.168.4.1](http://192.168.4.1)，点击选择文件，选择下载的固件后点击 Update 按钮即可。升级后设备自动重启。
 
 <img src="/assets/images/product/datalink/rid-ota-upload.png" alt="上传固件" loading="lazy" />
+
+## 更新记录
+
+### v1.0
+初始版本，完成RID基础功能。
+
+### v1.2
+修复协议赋值错误，优化WiFi广播，增加时间同步功能。
