@@ -10,11 +10,13 @@ description: >-
 
 # NP-RID-Sender 运行识别发射器
 
+## 产品简介
+
 NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射器，满足 GB 46750-2025 标准要求，可通过 WiFi 或蓝牙广播无人机运行状态信号，满足对无人机飞行监管需求。目前支持 MAVLink、DroneCAN 协议连接，支持的飞控有 Ardupilot、PX4 等，**如需要支持其他飞控或协议，可定制开发**。
 
 购买链接：<https://item.taobao.com/item.htm?id=1074097497449&mi_id=0000KHD5urOB5ulWhlh0CZLkO54UwXlaqMXVS7sOhyvD7lY>
 
-视频教程：
+视频教程：请在B站搜索nextpilot RID发射模块。[nextpilot rid发射模块-哔哩哔哩_bilibili](https://search.bilibili.com/all?keyword=nextpilot+rid发射模块&from_source=web_search&spm_id_from=333.1007&search_source=5)
 
 ## 产品功能
 
@@ -24,7 +26,7 @@ NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射�
 - 具备网页查看无人机状态功能；
 - 具备WiFi数传功能；
 - 具备虚拟 RID 模拟功能；
-- 具备参数设置功能，可通过串口调试助手连接设备后，通过参数命令快速设置所有参数！
+- 具备参数设置功能，可通过串口调试助手连接设备后，通过参数命令快速设置所有参数；
 - 具备 OTA 升级功能；
 
 ## 规格参数
@@ -283,6 +285,12 @@ param set GB_OP_CATEGORY 1
 - 3：CERTIFIED（审定类）
 
 设置完成后，请重启 RID 设备。
+
+### 时间同步
+
+连接无人机后，RID模块默认使用无人机系统时间，如果无人机系统时间无效，则可以手动设置。
+
+
 
 ### RID模拟功能
 

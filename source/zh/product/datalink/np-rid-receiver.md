@@ -22,7 +22,7 @@ NP-RID-Receiver 是 NextPilot 推出的一款广播式无人机运行识别接�
 ### 产品功能
 
 - 具备无人机广播数据接收能力，支持新国标 GB46750-2025；
-- 具备数据输出能力，可通过串口输出，支持[GB 46750](https://openstd.samr.gov.cn/bzgk/std/newGbInfo?hcno=56E7666BF313B2F51A747F2BEEE4F896)、[MAVLink](https://mavlink.io/zh/messages/common.html)或JSON；
+- 具备数据输出能力，可通过串口输出，支持[MAVLink](https://mavlink.io/zh/messages/common.html)协议或JSON格式；
 - 支持地面站显示，可在QGC、NextPilot、MissionPlanner地面站显示无人机位置、状态信息；
 - 用户可通过网页查看已接收到的无人机运行标识、设备运行状态；
 - 具备 OTA 升级能力，可通过网页上传并升级固件；
@@ -30,7 +30,7 @@ NP-RID-Receiver 是 NextPilot 推出的一款广播式无人机运行识别接�
 - 连接超级简单，只需一路USB，即可实现供电、配置、数据接收。
 
 ::: tip
-由于中国国标协议内容与 MAVLink 协议内容并不完全一致，故为了能够通过 MAVLink 输出，需要借用 MAVLink 消息字段进行传输，稍微不同的几个字段对应如下表：
+由于中国国标协议内容与 MAVLink 协议内容并不完全一致，故为了能够通过 MAVLink 协议输出，需要借用 MAVLink 消息字段进行传输，稍微不同的几个字段对应如下表：
 
 | 消息                           | 原始字段            | 映射 GB 后的含义  |
 | ------------------------------ | ------------------- | ----------------- |
@@ -49,7 +49,9 @@ NP-RID-Receiver 是 NextPilot 推出的一款广播式无人机运行识别接�
 - 最大信号接收数量：50；
 - 数据处理时间：≤20ms；
 - 信号接收动态范围：≥74dB；
-- 输出数据格式：GB46750/MAVLink/JSON；
+- 输出数据协议格式：MAVLink/JSON；
+- 尺寸大小：≤62mm x 23mm；
+- 重量：≤15g；
 
 ### 接口说明
 
