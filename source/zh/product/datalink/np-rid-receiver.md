@@ -90,3 +90,9 @@ NP-RID-Receiver-S3-PinWX，设备主要包括如下几个接口：
 3. 如要进行 OTA 升级，确保 WiFi 热点已打开（WIFI_AP_ENABLE=1）、开启 OTA（OTA_ENABLE=1）；
 
 ## 更新记录
+
+### v1.0
+初始版本，完成RID接收基础功能。
+
+### v1.2
+修复数据单位异常问题。

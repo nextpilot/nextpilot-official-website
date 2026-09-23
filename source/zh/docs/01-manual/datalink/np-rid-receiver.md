@@ -244,3 +244,11 @@ param set CFG_BAUD 115200
 4. 如果没有接收到RID广播，请依次排查：
    - 是否无人机RID广播仅支持WiFi，要想接收WiFi广播，请关闭WiFi热点（param set WIFI_AP_ENABLE 0）；
    - 如果还没有RID数据，可以通过设置调试参数（param set DBG_WIFI_OPTION 1），根据打印信息查看是否接收到WiFi广播数据报文，如MAC地址、RSSI、数据包长度；
+
+## 更新记录
+
+### v1.0
+初始版本，完成RID接收基础功能。
+
+### v1.2
+修复数据单位异常问题。
