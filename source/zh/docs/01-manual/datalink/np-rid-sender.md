@@ -45,10 +45,10 @@ NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射�
 - NP-RID-Sender-S3-GH
 - NP-RID-Sender-C3-PinMini
 
-| 硬件外观                                                                                                                 | 硬件名称                 | 说明                                                                                                     |
-| ------------------------------------------------------------------------------------------------------------------------ | ------------------------ | -------------------------------------------------------------------------------------------------------- |
-| <img src="/assets/images/product/datalink/np-rid-sender-gh-board.png" alt="NP-RID-Sender-S3-GH" loading="lazy" />        | NP-RID-Sender-S3-GH      | 主控芯片：ESP32-S3<br />具备所有功能，可直接安装至无人机<br />连接外置天线<br />调试串口为 UART2         |
-| <img src="/assets/images/product/datalink/np-rid-sender-c3-pinmini.png" alt="NP-RID-Sender-C3-PinMini" loading="lazy" /> | NP-RID-Sender-C3-PinMini | 主控芯片：ESP32-C3<br />无外置天线、只支持蓝牙不支持 WiFi 广播，一般用于测试使用。<br />调试串口为 UART0 |
+| 硬件外观                                                     | 硬件名称                 | 说明                                                         |
+| ------------------------------------------------------------ | ------------------------ | ------------------------------------------------------------ |
+| <img src="/assets/images/product/datalink/np-rid-sender-gh-board.png" alt="NP-RID-Sender-S3-GH" loading="lazy" /> | NP-RID-Sender-S3-GH      | 主控芯片：ESP32-S3<br />具备所有功能，可直接安装至无人机<br />连接外置天线<br />调试串口为 UART2 |
+| <img src="/assets/images/product/datalink/np-rid-sender-c3-pinmini.png" alt="NP-RID-Sender-C3-PinMini" loading="lazy" /> | NP-RID-Sender-C3-PinMini | 主控芯片：ESP32-C3<br />无外置天线，不支持CAN一般用于测试使用。<br />调试串口为 UART0 |
 
 ## 接口说明
 
@@ -168,6 +168,14 @@ NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射�
 RID 上电后，自动启动 WiFi 热点（热点名称 `NP-RID-xxxxxx`，密码 `nextpilot`），通过笔记本连接热点后，打开浏览器，输入<http://192.168.4.1>，即可显示设备运行状态。
 
 <img src="/assets/images/product/datalink/rid-web-status.png" alt="网页查看状态" loading="lazy" />
+
+### RID接收验证方法
+
+可通过手机APP或一些测试用RID接收设备完成接收验证。
+
+- 接收验证设备：[NP-RID-Receiver](https://nextpilot.org/docs/manual/datalink/np-rid-receiver.html)
+
+- 手机APP：[下载嗖嗖Fly APP](https://app.sousoufly.com/)
 
 ## 设置参数
 
@@ -315,10 +323,10 @@ param set GB_OP_CATEGORY 1
 
   注意由于日期字符串中间不能有空格，故通过字母`T`连接。
 
-  也可以直接设置unix时间
+  也可以直接设置unix时间（单位s），命令如下：
 
   ```bash
-  param set GB_UTC_TIME 2026-09-20 00:00:00
+  param set GB_UTC_TIME 1789833600
   ```
 
 ### WiFi数传功能
@@ -353,6 +361,10 @@ RID模块上电后会默认通过局域网段UDP广播形式，将通过串口�
 连接 RID 设备热点，打开网页[http://192.168.4.1](http://192.168.4.1)，点击选择文件，选择下载的固件后点击 Update 按钮即可。升级后设备自动重启。
 
 <img src="/assets/images/product/datalink/rid-ota-upload.png" alt="上传固件" loading="lazy" />
+
+## 常见问题
+
+1. 在地面站完成所有配置，仍然报错Arm uninitilized。请确认是否开启了RID模拟，通过`param set SIM_ON 0`关闭模拟；
 
 ## 更新记录
 
