@@ -71,8 +71,9 @@ export default defineConfig({
   // 排除根目录的说明文件，避免被当作页面生成；模式相对 srcDir（source/）匹配物理路径
   srcExclude: [
     'README.md',
-    // 基本概念章节尚未完成，先排除编译（中文内容物理位于 zh/ 下）
+    // 基本概念章节尚未完成，先排除编译（中英文内容物理分别位于 zh/ 与 en/ 下）
     'zh/docs/02-guide/01-concepts/**',
+    'en/docs/02-guide/01-concepts/**',
   ],
 
   // 下载页脚本链接指向 .bat 文件，VitePress 无法识别该扩展名为静态资源，故忽略死链检查
