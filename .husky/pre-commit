@@ -1,0 +1,3 @@
+# 提交前：只处理暂存文件，自动格式化（prettier --write）并修复可自动修复的 lint 问题。
+# 被修改的文件由 lint-staged 自动重新 git add，不需要再手动提交一次。
+pnpm lint-staged

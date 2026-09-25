@@ -5,6 +5,8 @@
     "eslint": "^10.9.1",
     "eslint-plugin-vue": "^10.10.0",
     "globals": "^17.11.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.5.1",
     "markdown-it-mathjax3": "^4.3.2",
     "markdownlint-cli2": "^0.23.2",
     "prettier": "^3.9.6",
@@ -28,6 +30,20 @@
     "type:check": "vue-tsc --noEmit",
     "test:run": "vitest run",
     "test:watch": "vitest",
-    "check": "pnpm format:check && pnpm lint:md && pnpm lint:code && pnpm type:check && pnpm test:run && pnpm docs:build"
+    "check": "pnpm format:check && pnpm lint:md && pnpm lint:code && pnpm type:check && pnpm test:run && pnpm docs:build",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.md": [
+      "prettier --write",
+      "markdownlint-cli2 --fix --no-globs"
+    ],
+    "*.{js,mjs,cjs,mts,cts,ts,vue}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,jsonc,yml,yaml,css,scss,html}": [
+      "prettier --write"
+    ]
   }
 }
