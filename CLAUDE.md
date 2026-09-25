@@ -24,10 +24,16 @@ NextPilot（`nextpilot-flight-control`）是一款国产开源先进自动驾驶
 - URL 排序前缀去除：`buildRewrites()`（`rewrites` 已启用，URL 不含 `NN-` 前缀）
 - `permalink` 路由重写（绝对/相对地址，侧边栏与正文内链统一解析）
 
+- 文章列表页：`blog` 已实现（`layout: blog` + `BlogLayout.vue` / `BlogLayout.data.mts`，支持分类与 tags 过滤）
+- `yyyymmdd` 日期前缀倒序排列已实现（`BlogLayout.data.mts` 的 `prefixDate()`，排序为 `b.dateTs - a.dateTs`）
+
 待完成或待完善：
 
-- 文章列表页：`news` / `blog`
-- `yyyymmdd` 日期前缀倒序排列（当前按数字升序）
+- `news` 栏目：仅占位页（`draft: true`），不接入导航、不实现列表页
+- `discovery` 栏目：仅占位页，暂不实现展示墙
+- 英文站内容：`source/en/` 已补齐中文站全部栏目（`about` / `product` / `solution` / `docs` / `download` / `blog`），构建产出 79 个英文页面；`news` 与 `discovery` 按约定不建英文版（见第 11 节）
+- 部分页面 `frontmatter` 缺失：集中在 `docs/02-guide/`（`03-quickstart` / `04-config` / `06-simulation` / `07-advanced` 的正文页只有一级标题、无 `title` / `description`），中英文同状，影响导航显示与 SEO
+- `docs/manual/navigator/np-ads-h05`、`docs/manual/navigator/np-rtk-base` 两篇手册中英文均为空占位，但产品页 `helpUrl` 已指向它们，需补内容否则是空页
 
 ## 3. 环境与技术栈
 
@@ -107,6 +113,7 @@ nextpilot-official-website/
   - `<column>` 为栏目，`<subcolumn>` 为子栏目，目录层级建议不超过 5 级
   - `xx` 是`两位整数`排序前缀，通常用于时间不敏感栏目（比如 product、solution 等）
   - `yyyymmdd` 是`日期格式`排序前缀，用于敏感类型栏目（比如 blog、news 等）
+- **排序前缀允许断层**：编号不要求连续，刻意留空号位是为了后续在中间插入章节时不必批量重命名（例如 `docs/02-guide/` 下目前是 `01-concepts` → `03-quickstart` → `04-config` → `06-simulation` → `07-advanced` → `99-peripheral`，空缺的 `02`、`05` 就是预留位）。**看到断层不要当成缺失去"修正"**，也不要顺手重排已有编号
 - 文件和目录名一律小写，且只允许：数字、小写字母、横杠（优先）、下划线（谨慎）、小数点（仅用于版本号），不允许中文或特殊字符
 - 图片统一放在 `public/assets/images/<栏目>/`，用绝对路径 `/assets/images/...` 引用（正文 `<img>` 与 `frontmatter` 的 `cover`/`gallery` 均如此）
 - 图片文件名应使用有意义的英文小写 slug，去掉自动生成的时间戳前缀（如 `image-20260623150217001.png` → `sim-main.png`）
@@ -134,7 +141,7 @@ nextpilot-official-website/
 页面有 **name（名称）** 与 **link（链接）** 两个身份字段，另加排序、所属栏目、分类与标签。
 
 - 页面的名称，获取优先级：`frontmatter.shortTitle` > `frontmatter.title` > `一级标题` > `页面文件名（除去排序前缀）`，优先级从高到低。
-- 页面的排序，获取优先级：`frontmatter.order` > `页面文件的排序前缀`，`xx` 按照从小到大排序，`yyyymmdd` 是页面创建日期，按照倒序排列（倒序当前未实现，待办）
+- 页面的排序，获取优先级：`frontmatter.order` > `页面文件的排序前缀`，`xx` 按照从小到大排序，`yyyymmdd` 是页面创建日期，按照倒序排列（倒序已在 `blog` 列表实现，见 `BlogLayout.data.mts`）
 - 页面的链接，获取优先级：`frontmatter.permalink` > `页面文件的物理路由`，物理路由需要去掉排序前缀；如果 `frontmatter.permalink` 是相对地址，则需要根据上级栏目的链接进行拼接
 - 页面的栏目（所属栏目）：由页面所在的物理目录决定，页面只属于一个栏目；列表展示时按栏目分组。栏目无 slug，直接用 link 访问
 - 页面的分类（`category`，独立属性，仅用于筛选、不决定栏目归属；不同栏目下的页面可拥有同一个分类），借鉴 Hexo：**名称是唯一真相源，slug 由名称 slugify 推导**，不手写 slug：
@@ -159,6 +166,7 @@ nextpilot-official-website/
 
 ### 7.2 产品中心
 
+- **读者与用途**：`product` 面向**买家/售前**，回答「这是什么、有什么能力、规格如何、怎么买」。语气偏介绍与卖点，允许营销表达，重点是让人产生购买意愿。
 - 栏目定位：`product` 是产品展示栏目，采用列表页 + 详情页结构。
 - 目录规则：`product/xx-subcolumn/yy-markdown.md`，其中产品子栏目 `subcolumn` 包括 `aircraft`、`autopilot`、`datalink`、`navigator`、`peripheral`。
 - 过滤规则：必须过滤 `index.md` 和 `draft: true`，并支持按分类筛选与全文搜索，分类筛选不能使用 `tags`。
@@ -169,6 +177,7 @@ nextpilot-official-website/
 
 ### 7.3 文档中心（docs）
 
+- **读者与用途**：`docs` 面向**已购用户/使用者**，回答「怎么装、怎么配、怎么飞、出问题怎么办」。语气偏操作与排故，写可执行的步骤，不写卖点。
 - 栏目定位：顶级 `docs` 是统一的文档栏目（`docs` 类型），整合原独立的 `manual`（产品导向手册）与 `opensource`（开源项目文档）两个栏目，主要展示文档内容和知识库。
 - 目录规则：`docs/<xx-subcolumn>/<...>/<yy-markdown.md>`，四个子栏目固定为 `01-manual`（产品手册，URL `/docs/manual/`）、`02-guide`（使用教程，URL `/docs/guide/`）、`03-develop`（开发指南，URL `/docs/develop/`）、`04-community`（社区支持，URL `/docs/community/`）；子栏目下可再嵌套下级栏目（层级建议不超过 5 级）；`index.md` 用作各级栏目首页，并提供该栏目所需的 `frontmatter`。
 - 栏目首页：`docs/index.md` 为文档中心落地页（普通 doc 布局 + 四个子栏目 link-card + 开源项目 repo-grid），导航顺序由 `frontmatter.order` 决定。
@@ -195,6 +204,26 @@ nextpilot-official-website/
 - 列表布局组件（`CatalogLayout.vue` / `BlogLayout.vue`）从当前路由 `route.path` 推导自身前缀（去掉 `.html`、尾斜杠与可选 `en/` 段），对加载器数据做 `startsWith` 过滤。
 - 排除规则：各级 `index.md`、`draft: true`、以及自身就是列表/详情布局的页面（`home / catalog / blog / solution / product`）不作为条目收录。
 - 默认分类名取「所属最近列表页」的显示名（可被页面 `frontmatter.category` 覆盖），与 6.2 节一致。
+
+### 7.7 product 与 docs 的同名页面：分工而非重复
+
+同一款产品（如 `np-rid-receiver`、`np-snail-550`、`np-fcc-h05`）在 `product/` 与 `docs/01-manual/` 下各有一个同名页面，**这是刻意的分工，不是内容重复，不要合并、也不要互相删减**。
+
+| 维度     | `product/<subcolumn>/<product>.md`                     | `docs/01-manual/<subcolumn>/<product>.md`      |
+| -------- | ------------------------------------------------------ | ---------------------------------------------- |
+| 读者     | 买家 / 售前（还没买）                                  | 用户 / 售后（已经买了）                        |
+| 回答     | 这是什么、能干什么、规格多少、多少钱                   | 怎么装、怎么配、怎么用、怎么排故               |
+| 语气     | 介绍与卖点，允许营销表达                               | 操作与排故，写可执行步骤                       |
+| 典型内容 | 产品特色、主要功能、技术参数表、价格、购买/咨询入口    | 开箱与安装、接线、参数配置、固件升级、常见问题 |
+| 布局     | `layout: product`（左图库 + 右摘要 + tab 正文）        | `layout: doc`（左 sidebar + 右 TOC）           |
+| 标题写法 | 标题由 `frontmatter.title` 渲染，正文不写首行 `# 标题` | 正文正常写 `# 标题`                            |
+
+约束：
+
+- **允许内容重叠，但侧重点必须不同**：两边都可以出现「技术参数表」，`product` 里服务于选型对比，`docs` 里服务于调试查表。
+- **必须交叉链接**：`product` 页给出「查看文档 →」指向对应 `docs` 手册页；`docs` 手册页给出「产品详情 →」指回 `product` 页。链接用站点内绝对路径。
+- **同步义务**：一方更新规格、固件、接口定义时，若另一方也写了同一事实，需同步修改，避免两处说法打架。
+- **不要跨栏目搬运整段正文**：需要复用时改写入口 + 链接，而不是复制粘贴。
 
 ## 8. Frontmatter 约定
 
@@ -277,8 +306,10 @@ helpUrl: /docs/manual/xxx
 ## 11. 国际化
 
 - 内容源按语言分目录：中文（root locale）在 `source/zh/`，英文在 `source/en/`；语言仅按最终 URL 判定——`source/zh/` 经函数式 `rewrites` 剥掉 `zh/` 段后服务于站点根（`nextpilot.org/...`），`source/en/` 保持 `/en/` 前缀（`nextpilot.org/en/...`）。新增中文栏目/页面一律放在 `source/zh/` 下，路径与命名约定不变
-- 新增中文页面时，不要在英文侧创建空文件占位
+- 新增中文页面时，不要在英文侧创建空文件占位；唯一例外是中文页本身就是空占位且已有其它页面（如产品页 `helpUrl`）指向它，此时英文侧需同步建同名空文件，否则构建会报死链
 - 英文页面缺失时，语言切换应回到中文对应页，若中文页也不存在则回到首页
+- 英文正文中的站内链接要加 `/en/` 前缀；正文锚点（如 `#参数汇总`）必须按英文标题重写（如 `#parameter-reference`），沿用中文锚点会静默失效
+- `frontmatter` 的 `title` 若含冒号（`:`）必须用引号包裹，否则 YAML 解析失败、构建直接报错（例：`title: "Encrypting MAVLink: A Full Walkthrough..."`）
 
 ## 12. 实现与处理原则
 
@@ -288,7 +319,7 @@ helpUrl: /docs/manual/xxx
 
 - 优先复用默认主题并做扩展，不要从零重写主题
 - `createContentLoader` 必须在构建期生成数据，不要在客户端扫描目录
-- `glob` 模式不要携带前导斜杠，例如：`zh/product/**/*.md`，不能写成 `/zh/product/**/*.md`（glob 相对 srcDir `source/` 按物理路径匹配，中文内容需带 `zh/` 前缀；loader 产出的 `item.url` 经 rewrites 处理、不含 `zh/`）。三个列表加载器（catalog / blog / solution）统一 glob `zh/**/*.md` 后按列表页 URL 子树归属过滤，不在 glob 中写死栏目名（见 7.6）
+- `glob` 模式不要携带前导斜杠，例如：`product/**/*.md`，不能写成 `/product/**/*.md`（glob 相对 srcDir `source/` 按物理路径匹配）。三个列表加载器（catalog / blog / solution）统一 glob `**/*.md`（**不能写成 `zh/**/*.md`**，否则英文内容会被整体漏掉），再按列表页自身 `route.path` 做 `startsWith` 过滤；中文条目 URL 经 rewrites 不含 `zh/` 段、英文条目带 `/en/` 段，因此两种语言天然互不串台，也不在 glob 中写死栏目名（见 7.6）
 - 自定义 Vue 组件放在 `.vitepress/theme/components/` 并通过 `enhanceApp` 全局注册
 - `docsSidebar()`、`buildRewrites()` 等辅助函数应放在 `.vitepress/` 的独立模块中，`config.mts` 只负责 import
 - 顶部导航由 `docsNavbar()`（`config/navbar.mts`）扫描 root 语言内容目录 `source/zh/` 自动生成：不写死栏目名单，顶级栏目按 `index.md` 的 `order` > 目录排序前缀 > 名称排序，草稿栏目（`draft: true`，如 news / discovery）自动排除；`docsNavbar(contentDir)` / `docsSidebars(contentDir, sections)` 的首参是语言内容目录（中文传 `source/zh`），生成的链接为不含语言段的裸路由，语言段由 `page.mts` 统一归一。VitePress 要求下拉组顶级项**不带** `link`（带了会渲染成普通链接），故含二级条目的栏目输出为 `{ text, items, sectionLink }`，`items` 为二级菜单：栏目的直接子目录（子栏目）与直接 md 页面（不含 index.md）都算二级条目，混合后统一按 `frontmatter.order` > 排序前缀 > 名称排序；栏目首页链接放在自定义字段 `sectionLink` 中，由 `theme/Layout.vue` 的 `onNavGroupClick` 接管桌面端一级菜单按钮的点击跳转（VitePress 下拉组按钮默认只展开、不导航）；二级菜单使用 VitePress 自带下拉（桌面端悬停展开、移动端汉堡菜单内手风琴展开）。`theme/components/NavbarRibbon.vue` 是已禁用的定制浮层方案，未在 `Layout.vue` 中挂载，需要时可再启用
@@ -315,6 +346,25 @@ helpUrl: /docs/manual/xxx
 - 对于产品、支持能力等事实性描述，必须以 README 和现有官网内容为准。
 
 ## 13. 构建与验证
+
+### 13.1 Git 钩子（husky + lint-staged）
+
+仓库已配置 `.husky/` 钩子，`pnpm install` 时由 `prepare` 脚本自动安装（`core.hooksPath` 指向 `.husky/_`）。
+
+| 钩子         | 执行内容                                                                                                                           | 耗时     |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `pre-commit` | `pnpm lint-staged`：只处理**暂存文件**，`prettier --write` 自动格式化，再跑 `markdownlint-cli2 --fix --no-globs` 与 `eslint --fix` | 秒级     |
+| `pre-push`   | `pnpm check`：与 CI 完全一致的完整校验（format / lint:md / lint:code / type / test / build）                                       | 约 10 秒 |
+
+行为要点：
+
+- **自动修复会自动重新暂存**：`lint-staged` 修完的文件会 `git add` 回去，不需要再提交一次。
+- **修不了的会被拦下**：`MD001`（标题跳级）、`MD056`（表格列数不符）等不可自动修复的问题会让提交失败，并**回滚**到原始状态，需人工改完再提交。
+- **`--no-globs` 不能去掉**：`markdownlint-cli2` 即使收到显式文件名，仍会合并配置文件里的 `globs` 去扫全库；加 `--no-globs` 才只处理传入文件。
+- **跳过钩子用 `git commit --no-verify` / `git push --no-verify`**，仅限紧急情况，否则 CI 大概率打回。
+- 希望在 CI 之前本地就发现问题时，随时手动跑 `pnpm check`。
+
+### 13.2 提交前检查
 
 在提交前，必须执行：
 
