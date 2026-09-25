@@ -1,4 +1,6 @@
 ---
+title: Basic Concepts
+description: NextPilot basic concepts, introducing what unmanned vehicles are and comparing multirotor, helicopter, fixed-wing and VTOL airframes.
 draft: true
 ---
 

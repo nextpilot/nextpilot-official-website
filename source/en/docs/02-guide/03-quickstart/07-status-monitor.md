@@ -1,3 +1,8 @@
+---
+title: Status Monitoring
+description: NextPilot status monitoring, covering how to read INS, position and attitude, airspeed, voltage and system message data in the ground station.
+---
+
 # Status Monitoring
 
 After installation is complete, place the autopilot in an open, unobstructed environment. Once satellite positioning is acquired, you can view the basic status in the ground station.

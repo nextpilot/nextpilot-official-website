@@ -1,3 +1,8 @@
+---
+title: Mission Planning
+description: NextPilot mission planning, covering drawing routes in the ground station, takeoff and common waypoint types, and geofence configuration.
+---
+
 # Mission Planning
 
 Click the "Mission Planning" button in the General section of the left sidebar of the ground station, or click the main menu in the top-left corner and select Mission Planning, to open the mission planning screen.

@@ -1,3 +1,8 @@
+---
+title: 硬件在环仿真（HITL）
+description: NextPilot 硬件在环仿真（HITL），介绍仿真固件烧写与在真实飞控硬件上开展仿真飞行的流程。
+---
+
 # 硬件在环仿真（HITL）
 
 ## 简介

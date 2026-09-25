@@ -1,3 +1,8 @@
+---
+title: Basic Setup
+description: NextPilot basic setup, covering airframe selection, RC setup, motor setup, servo reversing and trimming, and battery voltage calibration.
+---
+
 # Basic Setup
 
 ## Airframe Setup {#airframe-setup}

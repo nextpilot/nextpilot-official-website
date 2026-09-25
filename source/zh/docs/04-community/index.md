@@ -1,5 +1,6 @@
 ---
 title: 社区支持
+description: NextPilot 社区支持，涵盖技术求助与故障排查、加群交流、代码贡献与文档完善等方式。
 ---
 
 # NextPilot 社区支持

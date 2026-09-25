@@ -1,5 +1,6 @@
 ---
 title: NP-FCC-H05
+description: NP-FCC-H05 navigation flight control computer documentation, covering product introduction, interface and pin definitions, specifications and installation.
 ---
 
 # NP-FCC-H05 Navigation Flight Control Computer

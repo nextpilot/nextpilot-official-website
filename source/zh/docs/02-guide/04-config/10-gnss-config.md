@@ -1,3 +1,8 @@
+---
+title: 卫导配置
+description: NextPilot 卫导（GNSS）配置，给出 UM482、UM982、OEM718D 等 RTK 板卡在机载端与地面端的完整配置指令。
+---
+
 # 卫导配置
 
 ## UM482

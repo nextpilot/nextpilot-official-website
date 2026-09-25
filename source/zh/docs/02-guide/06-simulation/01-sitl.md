@@ -1,3 +1,8 @@
+---
+title: 软件在环仿真（SITL）
+description: NextPilot 软件在环仿真（SITL），介绍 QEMU 仿真环境搭建、固件启动、地面站 UDP 连接与常用仿真操作。
+---
+
 # 软件在环仿真（SITL）
 
 ## 简介

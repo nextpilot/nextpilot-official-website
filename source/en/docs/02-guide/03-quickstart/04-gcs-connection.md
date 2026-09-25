@@ -1,3 +1,8 @@
+---
+title: Ground Station Connection
+description: NextPilot ground station connection, covering serial, UDP and TCP links, connecting the datalink device and enabling automatic UDP connection.
+---
+
 # Ground Station Connection
 
 ## Connection Methods

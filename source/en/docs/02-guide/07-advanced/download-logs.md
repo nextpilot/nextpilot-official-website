@@ -1,3 +1,8 @@
+---
+title: Downloading Logs
+description: NextPilot log download, describing the flight log storage format and folder naming, and how to mount the SD card from the ground station to export logs.
+---
+
 # Downloading Logs
 
 ## Introduction

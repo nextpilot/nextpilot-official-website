@@ -1,4 +1,5 @@
 ---
+description: NextPilot 是国产开源先进自动驾驶仪，基于 RT-Thread 与 PX4，支持多旋翼、固定翼与垂起复合翼，面向教育、研究与工业等领域。
 layout: home
 
 hero:

@@ -1,3 +1,8 @@
+---
+title: Data Forwarding
+description: NextPilot data forwarding, describing scenarios for relaying vehicle data to a remote host, how to create forwarding connections and the additional options.
+---
+
 # Data Forwarding
 
 ## Introduction

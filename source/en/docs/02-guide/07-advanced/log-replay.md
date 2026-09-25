@@ -1,3 +1,8 @@
+---
+title: Log Replay
+description: NextPilot log replay, describing how to replay telemetry and operator logs in the ground station to locate flight issues quickly.
+---
+
 # Log Replay
 
 After the ground station is opened, a folder named after the date is created to store log data, including telemetry data and operator actions. Log replay plays back data recorded by the ground station, helping engineers quickly locate or identify flight problems.

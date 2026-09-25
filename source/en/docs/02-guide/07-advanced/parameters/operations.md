@@ -1,3 +1,8 @@
+---
+title: Parameter Operations
+description: NextPilot parameter operations, covering searching and viewing parameters, changing and saving them, exporting and importing files, and using the console.
+---
+
 # Parameter Operations
 
 ## Introduction

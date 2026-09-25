@@ -1,6 +1,7 @@
 ---
 order: 6
 title: 资源下载
+description: NextPilot 资源下载，提供地面站软件、飞控与导航固件、仿真固件及发布记录。
 ---
 
 # 资源下载

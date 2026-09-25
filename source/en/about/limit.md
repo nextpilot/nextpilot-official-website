@@ -1,6 +1,7 @@
 ---
 order: 5
 title: Terms of Use
+description: NextPilot product terms of use, covering prohibited military and warfare use, export control, applicable law and the disclaimer of liability.
 ---
 
 # Product Terms of Use

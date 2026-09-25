@@ -2,8 +2,17 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import type { DefaultTheme } from 'vitepress'
 import { getDisplayTitleFromFile, getFinalUrl, isIndexLinkable, parseFrontmatter, titleFromName } from './page.mts'
+import type { LocaleDir } from './page.mts'
 
 type SidebarItem = DefaultTheme.SidebarItem
+
+/**
+ * 拼接「语言段 + 栏目内路径」求最终 URL；裸路径会被按 root 语言（zh）归一，
+ * 故英文站必须显式带 `en/` 段，否则侧边栏链接会指回中文页面。
+ */
+function urlOf(localeDir: LocaleDir, innerPath: string): string {
+  return `/${getFinalUrl(`${localeDir}/${innerPath}`)}`
+}
 
 /** 读取 md 文件的 frontmatter */
 function readFrontmatter(filePath: string): Record<string, string> {
@@ -44,7 +53,7 @@ function sortEntries(entries: Entry[]): SidebarItem[] {
  * 构建一个分组（子目录）及其下的条目，递归处理更深层子目录。
  * relDir 为该目录相对栏目根目录的路径（如 autopilot/00-基本概念），用于拼接链接。
  */
-function buildGroup(section: string, relDir: string, dirPath: string, depth: number): SidebarItem {
+function buildGroup(section: string, relDir: string, dirPath: string, depth: number, localeDir: LocaleDir): SidebarItem {
   const indexPath = join(dirPath, 'index.md')
   const hasIndex = existsSync(indexPath)
   // index.md 的 frontmatter.linkable 为 false 时分组头不生成链接（标题仍展示、不可点击）
@@ -67,7 +76,7 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
         order: orderOf(childFm),
         prefix: sortPrefixOf(name),
         path: name,
-        item: buildGroup(section, childRelDir, full, depth + 1),
+        item: buildGroup(section, childRelDir, full, depth + 1, localeDir),
       })
     } else if (st.isFile() && name.endsWith('.md') && name !== 'index.md') {
       const fm = readFrontmatter(full)
@@ -79,7 +88,7 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
         path: name,
         item: {
           text: getDisplayTitleFromFile(full, titleFromName(basename(name, '.md'))),
-          link: `/${getFinalUrl(`${section}/${relDir}/${name}`)}`,
+          link: urlOf(localeDir, `${section}/${relDir}/${name}`),
         },
       })
     }
@@ -88,7 +97,7 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
   const text = getDisplayTitleFromFile(indexPath, titleFromName(basename(dirPath)))
   const items = sortEntries(children)
   // 栏目首页链接：linkable 为 false 时无链接（标题仅作分组标签，不可点击）
-  const indexLink = hasIndex && isIndexLinkable(indexFm) ? `/${getFinalUrl(`${section}/${relDir}/index.md`)}` : undefined
+  const indexLink = hasIndex && isIndexLinkable(indexFm) ? urlOf(localeDir, `${section}/${relDir}/index.md`) : undefined
 
   // 下级栏目暂无任何子页面：首页可链接时退化为单个链接条目（栏目本身即落地页，如仅有 index.md 的新栏目）
   if (items.length === 0 && indexLink) return { text, link: indexLink }
@@ -109,7 +118,7 @@ function buildGroup(section: string, relDir: string, dirPath: string, depth: num
  * 目录下的 md 映射为条目，均排除 index.md。
  * contentDir 为 root 语言内容目录（source/zh），栏目根为其下的 section 子目录。
  */
-export function docsSidebar(contentDir: string, section: string): SidebarItem[] {
+export function docsSidebar(contentDir: string, section: string, localeDir: LocaleDir = 'zh'): SidebarItem[] {
   const base = join(process.cwd(), contentDir, section)
   if (!existsSync(base)) return []
 
@@ -126,7 +135,7 @@ export function docsSidebar(contentDir: string, section: string): SidebarItem[] 
         order: orderOf(fm),
         prefix: sortPrefixOf(name),
         path: name,
-        item: buildGroup(section, name, full, 0),
+        item: buildGroup(section, name, full, 0, localeDir),
       })
     } else if (st.isFile() && name.endsWith('.md') && name !== 'index.md') {
       const fm = readFrontmatter(full)
@@ -138,7 +147,7 @@ export function docsSidebar(contentDir: string, section: string): SidebarItem[] 
         path: name,
         item: {
           text: getDisplayTitleFromFile(full, titleFromName(basename(name, '.md'))),
-          link: `/${getFinalUrl(`${section}/${name}`)}`,
+          link: urlOf(localeDir, `${section}/${name}`),
         },
       })
     }
@@ -166,11 +175,11 @@ function hasAnyMd(dirPath: string): boolean {
  * 例如 `manual/05-测试下` 声明 `permalink: /mytest22`，其页面 URL 在 `/mytest22/` 下，
  * 但物理上仍属于 manual，故要把 `/mytest22/` 也映射到 manual 侧边栏。
  */
-export function sectionRoutes(contentDir: string, section: string): string[] {
+export function sectionRoutes(contentDir: string, section: string, localeDir: LocaleDir = 'zh'): string[] {
   const base = join(process.cwd(), contentDir, section)
   if (!existsSync(base)) return []
 
-  const columnRoute = '/' + getFinalUrl(`${section}/index.md`)
+  const columnRoute = urlOf(localeDir, `${section}/index.md`)
   const prefixes = [columnRoute]
 
   const walk = (dirPath: string, relDir: string) => {
@@ -178,7 +187,7 @@ export function sectionRoutes(contentDir: string, section: string): string[] {
       const full = join(dirPath, name)
       if (!statSync(full).isDirectory() || !hasAnyMd(full)) continue
       const childRel = relDir ? `${relDir}/${name}` : name
-      const route = '/' + getFinalUrl(`${section}/${childRel}/index.md`)
+      const route = urlOf(localeDir, `${section}/${childRel}/index.md`)
       // 仍在栏目根路由下的子目录已被栏目根覆盖，只额外注册逃逸出去的路由
       if (!route.startsWith(columnRoute)) prefixes.push(route)
       walk(full, childRel)
@@ -189,11 +198,11 @@ export function sectionRoutes(contentDir: string, section: string): string[] {
 }
 
 /** 构建所有栏目的侧边栏映射（路由前缀 -> 侧边栏项），供 config.mts 的 themeConfig.sidebar 使用 */
-export function docsSidebars(contentDir: string, sections: string[]): Record<string, SidebarItem[]> {
+export function docsSidebars(contentDir: string, sections: string[], localeDir: LocaleDir = 'zh'): Record<string, SidebarItem[]> {
   const result: Record<string, SidebarItem[]> = {}
   for (const section of sections) {
-    const items = docsSidebar(contentDir, section)
-    for (const route of sectionRoutes(contentDir, section)) result[route] = items
+    const items = docsSidebar(contentDir, section, localeDir)
+    for (const route of sectionRoutes(contentDir, section, localeDir)) result[route] = items
   }
   return result
 }

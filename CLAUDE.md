@@ -266,8 +266,8 @@ helpUrl: /docs/manual/xxx
 
 必须遵守：
 
-- `title` SEO / 浏览器标题
-- `description` SEO / 浏览器描述
+- `title` SEO / 浏览器标题。**每个页面都要写**：缺失时回退到正文一级标题，正文也没有则回退为 `文件名去前缀后全大写`（如 `AIRFRAME`），导航栏与侧边栏会直接露出这个兜底值。取值应与正文一级标题保持一致，避免导航/侧边栏文案跳变
+- `description` SEO / 浏览器描述。**每个页面都要写且须为本「页」专属**：缺失时 VitePress 回退到 `config.mts` 里的站点级 `description`，导致全站页面共用同一段简介（英文站上甚至是一整段中文），对搜索引擎与列表页摘要都是负优化。中文为一句话、以「NextPilot …」开头；英文对应同义句
 - `permalink` 如果是相对地址，则需要根据上级栏目的链接进行拼接
 - `draft: true` 在开发环境允许预览，但构建和列表页必须排除草稿，未填写 `draft` 时按正式内容处理
 - `linkable`（仅栏目/子栏目首页 `index.md` 生效，可选）控制该首页是否作为可点击链接入口；缺省或 `true` 默认可链接。写 `false` 时（适用于仅作分组占位、无落地内容的栏目首页）各导航面表现不同：
@@ -309,6 +309,8 @@ helpUrl: /docs/manual/xxx
 - 新增中文页面时，不要在英文侧创建空文件占位；唯一例外是中文页本身就是空占位且已有其它页面（如产品页 `helpUrl`）指向它，此时英文侧需同步建同名空文件，否则构建会报死链
 - 英文页面缺失时，语言切换应回到中文对应页，若中文页也不存在则回到首页
 - 英文正文中的站内链接要加 `/en/` 前缀；正文锚点（如 `#参数汇总`）必须按英文标题重写（如 `#parameter-reference`），沿用中文锚点会静默失效
+- **自动生成导航/侧边栏时必须传语言段**：`docsNavbar(contentDir, localeDir)` 与 `docsSidebar(s) / sectionRoutes(contentDir, section, localeDir)` 的末位参数为语言段（`zh` 缺省 / `en`）。它们内部的 `getFinalUrl()` 对**裸路径按 root 语言 zh 归一**，所以给英文站传裸路径会得到「英文标题 + 中文链接」的错链；英文必须显式传 `'en'`。两大判断口径：中文页面 URL 不含 `/zh/` 也不含 `/en/`，英文一律以 `/en/` 开头，`test/i18n-nav.test.ts` 对此有回归断言
+- 某语言未提供的栏目（如英文站暂无 news / discovery）无需额外排除——扫描各自语言目录时天然缺失
 - `frontmatter` 的 `title` 若含冒号（`:`）必须用引号包裹，否则 YAML 解析失败、构建直接报错（例：`title: "Encrypting MAVLink: A Full Walkthrough..."`）
 
 ## 12. 实现与处理原则

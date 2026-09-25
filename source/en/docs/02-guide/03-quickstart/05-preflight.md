@@ -1,3 +1,8 @@
+---
+title: Preflight Check
+description: NextPilot preflight check, covering power management, integrated navigation, joystick input, radio control, control output, propulsion and mission checks, plus firmware version lookup.
+---
+
 # Preflight Check
 
 Before a full flight, a preflight check must be performed to ensure flight safety.

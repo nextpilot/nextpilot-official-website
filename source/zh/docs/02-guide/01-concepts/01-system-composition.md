@@ -1,4 +1,6 @@
 ---
+title: 系统组成
+description: NextPilot 系统组成，涵盖飞控、传感器、电调电机与舵机、电池、遥控器、安全开关、蜂鸣器、指示灯与数据链。
 draft: true
 ---
 

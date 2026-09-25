@@ -1,3 +1,8 @@
+---
+title: GNSS Configuration
+description: NextPilot GNSS configuration, providing full setup commands for UM482, UM982 and OEM718D RTK boards on both the airborne and ground sides.
+---
+
 # GNSS Configuration
 
 ## UM482

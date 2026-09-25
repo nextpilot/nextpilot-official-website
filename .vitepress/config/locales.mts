@@ -8,8 +8,9 @@ const sidebarSections = ['about', 'docs']
 /**
  * 构建多语言配置：root = 简体中文（默认），en = English。
  *
- * 中文导航/侧边栏由 docsNavbar() / docsSidebars() 扫描 root 语言内容目录 source/zh 自动生成；
- * 英文内容物理位于 source/en（URL 前缀 /en/）。语言仅按最终 URL 判定，物理目录名 zh 不是 locale 键。
+ * 中英文导航/侧边栏均由 docsNavbar() / docsSidebars() 扫描各自语言的内容目录自动生成：
+ * 中文扫 source/zh（URL 无语言段），英文扫 source/en（URL 前缀 /en/）。
+ * 英文内容物理位于 source/en。语言仅按最终 URL 判定，物理目录名 zh 不是 locale 键。
  * 新增语言时在此添加一个 locale 键并准备对应内容目录，无需改动 navbar。
  */
 export function buildLocales(srcDir: string): NonNullable<UserConfig['locales']> {
@@ -62,14 +63,15 @@ export function buildLocales(srcDir: string): NonNullable<UserConfig['locales']>
             'This documentation is licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>. You are free to share, adapt, and use it commercially, provided you give appropriate credit.',
           copyright: `Copyright © ${new Date().getFullYear()} NextPilot Development Team`,
         },
-        nav: [{ text: 'Home', link: '/en/' }],
-        // sidebar: { '/en/docs/': docsSidebar('en') },
+        // nav / sidebar 在下方由 docsNavbar() / docsSidebars() 动态填充（与中文站一致）
       },
     },
   } satisfies UserConfig['locales']
 
   // root 语言（简体中文）的内容目录：source 根下的 zh/（经 rewrites 剥掉 zh/ 段，URL 上不可见）
   const zhContentDir = `${srcDir}/zh`
+  // 英文的内容目录：source 根下的 en/（URL 前缀 /en/）
+  const enContentDir = `${srcDir}/en`
 
   // 中文导航与侧边栏：扫描 source/zh 自动生成，新增顶级/二级栏目无需修改配置。
   // locales.root.themeConfig 经 satisfies 推断为较宽松的类型（nav/sidebar 为后续动态填充），
@@ -77,6 +79,12 @@ export function buildLocales(srcDir: string): NonNullable<UserConfig['locales']>
   const rootThemeConfig = locales.root.themeConfig as DefaultTheme.Config
   rootThemeConfig.nav = [{ text: '首页', link: '/' }, ...docsNavbar(zhContentDir)]
   rootThemeConfig.sidebar = docsSidebars(zhContentDir, sidebarSections)
+
+  // 英文导航与侧边栏：同样自动扫描 source/en，标题取自英文内容、链接自动补 /en/ 前缀。
+  // 英文暂未提供的栏目（如 news / discovery）因目录缺失自然不出现，无需额外排除。
+  const enThemeConfig = locales.en.themeConfig as DefaultTheme.Config
+  enThemeConfig.nav = [{ text: 'Home', link: '/en/' }, ...docsNavbar(enContentDir, 'en')]
+  enThemeConfig.sidebar = docsSidebars(enContentDir, sidebarSections, 'en')
 
   return locales
 }

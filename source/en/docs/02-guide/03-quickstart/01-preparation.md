@@ -1,3 +1,8 @@
+---
+title: Preparation
+description: NextPilot preparation, covering the recommended autopilot hardware list, supported vehicle types, ground station installation and firmware flashing.
+---
+
 # Preparation
 
 ## Hardware Preparation

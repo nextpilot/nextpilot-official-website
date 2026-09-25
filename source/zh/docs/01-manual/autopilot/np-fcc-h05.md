@@ -1,5 +1,6 @@
 ---
 title: NP-FCC-H05
+description: NP-FCC-H05 导航飞控计算机文档，涵盖产品简介、接口定义与引脚线序、性能参数与安装要求。
 ---
 
 # NP-FCC-H05 导航飞控计算机

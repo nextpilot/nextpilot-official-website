@@ -1,3 +1,8 @@
+---
+title: Hardware-In-The-Loop Simulation (HITL)
+description: NextPilot HITL simulation, covering flashing the simulation firmware and running simulated flight on the real autopilot hardware.
+---
+
 # Hardware-In-The-Loop Simulation (HITL)
 
 ## Introduction

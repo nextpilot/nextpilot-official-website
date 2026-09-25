@@ -1,6 +1,7 @@
 ---
 order: 6
 title: Downloads
+description: NextPilot downloads, providing ground station software, flight control and navigation firmware, simulation firmware and release notes.
 ---
 
 # Downloads

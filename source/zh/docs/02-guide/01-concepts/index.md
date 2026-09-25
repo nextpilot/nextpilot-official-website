@@ -1,4 +1,6 @@
 ---
+title: 基本概念
+description: NextPilot 基本概念，介绍无人机的定义与分类、多旋翼、直升机、固定翼与垂起等机架的适用场景。
 draft: true
 ---
 

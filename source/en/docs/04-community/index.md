@@ -1,5 +1,6 @@
 ---
 title: Community Support
+description: NextPilot community support, covering how to get technical help and troubleshoot, join discussion groups, contribute code and improve the documentation.
 ---
 
 # NextPilot Community Support

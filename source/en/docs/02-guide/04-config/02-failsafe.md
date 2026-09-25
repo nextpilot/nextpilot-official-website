@@ -1,3 +1,8 @@
+---
+title: Failsafe Protection
+description: NextPilot failsafe protection, covering low battery, RC signal loss, datalink loss, GNSS failure, engine failure and geofence protection.
+---
+
 # Failsafe Protection
 
 Go to Autopilot Setup -> Safety Protection to configure the handling logic for common faults.

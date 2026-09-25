@@ -1,3 +1,8 @@
+---
+title: Basic Flight
+description: NextPilot basic flight, covering power restore and cut, arming and disarming, and the available flight states and flight modes.
+---
+
 # Basic Flight
 
 ## Propulsion Arm / Cutoff

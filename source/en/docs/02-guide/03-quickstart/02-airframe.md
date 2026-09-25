@@ -1,3 +1,8 @@
+---
+title: Airframes
+description: NextPilot airframes, describing PWM output pinouts for quadrotor X, hexarotor X, electric VTOL, fuel VTOL and fixed-wing configurations.
+---
+
 # Airframes
 
 UAV actuators generally include servos, ESCs and motors, engines, etc., and the drive signals are generally PWM. The autopilot provides a total of 16 PWM output channels, which must be connected according to the vehicle type.

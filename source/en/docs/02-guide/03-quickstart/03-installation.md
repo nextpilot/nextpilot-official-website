@@ -1,3 +1,8 @@
+---
+title: Device Installation
+description: NextPilot device installation, covering body and autopilot coordinate frames and how to mount the flight control computer, onboard GNSS antenna, air data computer and ground RTK base station.
+---
+
 # Device Installation
 
 ## Coordinate System Definition

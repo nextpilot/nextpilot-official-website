@@ -1,4 +1,6 @@
 ---
+description: NextPilot solution services, providing full-stack customisation from aerodynamic design and flight control development to communication protocols and ground control stations.
+title: Solutions
 layout: solution
 order: 2
 ---

@@ -1,3 +1,8 @@
+---
+title: Parameter Reference
+description: NextPilot parameter reference, listing parameter names and functions grouped by takeoff, mission, fixed-wing, multicopter, transition, navigation, moving platform, return, engine and telemetry channels.
+---
+
 # Parameter Reference
 
 NextPilot references the PX4 parameter management module; most parameter names and functions are the same. Newly added parameters and frequently used parameters are listed below:

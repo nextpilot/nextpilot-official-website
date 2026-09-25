@@ -1,3 +1,8 @@
+---
+title: Flashing Firmware
+description: NextPilot firmware flashing, covering prerequisites and steps for flashing flight control firmware over FCS-USB and navigation firmware over AHRS-USB.
+---
+
 # Flashing Firmware
 
 > Since the navigation flight controller contains two main control chips — one running the flight control system program (FCS) and one running the navigation system program (INS) — the flight control firmware is flashed through `FCS-USB` and the navigation firmware through `AHRS-USB`. The latest firmware is flashed by default at the factory. Because the autopilot program is updated frequently, see the [release notes](../../../download/changelog.md) for the version correspondence between the two firmware images.

@@ -1,3 +1,8 @@
+---
+title: Software-In-The-Loop Simulation (SITL)
+description: NextPilot SITL simulation, covering QEMU environment setup, launching the simulation, ground station UDP connection and common operations.
+---
+
 # Software-In-The-Loop Simulation (SITL)
 
 ## Introduction

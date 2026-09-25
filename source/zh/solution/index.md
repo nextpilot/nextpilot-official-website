@@ -1,4 +1,6 @@
 ---
+description: NextPilot 解决方案，提供从气动设计、飞控开发、通信协议到地面站指控的全栈定制服务。
+title: 解决方案
 layout: solution
 order: 2
 ---

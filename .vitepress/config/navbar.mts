@@ -2,8 +2,18 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import type { DefaultTheme } from 'vitepress'
 import { getDisplayTitleFromFile, getFinalUrl, isIndexLinkable, parseFrontmatter, titleFromName } from './page.mts'
+import type { LocaleDir } from './page.mts'
 
 type NavItem = DefaultTheme.NavItem
+
+/**
+ * 拼接「语言段 + 栏目内路径」交给 getFinalUrl 求最终 URL。
+ * 裸路径会被 page.mts 按 root 语言（zh）归一，故英文必须显式带上 `en/` 段，
+ * 否则会生成英文标题搭配中文链接的错误结果。
+ */
+function urlOf(localeDir: LocaleDir, innerPath: string): string {
+  return `/${getFinalUrl(`${localeDir}/${innerPath}`)}`
+}
 
 /** 读取 md 文件的 frontmatter（文件缺失返回空对象） */
 function readFrontmatter(filePath: string): Record<string, string> {
@@ -48,7 +58,7 @@ interface ChildEntry {
  * 统一按 frontmatter.order > 排序前缀（xx-）> 名称排序；排除 index.md 与草稿。
  * 子栏目首页 index.md 的 frontmatter.linkable 为 false 时，导航中直接跳过、不生成该条目。
  */
-function childItems(sectionPath: string, section: string): NavItem[] {
+function childItems(sectionPath: string, section: string, localeDir: LocaleDir): NavItem[] {
   const entries: ChildEntry[] = []
 
   for (const name of readdirSync(sectionPath)) {
@@ -65,7 +75,7 @@ function childItems(sectionPath: string, section: string): NavItem[] {
         name,
         item: {
           text: getDisplayTitleFromFile(indexPath, titleFromName(basename(name))),
-          link: `/${getFinalUrl(`${section}/${name}/index.md`)}`,
+          link: urlOf(localeDir, `${section}/${name}/index.md`),
         },
       })
     } else if (name.endsWith('.md') && name !== 'index.md') {
@@ -76,7 +86,7 @@ function childItems(sectionPath: string, section: string): NavItem[] {
         name,
         item: {
           text: getDisplayTitleFromFile(fullPath, titleFromName(basename(name, '.md'))),
-          link: `/${getFinalUrl(`${section}/${name}`)}`,
+          link: urlOf(localeDir, `${section}/${name}`),
         },
       })
     }
@@ -86,15 +96,15 @@ function childItems(sectionPath: string, section: string): NavItem[] {
 }
 
 /** 构建单个顶级栏目导航项：标题/链接取 index.md（shortTitle > title > 一级标题 > 目录名） */
-function sectionItem(contentDir: string, section: string): NavItem | undefined {
+function sectionItem(contentDir: string, section: string, localeDir: LocaleDir): NavItem | undefined {
   const sectionPath = join(process.cwd(), contentDir, section)
   const indexPath = join(sectionPath, 'index.md')
   if (!existsSync(sectionPath) || !existsSync(indexPath) || isDraft(indexPath)) return undefined
 
   const sectionTitle = getDisplayTitleFromFile(indexPath, titleFromName(section))
   // index.md 的 frontmatter.linkable 为 false 时不生成栏目首页链接（标题仍展示、不可点击）
-  const sectionLink = isIndexLinkable(readFrontmatter(indexPath)) ? `/${getFinalUrl(`${section}/index.md`)}` : undefined
-  const children = childItems(sectionPath, section)
+  const sectionLink = isIndexLinkable(readFrontmatter(indexPath)) ? urlOf(localeDir, `${section}/index.md`) : undefined
+  const children = childItems(sectionPath, section, localeDir)
 
   // 无二级条目：可链接时顶级项直接作为链接；栏目自身 linkable 为 false（无 sectionLink）
   // 且二级条目又都被跳过时，没有可生成的有效条目（VitePress 顶级项需带 link 或 items），直接跳过
@@ -115,13 +125,15 @@ function sectionItem(contentDir: string, section: string): NavItem | undefined {
 }
 
 /**
- * 根据 root 语言内容目录（source/zh）的顶级栏目与二级子目录自动生成中文站点导航。
+ * 根据某语言的内容目录（source/zh 或 source/en）自动生成该语言站点的导航。
  *
  * - 顶级栏目：内容目录下含 index.md 且非草稿的目录，排序取 index.md 的 `order` >
  *   目录排序前缀（xx-）> 目录名；新增栏目目录并补充 index.md 即自动出现，无需改代码
- * - 生成的链接为不含语言段的裸路由（如 /manual/），由 page.mts 统一按 zh 语言归一
+ * - localeDir 决定最终 URL 的语言段：root 语言（zh）为裸路由（/docs/…），
+ *   英文为带 `/en/` 前缀的路由（/en/docs/…）；标题始终取自对应语言目录下的文件
+ * - 某语言未提供的栏目（如英文站暂未提供 news / discovery）会自然缺失，无需额外配置
  */
-export function docsNavbar(contentDir: string): DefaultTheme.NavItem[] {
+export function docsNavbar(contentDir: string, localeDir: LocaleDir = 'zh'): DefaultTheme.NavItem[] {
   const contentPath = join(process.cwd(), contentDir)
   if (!existsSync(contentPath)) return []
 
@@ -132,6 +144,6 @@ export function docsNavbar(contentDir: string): DefaultTheme.NavItem[] {
       return existsSync(indexPath) && !isDraft(indexPath)
     })
     .sort((a, b) => orderOf(join(contentPath, a, 'index.md')) - orderOf(join(contentPath, b, 'index.md')) || sortPrefixOf(a) - sortPrefixOf(b) || a.localeCompare(b))
-    .map((section) => sectionItem(contentDir, section))
+    .map((section) => sectionItem(contentDir, section, localeDir))
     .filter((item): item is NavItem => item !== undefined)
 }

@@ -7,6 +7,9 @@ const srcDir = 'source'
 
 /** 各语言内容目录名：root locale（简体中文）物理位于 zh/，对 URL 不可见；en/ 保留在 URL 中 */
 const LOCALE_DIRS = ['zh', 'en'] as const
+
+/** 语言目录名：root locale 为 `zh`（URL 上不可见），英文站为 `en`（URL 前缀 `/en/`） */
+export type LocaleDir = (typeof LOCALE_DIRS)[number]
 /** 裸路径（不含语言段）的兜底语言目录：navbar/sidebar 扫描 source/zh 后传入的即裸路径 */
 const DEFAULT_LOCALE_DIR = 'zh'
 
