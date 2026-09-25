@@ -60,8 +60,9 @@ const NON_POST_LAYOUTS = new Set(['home', 'catalog', 'blog', 'solution', 'produc
  * 分类/标签 slug 由名称 slugify 推导（经全局 categoryMap / tagMap 覆盖）。
  * 排序：`frontmatter.order` 升序优先，其次按文件名 `yyyymmdd` 日期前缀倒序。
  */
-// glob 相对 srcDir（source/）为物理路径：只收中文内容 zh/；item.url 经 rewrites 不带 zh/ 段
-export default createContentLoader('zh/**/*.md', {
+// glob 相对 srcDir（source/）为物理路径：中英文内容都收（zh/ 与 en/）。
+// 博客列表页在两种语言下 URL 前缀不同（/blog/ 与 /en/blog/），前缀过滤天然分离。
+export default createContentLoader('**/*.md', {
   includeSrc: true,
   transform(data) {
     // 博客列表页（layout: blog）：URL 前缀 → 名称/排序（index 页 item.url 以 / 结尾，天然是前缀）

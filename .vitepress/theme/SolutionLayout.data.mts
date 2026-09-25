@@ -20,8 +20,9 @@ function titleFromUrl(url: string) {
  * 不绑定物理目录：扫描全部 md，凡 URL 位于某个 `layout: solution` 列表页子树下的
  * 普通内容页（非 index、非其它列表布局、非草稿）都作为方案卡片收录。
  */
-// glob 相对 srcDir（source/）为物理路径：中文内容在 zh/ 下；item.url 经 rewrites 不带 zh/ 段
-export default createContentLoader('zh/**/*.md', {
+// glob 相对 srcDir（source/）为物理路径：中英文内容都收（zh/ 与 en/）。
+// 方案列表页在两种语言下 URL 前缀不同（/solution/ 与 /en/solution/），前缀过滤天然分离。
+export default createContentLoader('**/*.md', {
   includeSrc: true,
   transform(data) {
     // 方案列表页（layout: solution）的 URL 前缀（index 页 item.url 以 / 结尾，天然是前缀）

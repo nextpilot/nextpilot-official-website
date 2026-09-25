@@ -25,8 +25,10 @@ function tagNames(frontmatter: Record<string, any>): string[] {
  * 分类名（真相源）= `frontmatter.category` > 最近 catalog 列表页名称 > `uncategorized`；
  * 分类/标签 slug 由名称 slugify 推导（经全局 categoryMap / tagMap 覆盖）。
  */
-// glob 相对 srcDir（source/）为物理路径：只收中文内容 zh/；item.url 经 rewrites 不带 zh/ 段
-export default createContentLoader('zh/**/*.md', {
+// glob 相对 srcDir（source/）为物理路径：中英文内容都收（zh/ 与 en/）。
+// item.url 经 rewrites 不带 zh/ 段，英文保留 /en/ 段，因此同一栏目在两种语言下 URL 前缀天然不同，
+// 列表页按自身 route.path 做 startsWith 过滤时，中英文条目互不串台。
+export default createContentLoader('**/*.md', {
   includeSrc: true,
   transform(data) {
     // 列表页（layout: catalog）：URL 前缀 → 名称/排序（index 页 item.url 以 / 结尾，天然是前缀）
