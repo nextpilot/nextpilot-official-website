@@ -45,10 +45,10 @@ NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射�
 - NP-RID-Sender-S3-GH
 - NP-RID-Sender-C3-PinMini
 
-| 硬件外观                                                     | 硬件名称                 | 说明                                                         |
-| ------------------------------------------------------------ | ------------------------ | ------------------------------------------------------------ |
-| <img src="/assets/images/product/datalink/np-rid-sender-gh-board.png" alt="NP-RID-Sender-S3-GH" loading="lazy" /> | NP-RID-Sender-S3-GH      | 主控芯片：ESP32-S3<br />具备所有功能，可直接安装至无人机<br />连接外置天线<br />调试串口为 UART2 |
-| <img src="/assets/images/product/datalink/np-rid-sender-c3-pinmini.png" alt="NP-RID-Sender-C3-PinMini" loading="lazy" /> | NP-RID-Sender-C3-PinMini | 主控芯片：ESP32-C3<br />无外置天线，不支持CAN一般用于测试使用。<br />调试串口为 UART0 |
+| 硬件外观                                                                                                                 | 硬件名称                 | 说明                                                                                             |
+| ------------------------------------------------------------------------------------------------------------------------ | ------------------------ | ------------------------------------------------------------------------------------------------ |
+| <img src="/assets/images/product/datalink/np-rid-sender-gh-board.png" alt="NP-RID-Sender-S3-GH" loading="lazy" />        | NP-RID-Sender-S3-GH      | 主控芯片：ESP32-S3<br />具备所有功能，可直接安装至无人机<br />连接外置天线<br />调试串口为 UART2 |
+| <img src="/assets/images/product/datalink/np-rid-sender-c3-pinmini.png" alt="NP-RID-Sender-C3-PinMini" loading="lazy" /> | NP-RID-Sender-C3-PinMini | 主控芯片：ESP32-C3<br />无外置天线，不支持CAN一般用于测试使用。<br />调试串口为 UART0            |
 
 ## 接口说明
 
@@ -56,12 +56,12 @@ NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射�
 
 各硬件外部接口说明如下表：
 
-| 接口  | 引脚线序                   | 备注                                                         |
-| ----- | -------------------------- | ------------------------------------------------------------ |
-| USB   | USB，Type-C                | 开发人员使用，程序烧写与调试                                 |
-| UART1 | RX: GPIO17<br />TX: GPIO18 | **飞控串口**<br />默认波特率 115200<br />接插件标识为 J6     |
+| 接口  | 引脚线序                   | 备注                                                                                                   |
+| ----- | -------------------------- | ------------------------------------------------------------------------------------------------------ |
+| USB   | USB，Type-C                | 开发人员使用，程序烧写与调试                                                                           |
+| UART1 | RX: GPIO17<br />TX: GPIO18 | **飞控串口**<br />默认波特率 115200<br />接插件标识为 J6                                               |
 | UART2 | RX: GPIO44<br />TX: GPIO43 | **调试串口**<br />用于调试、参数配置，搭配USB转TTL模块使用<br />默认波特率 115200<br />接插件标识为 J4 |
-| CAN   | RX: GPIO38<br />TX: GPIO47 | 直接连接飞控 CAN 即可<br />接插件标识为J5                    |
+| CAN   | RX: GPIO38<br />TX: GPIO47 | 直接连接飞控 CAN 即可<br />接插件标识为J5                                                              |
 
 ### NP-RID-Sender-C3-PinMini
 
@@ -218,7 +218,7 @@ RID 上电后，自动启动 WiFi 热点（热点名称 `NP-RID-xxxxxx`，密码
 
 - 设置唯一产品标识码，必须输入 20个字符，否则无法设置。
 - 设置实名登记号，必须输入 8个数字字符，否则无法设置。
-:::
+  :::
 
 ### 参数汇总
 
@@ -351,9 +351,9 @@ RID模块上电后会默认通过局域网段UDP广播形式，将通过串口�
 
 ### 固件下载
 
-| 板子                     | 当前固件版本 | 点击下载                                                     |
-| ------------------------ | ------------ | ------------------------------------------------------------ |
-| NP-RID-Sender-S3-GH      | V1.2         | [OTA 升级 app 固件](/assets/files/NP-RID-Sender-S3-GH-V1.2_OTA.bin) |
+| 板子                     | 当前固件版本 | 点击下载                                                                 |
+| ------------------------ | ------------ | ------------------------------------------------------------------------ |
+| NP-RID-Sender-S3-GH      | V1.2         | [OTA 升级 app 固件](/assets/files/NP-RID-Sender-S3-GH-V1.2_OTA.bin)      |
 | NP-RID-Sender-C3-PinMini | V1.0         | [OTA 升级 app 固件](/assets/files/NP-RID-Sender-C3-PinMini-V1.0_OTA.bin) |
 
 ### 更新固件
@@ -369,7 +369,9 @@ RID模块上电后会默认通过局域网段UDP广播形式，将通过串口�
 ## 更新记录
 
 ### v1.0
+
 初始版本，完成RID基础功能。
 
 ### v1.2
+
 修复协议赋值错误，优化WiFi广播，增加时间同步功能。

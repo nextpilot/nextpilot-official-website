@@ -8,7 +8,7 @@ title: NP-FCC-H05
 
 <img src="/assets/images/product/autopilot/fcc-top-view1.png" alt="产品图-导航飞控" loading="lazy" />
 
-### 产品特色
+## 产品特色
 
 - 双主控处理器，飞控导航分离式架构
 - 内置高性能 IMU，无需减震即可安装
@@ -16,7 +16,7 @@ title: NP-FCC-H05
 - 支持动平台
 - 符合 GJB 相关标准
 
-### 主要功能
+## 主要功能
 
 目前导航飞控主要功能有：
 
