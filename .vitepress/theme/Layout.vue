@@ -3,6 +3,7 @@ import { nextTick, onBeforeUnmount, onMounted } from 'vue'
 import { onContentUpdated, useData, useRouter } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import Breadcrumb from './components/Breadcrumb.vue'
+import NotFound from './components/NotFound.vue'
 
 const { Layout } = DefaultTheme
 const { theme } = useData()
@@ -86,6 +87,9 @@ onContentUpdated(() => {
   <Layout>
     <template #doc-before>
       <Breadcrumb />
+    </template>
+    <template #not-found>
+      <NotFound />
     </template>
   </Layout>
 </template>
