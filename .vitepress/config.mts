@@ -6,8 +6,25 @@ import { headingTab } from './markdown/plugin-heading-tab.mts'
 import { markdownTab } from './markdown/plugin-markdown-tab.mts'
 import { markdownCard } from './markdown/plugin-markdown-card.mts'
 import { rewriteLink } from './markdown/plugin-rewrite-link.mts'
-import { redirectHead, legacyDocsHead, canonicalHead, baiduAnalyticsHead, SITE_URL } from './config/head.mts'
+import {
+  redirectHead,
+  legacyDocsHead,
+  transformHead,
+  baiduAnalyticsHead,
+  globalJsonLdHeads,
+  manifestHead,
+  svgFaviconHead,
+  themeColorHead,
+  globalMetaHeads,
+  verificationHeads,
+  appleTouchIconHead,
+  safariMaskIconHead,
+  resourceHintHeads,
+  SITE_URL,
+} from './config/head.mts'
 import { buildRewrites } from './config/page.mts'
+import { enhancedSitemapPlugin } from './config/sitemap.mts'
+import { rssFeedPlugin } from './config/rss.mts'
 
 // 内容源目录（相对项目根），作为 srcDir 配置项；root 语言（中文）内容在其下 zh/ 子目录（见 config/locales.mts）
 const srcDir = 'source'
@@ -35,6 +52,7 @@ export default defineConfig({
   // 全局 <head>：favicon + SEO meta（keywords / author）+ 客户端跳转脚本
   head: [
     ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }],
+    svgFaviconHead,
     [
       'meta',
       {
@@ -43,12 +61,23 @@ export default defineConfig({
       },
     ],
     ['meta', { name: 'author', content: 'NextPilot Development Team' }],
+    manifestHead,
+    themeColorHead,
+    appleTouchIconHead,
+    safariMaskIconHead,
+    ...resourceHintHeads,
+    ['link', { rel: 'alternate', type: 'application/atom+xml', title: 'NextPilot Blog Feed', href: '/feed.xml' }],
+    ...verificationHeads,
     ...legacyDocsHead,
     ...redirectHead,
     ...baiduAnalyticsHead,
+    ...globalJsonLdHeads,
+    ...globalMetaHeads,
+    // PWA Service Worker 注册
+    ['script', {}, `if ('serviceWorker' in navigator) { window.addEventListener('load', function() { navigator.serviceWorker.register('/sw.js').catch(function() {}) }) }`],
   ],
-  // 按页注入 canonical（见 config/head.mts，与 sitemap 共用 SITE_URL）
-  transformHead: canonicalHead,
+  // 按页注入 canonical + OG/Twitter + 页面级 JSON-LD（见 config/head.mts）
+  transformHead,
   // 内容源目录与构建输出目录
   srcDir,
   outDir: 'build',
@@ -58,6 +87,10 @@ export default defineConfig({
     plugins: [
       // 仅 dev：新增/删除栏目目录或 index.md 时自动重启，让导航结构热更新（见 config/hot-restart.mts）
       hotRestartPlugin(srcDir),
+      // 构建后增强 sitemap，加入 hreflang / priority / changeFrequency / lastModified
+      enhancedSitemapPlugin(),
+      // 构建后生成 RSS/Atom Feed（/feed.xml）
+      rssFeedPlugin(),
     ],
     resolve: {
       alias: {

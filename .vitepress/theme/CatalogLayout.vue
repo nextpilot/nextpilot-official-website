@@ -43,11 +43,11 @@ const t = computed(() =>
 
 // 当前列表页自身的 URL 前缀（与物理目录无关）：/product/autopilot/ → 仅列其 URL 子树下的产品，
 // /product/ → 列出全部产品。任何位置的 `layout: catalog` 页面都按同一规则收集子树内容。
+// 英文页保留 /en/ 前缀，以便只匹配英文产品（item.url 英文以 /en/ 开头，中文不带语言段）。
 const basePrefix = computed(() => {
   let p = route.path.replace(/\.html$/, '')
   if (p !== '/') p = p.replace(/\/+$/, '')
   const segs = p.split('/').filter(Boolean)
-  if (segs[0] === 'en') segs.shift() // 英文页剥掉语言段（加载器只收中文内容）
   p = segs.length ? '/' + segs.join('/') + '/' : '/'
   return p
 })

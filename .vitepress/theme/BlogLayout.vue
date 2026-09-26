@@ -56,7 +56,6 @@ const basePrefix = computed(() => {
   let p = route.path.replace(/\.html$/, '')
   if (p !== '/') p = p.replace(/\/+$/, '')
   const segs = p.split('/').filter(Boolean)
-  if (segs[0] === 'en') segs.shift() // 英文页剥掉语言段（加载器只收中文内容）
   return segs.length ? '/' + segs.join('/') + '/' : '/'
 })
 

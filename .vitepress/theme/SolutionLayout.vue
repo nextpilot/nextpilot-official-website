@@ -8,9 +8,12 @@ import Breadcrumb from './components/Breadcrumb.vue'
 const { lang } = useData()
 const isZh = computed(() => (lang.value || 'zh-CN').startsWith('zh'))
 
+// 按当前语言筛选（中文不包含 /en/ 前缀，英文仅包含 /en/ 前缀）
+const solutionByLang = computed(() => solutions.filter((s: any) => (isZh.value ? !s.url.startsWith('/en/') : s.url.startsWith('/en/'))))
+
 // 解析每个解决方案的 summary 为 intro（首段）+ bullets（- 列表项）
 const items = computed(() =>
-  solutions.map((s: any) => {
+  solutionByLang.value.map((s: any) => {
     const lines = (s.summary || '')
       .split('\n')
       .map((l: string) => l.trim())

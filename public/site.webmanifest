@@ -1,0 +1,48 @@
+{
+  "name": "NextPilot",
+  "short_name": "NextPilot",
+  "description": "NextPilot is an open-source advanced autopilot developed in China, built on RT-Thread and PX4.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3451b2",
+  "categories": ["education", "utilities", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "platform": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Documentation",
+      "short_name": "Docs",
+      "description": "Read user manual and guides",
+      "url": "/docs/manual/",
+      "icons": [{ "src": "/favicon.png", "sizes": "48x48" }]
+    },
+    {
+      "name": "Download",
+      "short_name": "Download",
+      "description": "Download NextPilot software",
+      "url": "/download/",
+      "icons": [{ "src": "/favicon.png", "sizes": "48x48" }]
+    }
+  ],
+  "lang": "zh-CN"
+}

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /me
+Disallow: /en/me
+Crawl-delay: 5
+
+Host: nextpilot.org
+
+Sitemap: https://nextpilot.org/sitemap.xml
