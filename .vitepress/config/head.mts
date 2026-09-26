@@ -196,7 +196,7 @@ function toISODate(d: unknown): string | null {
 }
 
 /** 安全访问 pageData 上的自定义 frontmatter 字段（pageData 类型定义不包含自定义字段） */
- 
+
 function fm(ctx: TransformContext): Record<string, any> {
   const pd = ctx.pageData as unknown as Record<string, any>
   return pd.frontmatter || pd
