@@ -1,118 +1,94 @@
-import { readFileSync, writeFileSync, existsSync, statSync, readdirSync } from 'node:fs'
-import { join, relative } from 'node:path'
+import { readFileSync, writeFileSync, existsSync } from 'node:fs'
+import { join } from 'node:path'
 import type { Plugin } from 'vite'
 
 const SITE_URL = 'https://nextpilot.org'
 const BUILD_DIR = 'build'
-const SRC_DIR = 'source'
 
 /**
- * 增强 Sitemap 插件：在 VitePress 构建完成后，
- * 1. 为 sitemap.xml 增加 hreflang / priority / changeFrequency
- * 2. 使用源文件的实际修改时间作为 lastmod
+ * 增强 Sitemap 插件。
+ *
+ * 原实现在 Vite 的 `closeBundle` 钩子里读取 sitemap.xml 并做增强，但 VitePress 的
+ * sitemap 生成（`generateSitemap`）发生在「渲染页面」之后、且早于任何 `closeBundle`，
+ * 因此原插件永远读不到 sitemap.xml（日志里一直打印 "sitemap.xml not found, skipping"）。
+ *
+ * 修复方案：在 `configResolved` 里拿到 VitePress 的 siteConfig，并覆写其 `buildEnd`
+ * 钩子——VitePress 的构建流程是
+ *   bundle() → render() → generateSitemap() → siteConfig.buildEnd?.(siteConfig)
+ * 所以 `buildEnd` 一定在 sitemap.xml 落盘之后才执行，时序上绝对安全。
+ *
+ * 增强内容（在 VitePress 已生成的 lastmod / hreflang 互链基础上追加，绝不覆盖已有字段）：
+ *   - <changefreq> / <priority>：按栏目分级
+ *   - <xhtml:link rel="alternate" hreflang="x-default">：指向默认语言（简体中文）版本
+ * 整个替换是幂等的，重复执行不会产生重复字段。
  */
 export function enhancedSitemapPlugin(): Plugin {
   return {
     name: 'enhanced-sitemap',
     apply: 'build',
-    async closeBundle() {
-      const sitemapPath = join(process.cwd(), BUILD_DIR, 'sitemap.xml')
-      if (!existsSync(sitemapPath)) {
-        console.warn('[enhanced-sitemap] sitemap.xml not found, skipping')
-        return
+    configResolved(config) {
+      const vp = (config as { vitepress?: any }).vitepress
+      if (!vp || vp.__enhancedSitemapInstalled) return
+      vp.__enhancedSitemapInstalled = true
+      const prevBuildEnd = vp.buildEnd
+      vp.buildEnd = async (siteConfig: any) => {
+        if (prevBuildEnd) await prevBuildEnd(siteConfig)
+        enhanceSitemap(siteConfig)
       }
-
-      // 构建 URL → 源文件 mtime 的映射表
-      const mtimeMap = buildMtimeMap()
-
-      let xml = readFileSync(sitemapPath, 'utf-8')
-
-      // 替换默认的 <url> 条目，增加 hreflang / priority / changeFrequency / lastModified
-      xml = xml.replace(/<url>\s*<loc>([^<]+)<\/loc>\s*(?:<lastmod>[^<]*<\/lastmod>\s*)?<\/url>/g, (_match, loc: string) => {
-        const url = loc.trim()
-        const isEnglish = url.includes('/en/')
-        const altUrl = isEnglish ? url.replace(`${SITE_URL}/en/`, `${SITE_URL}/`) : url.replace(SITE_URL, `${SITE_URL}/en`)
-
-        // 优先级：首页 > 产品 > 文档 > blog > 关于 > 其他
-        let priority = '0.5'
-        let changeFreq = 'weekly'
-        if (url === SITE_URL + '/' || url === SITE_URL + '/en/') {
-          priority = '1.0'
-          changeFreq = 'daily'
-        } else if (url.includes('/product/')) {
-          priority = '0.9'
-          changeFreq = 'monthly'
-        } else if (url.includes('/docs/')) {
-          priority = '0.8'
-          changeFreq = 'weekly'
-        } else if (url.includes('/blog/')) {
-          priority = '0.7'
-          changeFreq = 'weekly'
-        } else if (url.includes('/about/')) {
-          priority = '0.6'
-          changeFreq = 'monthly'
-        }
-
-        // 获取源文件真实修改时间
-        const urlPath = url.replace(SITE_URL, '')
-        const mtime = mtimeMap.get(urlPath)
-        const lastmod = mtime ? mtime.toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
-
-        return `<url>
-    <loc>${url}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>${changeFreq}</changefreq>
-    <priority>${priority}</priority>
-    <xhtml:link rel="alternate" hreflang="${isEnglish ? 'en-US' : 'zh-CN'}" href="${url}"/>
-    <xhtml:link rel="alternate" hreflang="${isEnglish ? 'zh-CN' : 'en-US'}" href="${altUrl}"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="${isEnglish ? url.replace(`${SITE_URL}/en/`, `${SITE_URL}/`) : url}"/>
-  </url>`
-      })
-
-      // 确保 xmlns:xhtml 命名空间存在
-      if (!xml.includes('xmlns:xhtml')) {
-        xml = xml.replace('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"')
-      }
-
-      writeFileSync(sitemapPath, xml)
-      console.log('[enhanced-sitemap] Sitemap enhanced with hreflang, priority, changeFrequency, lastModified (from source files)')
     },
   }
 }
 
-/** 构建 URL 路径 → 源文件 mtime 的映射（递归扫描 source 目录） */
-function buildMtimeMap(): Map<string, Date> {
-  const map = new Map<string, Date>()
-  const srcRoot = join(process.cwd(), SRC_DIR)
-  if (!existsSync(srcRoot)) return map
-
-  function scan(dir: string) {
-    const entries = readdirSync(dir, { withFileTypes: true })
-    for (const entry of entries) {
-      const full = join(dir, entry.name)
-      if (entry.isDirectory()) {
-        scan(full)
-      } else if (entry.name.endsWith('.md')) {
-        try {
-          const stat = statSync(full)
-          const rel = relative(srcRoot, full).replace(/\\/g, '/')
-          // 映射为 VitePress 输出 URL
-          const url = mdToUrl(rel)
-          map.set(url, stat.mtime)
-        } catch {
-          // 忽略无法读取的文件
-        }
-      }
-    }
+/** 按 URL 路径计算优先级与更新频率 */
+function rank(url: string): { priority: string; changefreq: string } {
+  if (url === SITE_URL + '/' || url === SITE_URL + '/en/') {
+    return { priority: '1.0', changefreq: 'daily' }
   }
-
-  scan(srcRoot)
-  return map
+  if (url.includes('/product/')) return { priority: '0.9', changefreq: 'monthly' }
+  if (url.includes('/docs/')) return { priority: '0.8', changefreq: 'weekly' }
+  if (url.includes('/blog/')) return { priority: '0.7', changefreq: 'weekly' }
+  if (url.includes('/about/')) return { priority: '0.6', changefreq: 'monthly' }
+  return { priority: '0.5', changefreq: 'weekly' }
 }
 
-/** 将 source 目录下的 markdown 路径转为输出 URL */
-function mdToUrl(rel: string): string {
-  if (rel === 'index.md') return '/'
-  if (rel.endsWith('/index.md')) return '/' + rel.slice(0, -'index.md'.length)
-  return '/' + rel.replace(/\.md$/, '.html')
+function enhanceSitemap(siteConfig: any) {
+  const sitemapPath = join(siteConfig.outDir || BUILD_DIR, 'sitemap.xml')
+  if (!existsSync(sitemapPath)) {
+    console.warn('[enhanced-sitemap] sitemap.xml not found, skipping')
+    return
+  }
+
+  const xml = readFileSync(sitemapPath, 'utf-8')
+
+  const enhanced = xml.replace(/<url>([\s\S]*?)<\/url>/g, (block) => {
+    const locMatch = block.match(/<loc>([^<]*)<\/loc>/)
+    if (!locMatch) return block
+    const url = locMatch[1].trim()
+
+    const lastmodMatch = block.match(/<lastmod>([^<]*)<\/lastmod>/)
+    const lastmod = lastmodMatch ? lastmodMatch[1] : null
+
+    // 保留 VitePress 已生成的 hreflang 互链
+    const alts = [...block.matchAll(/<xhtml:link[^>]*\/>/g)].map((m) => m[0])
+    const hasXDefault = alts.some((a) => a.includes('hreflang="x-default"'))
+
+    const { priority, changefreq } = rank(url)
+    // 默认语言为简体中文：x-default 指向去掉 /en/ 前缀的版本
+    const xDefaultHref = url.replace(`${SITE_URL}/en/`, `${SITE_URL}/`)
+
+    const lines = ['  <url>']
+    lines.push(`    <loc>${url}</loc>`)
+    if (lastmod) lines.push(`    <lastmod>${lastmod}</lastmod>`)
+    lines.push(`    <changefreq>${changefreq}</changefreq>`)
+    lines.push(`    <priority>${priority}</priority>`)
+    for (const alt of alts) lines.push(`    ${alt}`)
+    if (!hasXDefault) {
+      lines.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${xDefaultHref}"/>`)
+    }
+    lines.push('  </url>')
+    return lines.join('\n')
+  })
+
+  writeFileSync(sitemapPath, enhanced)
+  console.log('[enhanced-sitemap] sitemap enhanced: priority / changefreq / x-default added (hreflang & lastmod preserved)')
 }
