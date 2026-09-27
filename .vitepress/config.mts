@@ -25,6 +25,7 @@ import {
 import { buildRewrites } from './config/page.mts'
 import { enhancedSitemapPlugin } from './config/sitemap.mts'
 import { rssFeedPlugin } from './config/rss.mts'
+import { llmsFullPlugin } from './config/llms.mts'
 
 // 内容源目录（相对项目根），作为 srcDir 配置项；root 语言（中文）内容在其下 zh/ 子目录（见 config/locales.mts）
 const srcDir = 'source'
@@ -89,10 +90,12 @@ export default defineConfig({
     plugins: [
       // 仅 dev：新增/删除栏目目录或 index.md 时自动重启，让导航结构热更新（见 config/hot-restart.mts）
       hotRestartPlugin(srcDir),
-      // 构建后增强 sitemap，加入 hreflang / priority / changeFrequency / lastModified
+      // 构建后增强 sitemap，加入 hreflag / priority / changeFrequency / lastModified
       enhancedSitemapPlugin(),
       // 构建后生成 RSS/Atom Feed（/feed.xml）
       rssFeedPlugin(),
+      // 构建后生成 GEO 全量内容转储 llms-full.txt / llms-full-en.txt（链式挂载于 buildEnd，见 config/llms.mts）
+      llmsFullPlugin(),
     ],
     resolve: {
       alias: {

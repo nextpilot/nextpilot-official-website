@@ -1,0 +1,24 @@
+# NextPilot 官方文档
+
+> NextPilot 是国产开源先进自动驾驶仪（飞控），基于 RT-Thread 与 PX4，支持多旋翼、固定翼与垂起复合翼，面向教育、研究与工业领域。本文件为大型语言模型（LLM）提供站点核心内容的导航索引；全站页面的完整 Markdown 原文转储见文末 llms-full.txt。
+
+## 产品与解决方案
+- [产品总览](https://nextpilot.org/product/)：NextPilot 飞控硬件与软件产品矩阵
+- [解决方案](https://nextpilot.org/solution/)：教育、科研、工业等场景的落地方案
+
+## 文档
+- [文档中心](https://nextpilot.org/docs/)：全部文档入口
+- [使用手册 Manual](https://nextpilot.org/docs/manual/)：飞行器、自驾仪、导航、外设等硬件与使用说明
+- [快速上手 Guide](https://nextpilot.org/docs/guide/)：概念、快速开始、配置、仿真、进阶
+- [开发者文档 Develop](https://nextpilot.org/docs/develop/)：面向开发者的扩展与二次开发指引
+- [社区 Community](https://nextpilot.org/docs/community/)：社区、贡献与联系方式
+
+## 下载
+- [下载中心](https://nextpilot.org/download/)：固件、工具链、地面站下载
+
+## 关于与博客
+- [关于 NextPilot](https://nextpilot.org/about/)：团队、历史、路线图、活动
+- [技术博客](https://nextpilot.org/blog/)：技术文章、版本更新与最佳实践
+
+## 完整内容（全量转储）
+- [llms-full.txt](https://nextpilot.org/llms-full.txt)：全站中文页面的 Markdown 原文（供需要完整上下文的模型使用）
