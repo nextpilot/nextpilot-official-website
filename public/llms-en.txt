@@ -1,0 +1,24 @@
+# NextPilot Documentation
+
+> NextPilot is an open-source advanced autopilot (flight controller) developed in China, built on RT-Thread and PX4, supporting multirotor, fixed-wing and VTOL aircraft for education, research and industry. This file provides a curated navigation index of the site's core content for large language models (LLMs); the full Markdown source dump of every page is available at llms-full-en.txt below.
+
+## Products & Solutions
+- [Products](https://nextpilot.org/en/product/): NextPilot flight-control hardware and software portfolio
+- [Solutions](https://nextpilot.org/en/solution/): Deployment scenarios for education, research and industry
+
+## Documentation
+- [Docs Home](https://nextpilot.org/en/docs/): Entry point for all documentation
+- [Manual](https://nextpilot.org/en/docs/manual/): Aircraft, autopilot, navigator and peripheral hardware & usage
+- [Guide](https://nextpilot.org/en/docs/guide/): Concepts, quick start, configuration, simulation and advanced topics
+- [Develop](https://nextpilot.org/en/docs/develop/): Extension and secondary-development guidance for developers
+- [Community](https://nextpilot.org/en/docs/community/): Community, contribution and contact
+
+## Download
+- [Download Center](https://nextpilot.org/en/download/): Firmware, toolchains and ground station
+
+## About & Blog
+- [About NextPilot](https://nextpilot.org/en/about/): Team, history, roadmap and events
+- [Tech Blog](https://nextpilot.org/en/blog/): Technical articles, release notes and best practices
+
+## Full Content (Complete Dump)
+- [llms-full-en.txt](https://nextpilot.org/llms-full-en.txt): Full Markdown source of every English page (for models that need the complete context)
