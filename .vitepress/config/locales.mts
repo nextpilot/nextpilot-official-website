@@ -56,6 +56,10 @@ export function buildLocales(srcDir: string): NonNullable<UserConfig['locales']>
     en: {
       label: 'English',
       lang: 'en-US',
+      // 英文站站点标题（中文「让飞控更开放…」的英文翻译）
+      title: 'NextPilot — Making Flight Control More Open, Development More Efficient, Design More Focused',
+      // 英文站标题模板：后缀为上述中文营销语的英文翻译，避免英文页挂中文后缀
+      titleTemplate: ':title — NextPilot Making Flight Control More Open, Development More Efficient, Design More Focused',
       themeConfig: {
         editLink: { text: 'Edit this page' },
         footer: {

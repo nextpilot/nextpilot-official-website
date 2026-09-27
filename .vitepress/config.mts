@@ -46,6 +46,8 @@ const markdownLocales = Object.entries(locales).reduce<Record<string, NonNullabl
 export default defineConfig({
   // 站点基本信息：标题 / SEO 描述 / 默认语言
   title: 'NextPilot 让飞控更开放，让开发更高效，让设计更专注',
+  // 标题模板：每个页面 <title> = 「页面标题 — 站点标题」。英文站后缀见 locales.en.titleTemplate（中文营销语的翻译）
+  titleTemplate: ':title — NextPilot 让飞控更开放，让开发更高效，让设计更专注',
   description:
     'NextPilot 致力于为大家提供一套简易、高效、可靠和开放的无人系统方案和产品，能够便捷的应用于教育、科研和工业等领域，让工程师专注于自己的擅长领域进行高效的开发。其中 NextPilot Flight Control 是一款基于 RT-Thread 实时操作系统、核心算法移植自 PX4 的国产先进自动驾驶仪，支持多旋翼、固定翼、垂起复合翼，目前在高等院校、科研院所、工业部门等拥有较为广泛的应用。',
   lang: 'zh-CN',
