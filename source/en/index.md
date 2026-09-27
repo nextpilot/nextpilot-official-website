@@ -1,6 +1,8 @@
 ---
 description: NextPilot is an open-source advanced autopilot developed in China, built on RT-Thread and PX4, supporting multirotor, fixed-wing and VTOL aircraft for education, research and industry.
 layout: home
+# 首页标题已是站点标题，关闭 titleTemplate 后缀以免重复
+titleTemplate: false
 
 hero:
   name: NextPilot
