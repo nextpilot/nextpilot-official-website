@@ -14,6 +14,43 @@
   max-width: none !important;
 }
 
+/* 横向全屏：除首页外，带侧栏的页面内容区也占满整个视口宽度。
+   首页 .VPContent.is-home 本就是 max-width:100%，此处让其余页面（文档 / 带侧栏栏目）
+   与首页行为一致——VitePress 默认把 .VPContent.has-sidebar 在 var(--vp-layout-max-width,
+   1440px) 内居中，超宽屏两侧留白、正文到不了屏幕边缘。桌面端（侧栏为内联布局）去掉居中
+   padding，仅保留左侧栏宽度，内容自侧栏右缘一直延伸到屏幕右缘。移动端侧栏为抽屉浮层，
+   不覆盖以免正文被永久挤出空隙。 */
+@media (min-width: 960px) {
+  .VPContent.has-sidebar {
+    padding-left: var(--vp-sidebar-width) !important;
+    padding-right: 0 !important;
+  }
+}
+
+/* 宽屏（≥1440px）全屏对齐：VitePress 在 @media (width>=1440px) 下会把 .VPSidebar 与
+   .VPNavBar.has-sidebar 的 .title/.content/.divider 也按 var(--vp-layout-max-width,1440px)
+   居中——侧栏文字、导航 logo 与正文区的左内边距都换成随屏宽增长的 calc(...) 公式，
+   随超宽屏向右漂移，与固定 padding-left:var(--vp-sidebar-width) 的内容区错位，看似不全屏。
+   此处用 !important 把这几处左内边距 / 宽度锚定回 ≤1440px 桌面态的值（侧栏 32px、导航栏
+   侧栏宽度），三栏左缘统一对齐、内容从侧栏右缘一路铺到屏幕右缘，真正全屏。 */
+@media (width>=1440px) {
+  .VPSidebar {
+    padding-left: 32px !important;
+    width: var(--vp-sidebar-width) !important;
+  }
+  .VPNavBar.has-sidebar .title {
+    padding-left: 32px !important;
+    width: var(--vp-sidebar-width) !important;
+  }
+  .VPNavBar.has-sidebar .content {
+    padding-left: var(--vp-sidebar-width) !important;
+    padding-right: 32px !important;
+  }
+  .VPNavBar.has-sidebar .divider {
+    padding-left: var(--vp-sidebar-width) !important;
+  }
+}
+
 /* 减小内容区顶部空白（覆盖 VitePress 默认 .VPDoc 顶部内边距） */
 .VPDoc {
   padding-top: 24px !important;
