@@ -354,7 +354,7 @@ RID模块上电后会默认通过局域网段UDP广播形式，将通过串口�
 | 板子                     | 当前固件版本 | 点击下载                                                                 |
 | ------------------------ | ------------ | ------------------------------------------------------------------------ |
 | NP-RID-Sender-S3-GH      | V1.2         | [OTA 升级 app 固件](/assets/files/NP-RID-Sender-S3-GH-V1.2_OTA.bin)      |
-| NP-RID-Sender-C3-PinMini | V1.0         | [OTA 升级 app 固件](/assets/files/NP-RID-Sender-C3-PinMini-V1.0_OTA.bin) |
+| NP_S3_CMV2 | V1.3         | [OTA 升级 app 固件](/assets/files/NP-RID-Sender-C3-PinMini-V1.0_OTA.bin) |
 
 ### 更新固件
 
@@ -364,7 +364,9 @@ RID模块上电后会默认通过局域网段UDP广播形式，将通过串口�
 
 ## 常见问题
 
-1. 在地面站完成所有配置，仍然报错Arm uninitilized。请确认是否开启了RID模拟，通过`param set SIM_ON 0`关闭模拟；
+1. 在地面站完成所有配置，仍然报错Arm uninitilized：请确认是否开启了RID模拟，通过`param set SIM_ON 0`关闭模拟；
+1. 通过CAN连接PX4时，网页中显示的产品标识码与QGC地面站设置的不同，而通过串口连接时二者一样：可能你使用的PX4版本低于v1.18，在这之前的版本PX4 的 DroneCAN `send_basic_id()` 把 `uas_id` 取自 **MCU 序列号/board UUID**，而非QGC地面站的设置；
+1. 
 
 ## 更新记录
 
