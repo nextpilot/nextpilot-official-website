@@ -18,11 +18,11 @@ description: NextPilot 各硬件产品的用户手册，涵盖整机平台、飞
   link: /docs/manual/autopilot/np-fcc-h05
   name: NP-FCC-H05 导航飞控计算机
   desc: 高性能工业级一体化导航飞控，双冗余减震 IMU，支持多旋翼/固定翼/垂起，适用于 10~300kg 级无人机平台。
-- cover: /assets/images/product/datalink/NP-RID-Receiver-S3-PinWX.png
+- cover: /assets/images/product/datalink/np_rid_receiver_boards_support.png
   link: /docs/manual/datalink/np-rid-receiver
   name: NP-RID-Receiver 运行识别接收器
   desc: 满足 GB 46750-2025，支持 WiFi/蓝牙广播信号接收，最多同时接收 50 路，经串口输出监管数据。
-- cover: /assets/images/product/datalink/np-rid-sender-gh-board.png
+- cover: /assets/images/product/datalink/np_rid_sender_board.png
   link: /docs/manual/datalink/np-rid-sender
   name: NP-RID-Sender 运行识别发射器
   desc: 满足 GB 46750-2025，支持 MAVLink/DroneCAN 连接飞控，通过 WiFi/蓝牙广播无人机运行状态。

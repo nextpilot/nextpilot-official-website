@@ -40,45 +40,38 @@ NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射�
 
 ## 硬件形态
 
-目前支持如下几款硬件：
+目前支持如下硬件：
 
-- NP-RID-Sender-S3-GH
-- NP-RID-Sender-C3-PinMini
+<img src="/assets/images/product/datalink/np_rid_sender_board.png" alt="np_rid_sender_board" style="zoom: 67%;" />
 
-| 硬件外观                                                                                                                 | 硬件名称                 | 说明                                                                                             |
-| ------------------------------------------------------------------------------------------------------------------------ | ------------------------ | ------------------------------------------------------------------------------------------------ |
-| <img src="/assets/images/product/datalink/np-rid-sender-gh-board.png" alt="NP-RID-Sender-S3-GH" loading="lazy" />        | NP-RID-Sender-S3-GH      | 主控芯片：ESP32-S3<br />具备所有功能，可直接安装至无人机<br />连接外置天线<br />调试串口为 UART2 |
-| <img src="/assets/images/product/datalink/np-rid-sender-c3-pinmini.png" alt="NP-RID-Sender-C3-PinMini" loading="lazy" /> | NP-RID-Sender-C3-PinMini | 主控芯片：ESP32-C3<br />无外置天线，不支持CAN一般用于测试使用。<br />调试串口为 UART0            |
+::: info
+这个我们自研的第二个板子，主要更改点是增加了USB Hub，将UART0通过USB引出，这样直接通过USB连接计算机即可完成参数配置。
+:::
 
 ## 接口说明
 
-### NP-RID-Sender-S3-GH
+硬件外部接口如下图所示：
 
-各硬件外部接口说明如下表：
+<img src="/assets/images/product/datalink/np_rid_receiver_interfaces.png" alt="np_rid_receiver_interfaces" style="zoom:80%;" />
+
+详细说明如下表：
 
 | 接口  | 引脚线序                   | 备注                                                                                                   |
 | ----- | -------------------------- | ------------------------------------------------------------------------------------------------------ |
-| USB   | USB，Type-C                | 开发人员使用，程序烧写与调试                                                                           |
-| UART1 | RX: GPIO17<br />TX: GPIO18 | **飞控串口**<br />默认波特率 115200<br />接插件标识为 J6                                               |
+| USB   | USB，Type-C                | 板子内置USB Hub，连接一路USB至计算机，即可看到两路USB转串口。                                          |
+| UART1 | RX: GPIO17<br />TX: GPIO18 | 默认第一个为调试串口，第二个为调试打印串口。**飞控串口**<br />默认波特率 115200<br />接插件标识为 J6   |
 | UART2 | RX: GPIO44<br />TX: GPIO43 | **调试串口**<br />用于调试、参数配置，搭配USB转TTL模块使用<br />默认波特率 115200<br />接插件标识为 J4 |
 | CAN   | RX: GPIO38<br />TX: GPIO47 | 直接连接飞控 CAN 即可<br />接插件标识为J5                                                              |
 
-### NP-RID-Sender-C3-PinMini
+## 尺寸大小
 
-各硬件外部接口说明如下表：
-
-| 接口  | 引脚线序                   | 备注                                                        |
-| ----- | -------------------------- | ----------------------------------------------------------- |
-| USB   | USB，Type-C                | 开发人员使用，程序烧写与调试                                |
-| UART0 | RX: GPIO20<br />TX: GPIO21 | **调试串口**<br />用于调试、参数配置<br />默认波特率 115200 |
-| UART1 | RX: GPIO2<br />TX: GPIO3   | **飞控串口**<br />默认波特率 115200                         |
-| CAN   | RX: GPIO4<br />TX: GPIO5   | 需要外接 CAN 驱动器才可以使用                               |
+<img src="/assets/images/product/datalink/np_rid_NP_S3_CMV2_size.png" alt="np_rid_NP_S3_CMV2_size" style="zoom:50%;" />
 
 ## 快速使用（PX4+QGC）
 
 ### 首先连接飞控
 
-这里以 NP-RID-Sender-S3-GH 与雷迅 CUAV V7+飞控为例进行连接说明。
+这里以与雷迅 CUAV V7+飞控为例进行连接说明。
 
 #### 通过串口连接
 
@@ -88,26 +81,13 @@ NP-RID-Sender 是 NextPilot 推出的一款广播式无人机运行识别发射�
 首先需要通过 QGC 地面站设置飞控 TELEM1 或 TELEM2 串口的波特率为 115200。例如设置 TELEM1 的波特率是通过修改参数 SER_TEL1_BAUD 实现。设置完波特率后重启。
 :::
 
-接线说明如下：
-
-| 飞控 TELEM2 | RID 设备 UART1 |
-| ----------- | -------------- |
-| 5V          | 5V             |
-| GND         | GND            |
-| TX          | RX             |
-| RX          | TX             |
-
-连接如下图：
-
-<img src="/assets/images/product/datalink/fcs-connection-1.png" alt="连接示例 1" loading="lazy" />
-
 ::: info
-这里连接的是 TELEM1，其默认波特率为 115200，如果需要连接其他飞控串口，请设置 RID 模块的串口波特率。其他类型飞控的连接方式大同小异，只要确保通过飞控提供供电、并且将串口收发交叉连接即可！
+如果需要连接其他飞控串口，请设置 RID 模块的串口波特率。其他类型飞控的连接方式大同小异，只要确保通过飞控提供供电、并且将串口收发交叉连接即可！
 :::
 
 #### 通过 CAN 连接
 
-可以产品附带的飞控 CAN 连接线（4pin 转 4pin），连接设备 CAN 至飞控 CAN1 即可。
+可以产品附带的飞控 CAN 连接线（4pin 转 4pin），连接设备 CAN 至飞控 CAN1 或CAN2即可。
 
 ### QGC 地面站配置
 
@@ -183,15 +163,13 @@ RID 上电后，自动启动 WiFi 热点（热点名称 `NP-RID-xxxxxx`，密码
 
 ### 连接设备
 
-使用调试线（4pin 转 4pin 杜邦线）连接 RID 设备与产品附带的**USB 转 TTL**串口模块，然后将串口模块插入计算机。连接原理如下图所示：
+通过USB连接RID设备至计算机后，即可在设备管理器看到两个USB串口设备，第一个USB串口作为固件烧录使用，第二个USB串口即为UART0，默认作为调试打印串口，可通过该串口查看运行打印状态信息。
 
-<img src="/assets/images/product/datalink/debug-serial.png" alt="调试串口连接" loading="lazy" />
-
-这里以 NP-RID-Sender-S3-GH 板子为例，如果使用其他板子，请在[接口说明](#接口说明)章节找到对应板子的调试串口，与 USB 转 TTL 模块连接，然后再将 USB 转 TTL 模块插入计算机。
+<img src="/assets/images/product/datalink/usbhub_2coms.png" alt="usbhub_2coms" style="zoom:80%;" />
 
 ### 发送命令
 
-在计算机打开 JCom 串口调试助手（下载链接[JCom | 专业的实时曲线串口助手 - Jooiee](https://www.jooiee.com/cms/ruanjian/115.html)）后，设置串口号（自动识别）、波特率（115200），点击打开。**输入对应命令后再输入一个回车**，然后点击发送按钮即可。
+在计算机打开 JCom 串口调试助手（下载链接[JCom | 专业的实时曲线串口助手 - Jooiee](https://www.jooiee.com/cms/ruanjian/115.html)）后，设置波特率（115200），选择第二个串口，点击打开。**输入对应命令后再输入一个回车**，然后点击发送按钮即可。
 
 <img src="/assets/images/product/datalink/np-rid-set-params.png" alt="参数设置" loading="lazy" />
 
@@ -218,7 +196,8 @@ RID 上电后，自动启动 WiFi 热点（热点名称 `NP-RID-xxxxxx`，密码
 
 - 设置唯一产品标识码，必须输入 20个字符，否则无法设置。
 - 设置实名登记号，必须输入 8个数字字符，否则无法设置。
-  :::
+
+:::
 
 ### 参数汇总
 
@@ -230,6 +209,7 @@ RID 上电后，自动启动 WiFi 热点（热点名称 `NP-RID-xxxxxx`，密码
 | WIFI_PASSWORD    | WiFi 密码              | 隐藏显示，默认 nextpilot                                                                                                                      |
 | GB_UNIQUE_ID     | 无人机唯一标识         | 需UOM认证                                                                                                                                     |
 | BAUDRATE         | 串口 1 波特率          | 默认 115200                                                                                                                                   |
+| CAN_NODE         | 分配CAN节点ID          | 默认为0<br />对于无DNA（动态节点分配）功能的飞控，必须手动设置该值                                                                            |
 | GB_WIFI_NAN_RATE | WiFi-NAN 广播频率      | 默认 1次/秒                                                                                                                                   |
 | GB_WIFI_BCN_RATE | WiFi-Beacon 广播频率   | 默认 1次/秒                                                                                                                                   |
 | WIFI_CHANNEL     | WiFi 广播频道          | 默认6                                                                                                                                         |
@@ -347,6 +327,22 @@ RID模块上电后会默认通过局域网段UDP广播形式，将通过串口�
 
 通过RID模块的WiFi数传功能，可以实现约二百米以内的稳定数据通信，成本低、简单方便，非常适合日常调试。
 
+### 查看板子硬件信息
+
+打开网页，即可在网页左上角查看固件版本、板子名称等信息。
+
+<img src="/assets/images/product/datalink/board_infos.png" alt="board_infos" style="zoom:67%;" />
+
+### 第三方飞控适配
+
+#### CAN连接DroneCAN协议适配
+
+请参考[CAN适配说明](../../../blog/remoteID/CAN.md)。
+
+#### 串口连接MAVLink适配
+
+请参考[MAVLink适配说明](../../../blog/remoteID/MAVLink_serial.md)。
+
 ## OTA 升级
 
 ### 固件下载
@@ -354,7 +350,8 @@ RID模块上电后会默认通过局域网段UDP广播形式，将通过串口�
 | 板子                | 当前固件版本 | 点击下载                                                                 |
 | ------------------- | ------------ | ------------------------------------------------------------------------ |
 | NP-RID-Sender-S3-GH | V1.2         | [OTA 升级 app 固件](/assets/files/NP-RID-Sender-S3-GH-V1.2_OTA.bin)      |
-| NP_S3_CMV2          | V1.3         | [OTA 升级 app 固件](/assets/files/NP-RID-Sender-C3-PinMini-V1.0_OTA.bin) |
+|                     | V1.3         | [OTA 升级 app 固件](/assets/files/NP-RID-Sender-S3-GH-V1.3_OTA.bin)      |
+| NP_S3_CMV2          | V1.3         | [OTA 升级 app 固件](/assets/files/NP-RID-Sender-NP_S3_CMV2-V1.3_OTA.bin) |
 
 ### 更新固件
 
@@ -377,3 +374,7 @@ RID模块上电后会默认通过局域网段UDP广播形式，将通过串口�
 ### v1.2
 
 修复协议赋值错误，优化WiFi广播，增加时间同步功能。
+
+### v1.3
+
+增加对NP_S3_CMV2板子的支持，暴露CAN_NODE参数可由用户设置。
