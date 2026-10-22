@@ -169,6 +169,16 @@ RID 上电后，自动启动 WiFi 热点（热点名称 `NP-RID-xxxxxx`，密码
 
 ### 发送命令
 
+可通过串口调试助手发送命令，串口调试助手有网页版本和离线软件版本，用户根据实际需要选择合适的方式。
+
+#### 通过网页发送命令
+
+打开[Web Serial Debug-浏览器串口调试工具](https://www.itldg.com/web_serial_debug/)，点击`选择串口`，选择`USB Single Serial(COM)`字样的串口，勾选`末尾加回车换行`，打开串口后，即可输入命令并发送。
+
+<img src="/assets/images/product/datalink/web_serial_debug.png" alt="web_serial_debug" style="zoom:80%;" />
+
+#### 通过离线软件发送命令
+
 在计算机打开 JCom 串口调试助手（下载链接[JCom | 专业的实时曲线串口助手 - Jooiee](https://www.jooiee.com/cms/ruanjian/115.html)）后，设置波特率（115200），选择第二个串口，点击打开。**输入对应命令后再输入一个回车**，然后点击发送按钮即可。
 
 <img src="/assets/images/product/datalink/np-rid-set-params.png" alt="参数设置" loading="lazy" />
