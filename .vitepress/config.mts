@@ -148,7 +148,19 @@ export default defineConfig({
     logo: '/logo.png',
     siteTitle: false,
     // 本地全文搜索
-    search: { provider: 'local' },
+    // 关闭 miniSearch 的自动压缩（autoVacuum）：dev 下导航变更会整机重启，重建索引与
+    // hotUpdate 的单页重建会并发调用 indexFile，而 performVacuuming 是分批 await 的，
+    // 与并发 add/discard 交错会破坏 radix tree，抛 TypeError 直接杀死 dev server。
+    // 关闭后仅在长时间编辑时索引内存偏大，检索结果不受影响。
+    search: {
+      provider: 'local',
+      options: {
+        miniSearch: {
+          // @ts-expect-error VitePress 类型只声明了 tokenize / processTerm 等少数字段，运行时整对象透传给 MiniSearch
+          options: { autoVacuum: false },
+        },
+      },
+    },
     // 右上角社交链接
     socialLinks: [
       { icon: 'github', link: 'https://github.com/nextpilot/nextpilot-official-website' },
