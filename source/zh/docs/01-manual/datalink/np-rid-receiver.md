@@ -105,7 +105,7 @@ NP-RID-Receiver 是 NextPilot 推出的一款广播式无人机运行识别接�
 
 ### 通过串口助手查看广播数据
 
-产品出厂默认输出 JSON格式数据，连接RID设备USB至计算机，可直接通过串口助手查看无人机广播数据。
+产品出厂默认输出 JSON格式数据，连接RID设备USB至计算机，打开第二个串口（即UART0），可直接通过串口助手查看无人机广播数据。
 
 <img src="/assets/images/product/datalink/rid-receiver-json.png" alt="NP-RID-Receiver-S3-PinWX" loading="lazy" />
 
@@ -153,9 +153,25 @@ NP-RID-Receiver 是 NextPilot 推出的一款广播式无人机运行识别接�
 
 一般第一路 USB 串口为调试串口（也叫控制台串口），可通过该串口与设备进行交互。通过**USB 串口**灵活设置参数进而控制设备运行逻辑，如设置数据输出串口、启动 WiFi 热点、启动打印信息，极大方便用户在使用过程中进行测试。
 
-### 操作步骤
+### 连接设备
 
-直接使用 Type-C 数据线，连接产品**USB 串口**至计算机，打开串口调试上位机软件（如 MobaXterm、JCom 等），选择端口号，设置波特率 115200。通过串口调试上位机输入相关命令即可进行参数查看、参数设置、设备重启等操作。
+通过USB连接RID设备至计算机后，即可在设备管理器看到两个USB串口设备，第一个USB串口作为烧录与调试串口使用，可通过该串口查看运行打印状态信息，第二个USB串口即为UART0，默认作为数据输出串口。
+
+<img src="/assets/images/product/datalink/usbhub_2coms.png" alt="usbhub_2coms" style="zoom:80%;" />
+
+### 发送命令
+
+可通过串口调试助手发送命令，串口调试助手有网页版本和离线软件版本，用户根据实际需要选择合适的方式。
+
+#### 通过网页发送命令
+
+打开[Web Serial Debug-浏览器串口调试工具](https://www.itldg.com/web_serial_debug/)，点击`选择串口`，选择`USB JTAG/Serial debug unit(COM)`字样的串口，勾选`末尾加回车换行`，打开串口后，即可输入命令并发送。
+
+<img src="/assets/images/product/datalink/web_serial_debug_receiver.png" alt="web_serial_debug_receiver" style="zoom:80%;" />
+
+#### 通过离线软件发送命令
+
+直接使用 Type-C 数据线，连接产品**USB 串口**至计算机，打开串口调试上位机软件（如 MobaXterm、JCom 等），选择端口号（第一个串口），设置波特率 115200。通过串口调试上位机输入相关命令即可进行参数查看、参数设置、设备重启等操作。
 
 <img src="/assets/images/product/datalink/rid-serial-config.png" alt="串口配置" loading="lazy" />
 
@@ -201,7 +217,7 @@ NP-RID-Receiver 是 NextPilot 推出的一款广播式无人机运行识别接�
 
 ## 典型配置说明
 
-### 配置串口输出数据
+### 配置串口输出
 
 产品默认仅通过UART0（连接USB后第二个串口）输出数据，若需要通过其他两个串口输出输出，需要开启：
 
@@ -252,10 +268,10 @@ NP-RID-Receiver 是 NextPilot 推出的一款广播式无人机运行识别接�
 
 ### 下载固件
 
-| 板子                | 当前固件版本 | 点击下载                                                                                                                                              |
-| ------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| WX_S3_WR及WX_S3_WRU | V1.2         | [OTA 升级 app 固件](/assets/files/NP-RID-Receiver-S3-PinWX-V1.2_app.bin)<br />[OTA 升级网页固件](/assets/files/NP-RID-Receiver-S3-PinWX-V1.2_www.bin) |
-| NP_S3_CMV2          |              |                                                                                                                                                       |
+| 板子                | 当前固件版本 | 点击下载                                                                                                                                                  |
+| ------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| WX_S3_WR及WX_S3_WRU | V1.2         | [OTA 升级 app 固件](/assets/files/NP-RID-Receiver-S3-PinWX-V1.2_app.bin)<br />[OTA 升级网页固件](/assets/files/NP-RID-Receiver-S3-PinWX-V1.2_www.bin)     |
+| NP_S3_CMV2          | V1.3         | [OTA 升级 app 固件](/assets/files/NP-RID-Receiver-NP_S3_CMV2-V1.3_app.bin)<br />[OTA 升级网页固件](/assets/files/NP-RID-Receiver-NP_S3_CMV2-V1.3_www.bin) |
 
 ### 连接热点
 
