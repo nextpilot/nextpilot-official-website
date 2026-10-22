@@ -270,7 +270,7 @@ NP-RID-Receiver 是 NextPilot 推出的一款广播式无人机运行识别接�
 
 | 板子                | 当前固件版本 | 点击下载                                                                                                                                                  |
 | ------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| WX_S3_WR及WX_S3_WRU | V1.2         | [OTA 升级 app 固件](/assets/files/NP-RID-Receiver-S3-PinWX-V1.2_app.bin)<br />[OTA 升级网页固件](/assets/files/NP-RID-Receiver-S3-PinWX-V1.2_www.bin)     |
+| WX_S3_WR及WX_S3_WRU | V1.3         | [OTA 升级 app 固件](/assets/files/NP-RID-Receiver-WX_S3_WR-V1.3_app.bin)<br />[OTA 升级网页固件](/assets/files/NP-RID-Receiver-WX_S3_WR-V1.3_www.bin)     |
 | NP_S3_CMV2          | V1.3         | [OTA 升级 app 固件](/assets/files/NP-RID-Receiver-NP_S3_CMV2-V1.3_app.bin)<br />[OTA 升级网页固件](/assets/files/NP-RID-Receiver-NP_S3_CMV2-V1.3_www.bin) |
 
 ### 连接热点
